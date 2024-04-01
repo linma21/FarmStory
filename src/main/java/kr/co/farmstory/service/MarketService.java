@@ -23,12 +23,15 @@ public class MarketService {
     private final MarketRepository marketRepository;
     private final ModelMapper modelMapper;
 
-    // select * from `product` order by no desc limt (0, 10)
+    // 장보기 글목록 페이지 - 장보기 목록 출력
     public MarketPageResponseDTO selectProducts(MarketPageRequestDTO marketPageRequestDTO){
         log.info("selectProducts Service 1");
         Pageable pageable = marketPageRequestDTO.getPageable("no");
 
-        log.info("selectProducts Service 2");
+        log.info("selectProducts Service 2 pageable : " + pageable.toString());
+        log.info("selectProducts Service 2 pageable : " + marketPageRequestDTO.toString());
+
+        // select * from `product` order by no desc limt (0, 10)
         Page<Product> productList = marketRepository.selectProducts(marketPageRequestDTO, pageable);
 
         log.info("productList : " + productList.toString());
