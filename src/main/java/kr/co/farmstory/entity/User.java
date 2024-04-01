@@ -1,33 +1,30 @@
 package kr.co.farmstory.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name="user")
 public class User {
-
     @Id
     private String uid;
-    private String name;
     private String pass;
-    private String nick;
+    private String name;
     private String email;
-    private int level;
+    private String nick;
     private String hp;
     private String role;
+    private String level;
+
     private String zip;
     private String addr1;
     private String addr2;

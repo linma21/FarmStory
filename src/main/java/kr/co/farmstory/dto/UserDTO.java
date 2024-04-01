@@ -1,27 +1,26 @@
 package kr.co.farmstory.dto;
 
 import lombok.*;
-import lombok.experimental.StandardException;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Builder
-@Setter
-@Getter
 public class UserDTO {
-
     private String uid;
-    private String name;
     private String pass;
-    private String nick;
+    private String name;
     private String email;
-    private int level;
+    private String nick;
     private String hp;
     private String role;
+    private String level;
+
     private String zip;
     private String addr1;
     private String addr2;
@@ -29,5 +28,4 @@ public class UserDTO {
     private LocalDateTime regDate;
     private LocalDateTime leaveDate;
     private String provider;
-
 }

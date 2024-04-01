@@ -16,6 +16,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 @EnableAspectJAutoProxy
 public class RootConfig {
+
+    /*
+
     @Autowired
     private BuildProperties buildProperties;
 
@@ -25,4 +28,5 @@ public class RootConfig {
         String version = buildProperties.getVersion();
         return new AppInfo(name, version);
     }
+    */
 }
