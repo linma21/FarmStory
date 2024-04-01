@@ -20,7 +20,8 @@ import java.util.List;
 public class MarketController {
 
     private final MarketService marketService;
-
+    
+    // 장보기 글목록 페이지 매핑 (cate, pg, type, keyword 받음)
     @GetMapping("/market/list")
     public String marketList(Model model, MarketPageRequestDTO marketPageRequestDTO){
 

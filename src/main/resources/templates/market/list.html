@@ -43,12 +43,12 @@
                     </p>
                 </nav>
 
-                <!-- 내용 시작 -->
+                <!-- 내용 시작 / 해당 버튼 눌렀을때 on 옮겨가게 해야함-->
                 <p class="sort">
-                    <a href="#" class="on">전체(10) |</a>
-                    <a href="#">과일 |</a>
-                    <a href="#">야채 |</a>
-                    <a href="#">곡류</a>
+                    <a th:href="@{/market/list}" class="on">전체(10) |</a>
+                    <a th:href="@{/market/list(cate=과일)}">과일 |</a>
+                    <a th:href="@{/market/list(cate=야채)}">야채 |</a>
+                    <a th:href="@{/market/list(cate=곡류)}">곡류</a>
                 </p>
                 <table border="0">
                     <thead>
