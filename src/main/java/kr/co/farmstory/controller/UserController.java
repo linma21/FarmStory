@@ -29,7 +29,7 @@ import java.util.Map;
 public class UserController {
 
     private final TermsRepository termsRepository;
-
+    private final UserService userService;
 
     @GetMapping("/user/login")
     public String loginPage() {
