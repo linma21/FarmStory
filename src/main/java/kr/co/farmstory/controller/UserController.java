@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class MainController {
+public class UserController {
 
-    @GetMapping("/")
-    public String index(){
+    @GetMapping("/user/register")
+    public String register(){
 
-        return "/index";
+        return "/user/register";
+
     }
+
 }

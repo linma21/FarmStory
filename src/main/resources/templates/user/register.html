@@ -32,8 +32,145 @@
             <li><a href="./community/notice.html">커뮤니티</a></li>
         </ul>
     </header>
-    <div id="user">
-        <img src="./images/register.png" alt="회원가입 샘플">
+    <div id="user">//여기서 부터 회원가입내용
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5 mb-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">회원가입</h3></div>
+                <div class="card-body">
+                    <form th:action="@{/user/register}" name="registerForm" method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputUid" type="text" name="uid" placeholder="아이디 입력"/>
+                                    <label for="inputUid">아이디 입력</label>
+                                </div>
+                                <div id="resultUid" class="d-block"></div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-outline-secondary" id="btnCheckUid" data-type="uid">
+                                    <span class="spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                    <span class="" role="status">중복확인</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputPass1" type="password" name="pass" placeholder="비밀번호 입력"/>
+                                    <label for="inputPass1">비밀번호 입력</label>
+                                </div>
+                                <div id="resultPass" class="d-block"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputPass2" type="password" name="pass2" placeholder="비밀번호 입력 확인"/>
+                                    <label for="inputPass2">비밀번호 입력 확인</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputName" name="name" type="text" placeholder="이름 입력"/>
+                                    <label for="inputName">이름 입력</label>
+                                </div>
+                                <div id="resultName" class="d-block"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputNick" name="nick" type="text" placeholder="별명 입력"/>
+                                    <label for="inputNick">별명 입력</label>
+                                </div>
+                                <div id="resultNick" class="d-block"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-outline-secondary" id="btnCheckNick" data-type="nick">
+                                    <span class="spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                    <span class="" role="status">중복확인</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputHp" name="hp" type="text" placeholder="휴대폰 입력"/>
+                                    <label for="inputHp">휴대폰 입력</label>
+                                </div>
+                                <div id="resultHp" class="d-block"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-outline-secondary" id="btnCheckHp" data-type="hp">
+                                    <span class="spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                    <span class="" role="status">중복확인</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputEmail" name="email" type="text" placeholder="이메일 입력"/>
+                                    <label for="inputEmail">이메일 입력</label>
+                                </div>
+                                <div id="resultEmail" class="d-block"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-outline-secondary" id="btnCheckEmail" data-type="email">
+                                    <span class="spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                    <span class="" role="status">이메일 인증</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="divEmailCode" class="row mb-3 d-none">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputEmailCode" name="code" type="text" placeholder="이메일 인증코드 입력"/>
+                                    <label for="inputEmail">이메일 인증코드 입력</label>
+                                </div>
+                                <div id="resultEmailCode" class="d-block"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-outline-secondary" id="btnCheckEmailCode" data-type="email">
+                                    <span class="spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                    <span class="" role="status">인증코드 확인</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputZip" name="zip" type="text" readonly placeholder="우편번호 검색"/>
+                                    <label for="inputZip">우편번호 검색</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputAddr1" type="text" name="addr1" readonly placeholder="기본주소 입력" />
+                            <label for="inputAddr1">기본주소</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputAddr2" type="text" name="addr2" placeholder="상세주소 입력"/>
+                            <label for="inputAddr2">상세주소 입력</label>
+                        </div>
+
+                        <div class="text-center mt-4 mb-0">
+                            <a class="btn btn-secondary" th:href="@{/user/login}">취소</a>
+                            <input type="submit" class="btn btn-primary" value="회원가입"/>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
     <footer>
         <img src="../images/footer_logo.png" alt="로고"/>

@@ -1,6 +1,5 @@
 package kr.co.farmstory.dto;
 
-import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -21,6 +20,7 @@ public class UserDTO {
     private String hp;
     private String role;
     private String level;
+
     private String zip;
     private String addr1;
     private String addr2;
