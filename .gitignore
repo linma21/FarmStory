@@ -37,6 +37,6 @@ out/
 .vscode/
 
 !**/src/main/**/*.yml
-
+src/main/resources/application.yml
 logs
 logs/
