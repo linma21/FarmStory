@@ -18,6 +18,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class RootConfig {
 
     /*
+
     @Autowired
     private BuildProperties buildProperties;
 
