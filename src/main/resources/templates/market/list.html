@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html >
 <head>
     <meta charset="UTF-8">
     <title>팜스토리::장보기</title>
@@ -63,69 +62,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr th:each="product : ${marketPageResponseDTO.dtoList}">
                         <td>
-                            <a href="./view.html"><img src="../images/market_item1.jpg" alt="사과 500g"></a>
+                            <a href="./view.html"><img th:src="@{/images/__${product.thumbnail}__}" th:alt="${product.prodname}"></a>
                         </td>
-                        <td class="type">과일</td>
-                        <td class="title"><a href="#">사과 500g</a></td>
-                        <td class="discount">10%</td>
-                        <td class="point">400P</td>
+                        <td class="type">[[${product.cate}]]</td>
+                        <td class="title"><a href="#">[[${product.prodname}]]</a></td>
+                        <td class="discount">[[${product.discount}]]</td>
+                        <td class="point">[[${product.price} * ${product.discount} / 100]]</td>
                         <td class="price">
-                            <strong>3,600</strong>
-                            <del>4,000</del>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="./view.html"><img src="../images/market_item2.jpg" alt="사과 500g"></a>
-                        </td>
-                        <td class="type">과일</td>
-                        <td class="title"><a href="#">전남 완주 배 5kg</a></td>
-                        <td class="discount">10%</td>
-                        <td class="point">400P</td>
-                        <td class="price">
-                            <strong>3,600</strong>
-                            <del>4,000</del>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="./view.html"><img src="../images/market_item3.jpg" alt="사과 500g"></a>
-                        </td>
-                        <td class="type">과일</td>
-                        <td class="title"><a href="#">방울 토마토</a></td>
-                        <td class="discount">10%</td>
-                        <td class="point">400P</td>
-                        <td class="price">
-                            <strong>3,600</strong>
-                            <del>4,000</del>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="./view.html"><img src="../images/market_item6.jpg" alt="사과 500g"></a>
-                        </td>
-                        <td class="type">곡류</td>
-                        <td class="title"><a href="#">무농약 현미</a></td>
-                        <td class="discount">10%</td>
-                        <td class="point">400P</td>
-                        <td class="price">
-                            <strong>3,600</strong>
-                            <del>4,000</del>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="./view.html"><img src="../images/market_item7.jpg" alt="사과 500g"></a>
-                        </td>
-                        <td class="type">야채</td>
-                        <td class="title"><a href="#">팜스토리 하루야채 샐러드</a></td>
-                        <td class="discount">10%</td>
-                        <td class="point">400P</td>
-                        <td class="price">
-                            <strong>3,600</strong>
-                            <del>4,000</del>
+                            <strong>[[${product.price} - (${product.price} * ${product.discount} / 100)]]</strong><br>
+                            <del>[[${product.price}]]</del>
                         </td>
                     </tr>
 
@@ -133,13 +80,21 @@
                 </table>
 
                 <p class="paging">
-                    <a href="#"><</a>
-                    <a href="#" class="on">[1]</a>
-                    <a href="#">[2]</a>
-                    <a href="#">[3]</a>
-                    <a href="#">[4]</a>
-                    <a href="#">[5]</a>
-                    <a href="#">></a>
+                    <th:block th:if="${marketPageResponseDTO.prev}">
+                        <a th:if="${marketPageResponseDTO.keyword == null}" th:href="@{/market/list(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.start - 1})}">이전</a>
+                        <a th:if="${marketPageResponseDTO.keyword != null}" th:href="@{/market/list(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.start - 1},
+                                                                                        type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">이전</a>
+                    </th:block>
+                    <th:block th:each="n : ${#numbers.sequence(marketPageResponseDTO.start, marketPageResponseDTO.end)}">
+                        <a th:if="${marketPageResponseDTO.keyword == null}" th:href="@{/market/list(cate=${marketPageResponseDTO.cate}, pg=${n})}" th:text="${n}"></a>
+                        <a th:if="${marketPageResponseDTO.keyword != null}" th:href="@{/market/list(cate=${marketPageResponseDTO.cate}, pg=${n},
+                                                                    type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}" th:text="${n}"></a>
+                    </th:block>
+                    <th:block th:if="${marketPageResponseDTO.next}">
+                        <a th:if="${marketPageResponseDTO.keyword == null}" th:href="@{/market/list(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.end + 1})}">다음</a>
+                        <a th:if="${marketPageResponseDTO.keyword != null}" th:href="@{/market/list(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.end + 1},
+                                                                                        type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">다음</a>
+                    </th:block>
                 </p>
 
                 <!-- 내용 끝 -->
