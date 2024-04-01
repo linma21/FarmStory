@@ -57,3 +57,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// Java에서 빌드 정보 객체(BuildProperties)를 참조 위해 gradle buildInfo() 실행
+springBoot {
+    buildInfo()
+}
