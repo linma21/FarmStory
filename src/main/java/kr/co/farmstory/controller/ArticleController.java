@@ -1,0 +1,60 @@
+package kr.co.farmstory.controller;
+
+import kr.co.farmstory.dto.ArticleDTO;
+import kr.co.farmstory.dto.PageRequestDTO;
+import kr.co.farmstory.dto.PageResponseDTO;
+import kr.co.farmstory.service.ArticleService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+@Slf4j
+@RequiredArgsConstructor
+@Controller
+public class ArticleController {
+
+    private final ArticleService articleService;
+
+    // 글 목록 조회
+    @GetMapping("/community/list")
+    public String community(Model model, String cate, PageRequestDTO pageRequestDTO){
+        PageResponseDTO pageResponseDTO = null;
+
+        if(pageRequestDTO.getKeyword() == null) {
+            // 일반 글 목록 조회
+            pageResponseDTO = articleService.selectArticles(pageRequestDTO);
+        }else {
+            // 검색 글 목록 조회
+            pageResponseDTO = articleService.searchArticles(pageRequestDTO);
+        }
+        log.info("pageResponseDTO : " + pageResponseDTO);
+
+        model.addAttribute(pageResponseDTO);
+        return "/community/list";
+    }
+    // 글 상세 보기
+    @GetMapping("/community/view")
+    public String communityView(Model model, String cate, PageRequestDTO pageRequestDTO){
+        int no = pageRequestDTO.getNo();
+        int pg = pageRequestDTO.getPg();
+
+        // 글 조회
+        ArticleDTO article = articleService.selectArticle(no);
+
+        log.info("viewCont article1 : " + article.toString());
+
+        // 페이지 정보 build
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+        model.addAttribute("article", article);
+
+        return "/community/view";
+    }
+}

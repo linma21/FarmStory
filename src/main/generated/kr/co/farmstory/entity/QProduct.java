@@ -19,6 +19,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public static final QProduct product = new QProduct("product");
 
+    public final StringPath cate = createString("cate");
+
     public final StringPath company = createString("company");
 
     public final NumberPath<Integer> discount = createNumber("discount", Integer.class);
@@ -29,9 +31,12 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final NumberPath<Integer> prodno = createNumber("prodno", Integer.class);
 
+
+    public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> stock = createNumber("stock", Integer.class);
 
-    public final StringPath type = createString("type");
+    public final StringPath thumbnail = createString("thumbnail");
 
     public QProduct(String variable) {
         super(Product.class, forVariable(variable));

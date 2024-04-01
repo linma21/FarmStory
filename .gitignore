@@ -36,4 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-!./logs.txt
+!**/src/main/**/*.yml
+
+logs
+logs/
+
