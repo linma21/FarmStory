@@ -1,4 +1,5 @@
 package kr.co.farmstory.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,10 +24,12 @@ public class User {
     private String hp;
     private String role;
     private String level;
+
     private String zip;
     private String addr1;
     private String addr2;
     private String regip;
+
     @CreationTimestamp
     private LocalDateTime regDate;
     private LocalDateTime leaveDate;
