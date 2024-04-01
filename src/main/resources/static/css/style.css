@@ -1160,3 +1160,181 @@ input[type=number]::-webkit-outer-spin-button {
     --bs-pagination-border-radius: 0.25rem;
 }
 
+/*register*/
+.register {
+    width: 600px;
+    height: auto;
+    margin: 60px auto;
+    box-sizing: border-box;
+}
+.register > form {
+}
+.register > form > table {
+    width: 100%;
+    margin-bottom: 10px;
+    border-top: 2px solid #111;
+    border-spacing: 0;/*셀 사이의 간격이 없어짐*/
+    border-collapse: collapse;/*셀간의 테두리가 합쳐짐*/
+}
+.register > form > table > caption {
+    text-align: left;
+    padding: 10px 0;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.register > form > table tr {
+}
+.register > form > table td {
+    padding: 6px 12px;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+}
+.register > form > table td:nth-child(1) {
+    width: 106px;
+    background: #f4f8f9;
+}
+.register > form > table td:nth-child(2) {
+}
+.register > form > table input {
+    width: 162px;
+    height: 22px;
+    border: 1px solid #e4eaec;
+    background: #f7f7f7;
+    text-indent: 4px;
+}
+
+.register > form > table input[name=addr1]{
+    width: 360px;
+    margin: 4px 0;
+
+}
+.register > form > table input[name=addr2]{
+    width: 360px;
+}
+
+.register > form > table button {
+    border: none;
+    vertical-align: -2px;
+}
+
+.register > form > div {
+    text-align: right;
+}
+
+/*list*/
+.list{
+    width: 720px;
+    height: auto;
+    box-sizing: border-box;
+    margin: 60px auto;
+}
+.list>h3{}
+.list>article{}
+.list>article>table{
+    border-top: 2px solid #111;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin-top: 6px;
+}
+.list>article>table tr{}
+.list>article>table th{
+    padding: 12px;
+    border-top: 1px solid #d1dee2;
+    border-bottom: 1px solid #d1dee2;
+    background-color: #e5ecef;
+    color: #383838;
+}
+.list>article>table td{
+    padding: 12px;
+    border-top: 1px solid #e9e9e9;
+    border-bottom:1px solid #e9e9e9 ;
+
+}
+.list>article>table td:nth-child(1){width: 50px;text-align: center;}
+.list>article>table td:nth-child(2){width: auto;}
+.list>article>table td:nth-child(3){width: 100px;text-align: center;}
+.list>article>table td:nth-child(4){width: 100px;text-align: center;}
+.list>article>table td:nth-child(5){width: 50px;text-align: center;}
+
+
+.list>.paging{
+    padding: 20px;
+    text-align: center;
+}
+.list>.paging>a{
+    padding: 8px;
+    background: #f2f2f2;
+    border: 1px solid #d7d7d7;
+}
+.list>.paging>.prev{}
+.list>.paging>.next{}
+.list>.paging>.num{}
+.list>.paging>.current{
+    border: 1px solid #6d6d6d;
+    background: #888;
+    color: #fff;
+}
+
+.list>div{
+    text-align: right;
+}
+
+
+/*버튼 공통*/
+
+.btnNext {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid #bebebe;
+    background: #e9e9e9;
+    color: #111;
+}
+.btnCancel {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid #bebebe;
+    background: #fdfdfd;
+    color: #111;
+}
+.btnSubmit {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid #3b3c3f;
+    background: #4b545e;
+    color: #fff;
+}
+
+.btnWrite {
+
+    padding: 7px;
+    border: 1px solid #3b3c3f;
+    background: #4b545e;
+    color: #fff;
+}
+
+
+
+.btnDelete {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid #bebebe;
+    background: #fdfdfd;
+    color: #111;
+}
+
+.btnModify {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid #bebebe;
+    background: #fdfdfd;
+    color: #111;
+}
+
+.btnList {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid #bebebe;
+    background: #fdfdfd;
+    color: #111;
+}
