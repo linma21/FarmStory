@@ -59,6 +59,7 @@ tasks.named('test') {
 springBoot {
     buildInfo()
 }
+
 // QueryDSL 설정 - main 하위에 Querydsl 생성 설정
 def querydslDir = "src/main/generated"
 
