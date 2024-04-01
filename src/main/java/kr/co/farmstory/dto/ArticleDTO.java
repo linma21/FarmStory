@@ -23,4 +23,6 @@ public class ArticleDTO {
     private int hit;
     private int prodno;
     private LocalDateTime rdate;
+
+    private String nick;
 }

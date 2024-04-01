@@ -1,10 +1,14 @@
 package kr.co.farmstory.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "article")
 public class Article {
@@ -19,8 +23,11 @@ public class Article {
     private String thumbnail;
     private int file;
     private int hit;
-    private int prodno;
+    private Integer prodno;
 
     @CreationTimestamp
     private LocalDateTime rdate;
+
+    @Transient
+    private String nick;
 }

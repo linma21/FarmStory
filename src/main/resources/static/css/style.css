@@ -892,6 +892,48 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
 }
 
+/* list */
+.listTable {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    border-collapse: collapse;
+}
+.listTable th {
+    height: 36px;
+    font-weight: bold;
+    border-bottom: 2px solid #6a6a6a;
+    border-top: 2px solid #3f3f3f;
+}
+.listTable tr > td {
+    padding: 6px 2px;
+    border-bottom: 1px solid #8c8c8c;
+}
+.listTable tr > td:nth-child(1){
+    width: 50px;
+    color: #8c8c8c;
+}
+.listTable tr > td:nth-child(2){
+    color: #6a6a6a;
+    text-align: left;
+}
+.listTable tr > td:nth-child(2) > span {
+    color: red;
+}
+.listTable tr > td:nth-child(3){
+    width: 80px;
+    color: #3f3f3f;
+    font-weight: bold;
+}
+.listTable tr > td:nth-child(4){
+    width: 50px;
+    color: #8c8c8c;
+}
+.listTable tr > td:nth-child(5){
+    width: 50px;
+    color: #8c8c8c;
+}
+
 /* pagination */
 .pagination, .datatable-pagination ul {
     --bs-pagination-padding-x: 0.75rem;
@@ -996,3 +1038,4 @@ input[type=number]::-webkit-outer-spin-button {
     --bs-pagination-font-size: 0.875rem;
     --bs-pagination-border-radius: 0.25rem;
 }
+
