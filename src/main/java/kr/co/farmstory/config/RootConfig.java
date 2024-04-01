@@ -29,4 +29,15 @@ public class RootConfig {
         return new AppInfo(name, version);
     }
     */
+
+    @Bean
+    public ModelMapper modelMapper(){
+        ModelMapper modelMapper = new ModelMapper();
+        // Entity에 setter를 주지 않고 ModelMapper를 사용하기 위한 설정
+        modelMapper.getConfiguration()
+                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setFieldMatchingEnabled(true);
+        return modelMapper;
+    }
 }
