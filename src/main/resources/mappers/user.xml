@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.farmstory.mapper.UserMapper">
+
+    <select id="selectCountUser" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="type=='uid'">uid=#{value}</if>
+            <if test="type=='nick'">nick=#{value}</if>
+            <if test="type=='hp'">hp=#{value}</if>
+            <if test="type=='email'">email=#{value}</if>
+        </where>
+
+    </select>
+
+    <insert id="insertUser">
+        insert into user set
+        uid=#{uid},
+        pass=#{pass},
+        name=#{name},
+        nick=#{nick},
+        email=#{email},
+        hp=#{hp},
+        zip=#{zip},
+        addr1=#{addr1},
+        addr2=#{addr2},
+        regip=#{regip},
+        regDate=NOW()
+    </insert>
+
+
+</mapper>
