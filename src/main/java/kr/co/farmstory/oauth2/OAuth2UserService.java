@@ -41,8 +41,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String email=null;
         String name = null;
 
-        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
 
         //프로바이더에 따라서 다르게 email과 name에 들어감
@@ -51,6 +49,9 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             name = (String) attributes.get("name");
             // 구글 속성 사용
         } else if ("kakao".equals(provider)) {
+            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+
             email = (String) kakaoAccount.get("email");
             name = (String) profile.get("nickname");
             // 카카오 속성 사용

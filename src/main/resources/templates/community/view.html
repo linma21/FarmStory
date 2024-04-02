@@ -1,8 +1,10 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>팜스토리::커뮤니티</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/userLayout}">
+
+
+<div class="container" layout:fragment="content">
+
     <script th:src="@{/js/util.js}"></script>
     <script th:inline="javascript">
         window.onload = function (){
@@ -74,120 +76,89 @@
 
         }
     </script>
-</head>
-<body>
-<div id="container">
-    <header>
-        <a href="../index.html" class="logo"><img src="../images/logo.png" alt="로고"/></a>
-        <p>
-            <a href="#">HOME |</a>
-            <a href="#">로그인 |</a>
-            <a href="#">회원가입 |</a>
-            <a href="#">고객센터</a>
-        </p>
-        <img src="../images/head_txt_img.png" alt="3만원 이상 무료배송"/>
 
-        <ul class="gnb">
-            <li><a href="#">팜스토리소개</a></li>
-            <li><a href="#"><img src="../images/head_menu_badge.png" alt="30%"/>장바구니</a></li>
-            <li><a href="#">농작물이야기</a></li>
-            <li><a href="#">이벤트</a></li>
-            <li><a href="#">커뮤니티</a></li>
-        </ul>
-    </header>
-<main>
-    <div id="sub">
-        <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
-        <section class="community">
-            <aside>
-                <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
+    <main>
+        <div id="sub">
+            <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
+            <section class="community">
+                <aside>
+                    <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
 
-                <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
-                </ul>
-            </aside>
-            <article class="view">
-                <nav id="communityNav">
-                    <img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
-                    <p>
-                        HOME > 커뮤니티 > <em>자주묻는질문</em>
-                    </p>
-                </nav>
-                <!-- 내용 시작 -->
-                <section class="community_view">
-                    <form id="communityForm">
-                        <table>
-                            <tr>
-                                <th>제목</th>
-                                <td><input type="text" name="title" readonly th:value="${article.title}"/></td>
-                            </tr>
-                            <tr th:if="${article.file > 0}">
-                                <th>파일</th>
-                                <td>
-                                    <ul class="list-group" id="exampleFormControlInput1">
-                                        <li th:each="file:${article.fileList}"
-                                            class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="#" class="link-grey visually-hidden removeFile" th:data-fno="${file.fno}"><i class="bi bi-trash3-fill"></i> 삭제</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>내용</th>
-                                <td>
-                                    <textarea name="content" readonly>[[${article.content}]]</textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                    <div>
-                            <a href="#" class="btn btnRemove" id="btnRemove">삭제</a>
-                            <a href="#" class="btn btnModify" id="btnModify">수정</a>
-                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
-                           class="btn btnList">목록</a>
-                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
-                           class="btn btnList">목록</a>
-                    </div>
-
-                    <!-- 댓글목록 -->
-                    <section class="commentList" id="commentList">
-                            <!-- 댓글 내용 -->
-                    </section>
-
-                    <!-- 댓글쓰기 -->
-                    <section class="commentForm">
-                        <h3>댓글쓰기</h3>
-                        <form action="#" name="commentForm" method="post">
-                            <input type="hidden" name="writer" value="${sessUser.uid}">
-                            <input type="hidden" name="parent" value="${articleDTO.no}">
-                            <textarea name="content" class="commentContent"></textarea>
-                            <div>
-                                <a href="#" class="btn btnCancel">취소</a>
-                                <input type="submit" name="submit" value="작성완료" class="btn btnComment"/>
-                            </div>
+                    <ul class="lnb">
+                        <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
+                        <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
+                        <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
+                        <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
+                        <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
+                    </ul>
+                </aside>
+                <article class="view">
+                    <nav id="communityNav">
+                        <img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
+                        <p>
+                            HOME > 커뮤니티 > <em>자주묻는질문</em>
+                        </p>
+                    </nav>
+                    <!-- 내용 시작 -->
+                    <section class="community_view">
+                        <form id="communityForm">
+                            <table>
+                                <tr>
+                                    <th>제목</th>
+                                    <td><input type="text" name="title" readonly th:value="${article.title}"/></td>
+                                </tr>
+                                <tr th:if="${article.file > 0}">
+                                    <th>파일</th>
+                                    <td>
+                                        <ul class="list-group" id="exampleFormControlInput1">
+                                            <li th:each="file:${article.fileList}"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                <a href="#" class="link-grey visually-hidden removeFile" th:data-fno="${file.fno}"><i class="bi bi-trash3-fill"></i> 삭제</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>내용</th>
+                                    <td>
+                                        <textarea name="content" readonly>[[${article.content}]]</textarea>
+                                    </td>
+                                </tr>
+                            </table>
                         </form>
+                        <div>
+                                <a href="#" class="btn btnRemove" id="btnRemove">삭제</a>
+                                <a href="#" class="btn btnModify" id="btnModify">수정</a>
+                            <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                               class="btn btnList">목록</a>
+                            <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                               class="btn btnList">목록</a>
+                        </div>
+
+                        <!-- 댓글목록 -->
+                        <section class="commentList" id="commentList">
+                                <!-- 댓글 내용 -->
+                        </section>
+
+                        <!-- 댓글쓰기 -->
+                        <section class="commentForm">
+                            <h3>댓글쓰기</h3>
+                            <form action="#" name="commentForm" method="post">
+                                <input type="hidden" name="writer" value="${sessUser.uid}">
+                                <input type="hidden" name="parent" value="${articleDTO.no}">
+                                <textarea name="content" class="commentContent"></textarea>
+                                <div>
+                                    <a href="#" class="btn btnCancel">취소</a>
+                                    <input type="submit" name="submit" value="작성완료" class="btn btnComment"/>
+                                </div>
+                            </form>
+                        </section>
                     </section>
-                </section>
-                <!-- 내용 끝 -->
-            </article>
-        </section>
+                    <!-- 내용 끝 -->
+                </article>
+            </section>
 
-    </div>
-
-</main>
-    <footer>
-        <img src="../images/footer_logo.png" alt="로고"/>
-        <p>
-            (주)팜스토리 / 사업자등록번호 123-45-67890 / 통신판매업신고 제 2013-팜스토리구-123호 / 벤처기업확인 서울지방중소기업청 제 012345678-9-01234호<br />
-            등록번호 팜스토리01234 (2013.04.01) / 발행인 : 홍길동<br />
-            대표 : 홍길동 / 이메일 : email@mail.mail / 전화 : 01) 234-5678 / 경기도 성남시 잘한다구 신난다동 345<br />
-            <em>Copyright(C)홍길동 All rights reserved.</em>
-        </p>
-    </footer>
+        </div>
+    </main>
 </div>
-</body>
 </html>

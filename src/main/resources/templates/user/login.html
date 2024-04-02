@@ -20,7 +20,7 @@
         }
     </script>
 
-
+<main>
     <section class="login">
         <form th:action="@{/user/login}" method="post" class="form-flex">
             <table border="0">
@@ -50,17 +50,14 @@
                 <a th:href="@{/oauth2/authorization/kakao}">
                     <img th:src="@{/images/user/kakao.png}" alt="로그인">
                 </a>
-
-
             </div>
         </form>
-
         <div>
             <h3>회원 로그인 안내</h3>
             <p>아직 회원이 아니시면 회원으로 가입하세요.</p>
             <a th:href="@{/user/terms}">회원가입</a>
         </div>
     </section>
-
+</main>
 </div>
 </html>
