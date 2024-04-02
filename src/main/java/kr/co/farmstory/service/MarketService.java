@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,5 +50,15 @@ public class MarketService {
                 .dtoList(productDTO)
                 .total(total)
                 .build();
+    }
+    //
+    public ProductDTO selectProduct(int prodeno){
+        Optional<Product> optProduct = marketRepository.findById(prodeno);
+        ProductDTO productDTO = new ProductDTO();
+        if (optProduct.isPresent()){
+            productDTO = modelMapper.map(optProduct.get(),ProductDTO.class);
+            log.info("productDTO : " + productDTO);
+        }
+        return productDTO;
     }
 }
