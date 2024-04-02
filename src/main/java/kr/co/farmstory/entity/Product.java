@@ -17,6 +17,8 @@ public class Product {
     private int stock;
     private int price;
     private int discount;
+    private int delCost;
+    private int delType;
     private String company;
     @CreationTimestamp
     private LocalDateTime rdate;

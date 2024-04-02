@@ -21,6 +21,8 @@ public class ProductDTO {
     private int stock;
     private int price;
     private int discount;
+    private int delCost;
+    private int delType;
     private String company;
     private LocalDateTime rdate;
 }
