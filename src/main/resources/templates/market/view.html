@@ -4,6 +4,43 @@
     <meta charset="UTF-8">
     <title>팜스토리::장보기</title>
     <link rel="stylesheet" href="../css/style.css"/>
+
+    <script>
+        window.onload = function (){
+            // 수량 변경시 합계 가격 변동 코드
+            const count = document.getElementById('count');
+            const totalPrice = document.getElementById('totalPrice');
+            const discount = document.getElementById('discount');
+            const price = document.getElementById('price');
+            const delCost = document.getElementById('delCost');
+            const delType = document.getElementById('delType');
+            const discountRatio = document.getElementById('discountRatio');
+            const deliveryCost = document.getElementById('deliveryCost');
+            const finalPrice = document.getElementById('finalPrice');
+
+            count.addEventListener('input', function() {
+                // 할인 적용 안된 금액
+                let total = count.value * parseInt(price.innerText);
+                totalPrice.innerText = total;
+                // 할인금액
+                let discountPrice = total * parseInt(discount.innerText) / 100;
+                discountRatio.innerText = discountPrice;
+                // 배송비
+                let cost = parseInt(delCost.innerText);
+                if (delType.innerText <= (total - discountPrice)){
+                    cost = 0;
+                    deliveryCost.innerText = cost;
+                }else {
+                    deliveryCost.innerText = cost;
+                }
+
+                // 최종 금액
+                let fffff = total - discountPrice + cost;
+                finalPrice.innerText = fffff;
+            });
+        }
+    </script>
+
 </head>
 <body>
 <div id="container">
@@ -47,37 +84,46 @@
                 <!-- 내용 시작 -->
                 <h3>기본정보</h3>
                 <div class="basic">
-                    <img src="../images/market_item_thumb.jpg" alt="딸기 500g">
+                    <img th:src="@{/images/__${productDTO.thumbnail}__}" th:alt="${productDTO.prodname}" style="width: 240px;">
 
                     <table border="0">
                         <tr>
                             <td>상품명</td>
-                            <td>딸기 500g</td>
+                            <td>[[${productDTO.prodname}]]</td>
                         </tr>
                         <tr>
                             <td>상품코드</td>
-                            <td>01</td>
+                            <td>[[${productDTO.prodno}]]</td>
                         </tr>
                         <tr>
                             <td>배송비</td>
                             <td>
-                                <span>5,000</span>원
-                                <em>3만원 이상 무료배송</em>
+                                <span id="delCost">[[${productDTO.delCost}]]</span>원
+                                <em><i id="delType">[[${productDTO.delType}]]</i>원 이상 무료배송</em>
                             </td>
                         </tr>
                         <tr>
                             <td>판매가격</td>
-                            <td>4,000원</td>
+                            <td><i id="price">[[${productDTO.price}]]</i>원</td>
+                        </tr>
+                        <tr>
+                            <td>할인</td>
+                            <td><i id="discount">[[${productDTO.discount}]]</i>%</td>
                         </tr>
                         <tr>
                             <td>구매수량</td>
                             <td>
-                                <input type="number" name="count" min="1" value="1">
+                                <input type="number" name="count" min="1" value="0" id="count">
                             </td>
                         </tr>
                         <tr>
                             <td>합계</td>
-                            <td class="total">4,000원</td>
+                            <td class="total">
+                                +<i id="totalPrice"></i>원<br>
+                                -<i id="discountRatio"></i>원<br>
+                                +<i id="deliveryCost"></i>원<br>
+                                =<i id="finalPrice"></i>원
+                            </td>
                         </tr>
                         <style>
 

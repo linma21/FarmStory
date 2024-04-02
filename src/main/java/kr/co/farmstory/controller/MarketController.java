@@ -30,4 +30,15 @@ public class MarketController {
         model.addAttribute(pageResponseDTO);
         return "/market/list";
     }
+
+    // 장보기 글보기 페이지 매핑 (cate, pg, type, keyword 받음)
+    @GetMapping("/market/view")
+    public String marketView(Model model, MarketPageRequestDTO marketPageRequestDTO, int prodno){
+
+        ProductDTO productDTO = marketService.selectProduct(prodno);
+        log.info("productDTO : " + productDTO.toString());
+        model.addAttribute(productDTO);
+        model.addAttribute(marketPageRequestDTO);
+        return "/market/view";
+    }
 }
