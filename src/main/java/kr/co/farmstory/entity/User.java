@@ -3,8 +3,12 @@ package kr.co.farmstory.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -14,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name="user")
-public class User {
+public class User{
     @Id
     private String uid;
     private String pass;
@@ -35,4 +39,4 @@ public class User {
     private LocalDateTime leaveDate;
     private String provider;
 
-}
+ }

@@ -1,5 +1,6 @@
 package kr.co.farmstory.security;
 
+import kr.co.farmstory.oauth2.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfig {
 
+
+    private final OAuth2UserService oauth2UserService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // 인증 설정 (로그인)
@@ -28,7 +32,11 @@ public class SecurityConfig {
         httpSecurity.logout(logout -> logout
                                 .invalidateHttpSession(true)            // session 무효화 -> logout 후 새로운 session 시작
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // logout 호출 URL
-                                .logoutSuccessUrl("/user/login?success=300"));                     // logout 성공 주소
+                                .logoutSuccessUrl("/user/login?success=300"));
+
+        httpSecurity.oauth2Login(config -> config
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/"));// logout 성공 주소
 
         // 인가 설정
         httpSecurity.authorizeHttpRequests(authorize -> authorize
@@ -36,6 +44,7 @@ public class SecurityConfig {
                                     .requestMatchers("/article/**").permitAll()
                                     .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                                     .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
+                                    .requestMatchers("/oauth","/oauth/google","/oauth/callback/google","/oauth/naver/**").permitAll()
                                     .anyRequest().permitAll()
         );
 
