@@ -1,10 +1,13 @@
 package kr.co.farmstory.dto;
 
 import jakarta.persistence.*;
+import kr.co.farmstory.entity.File;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +28,7 @@ public class ArticleDTO {
     private LocalDateTime rdate;
 
     private String nick;
+
+    private List<MultipartFile> files;
+    private List<File> fileList;
 }

@@ -2,6 +2,7 @@ package kr.co.farmstory.service;
 
 import com.querydsl.core.Tuple;
 import kr.co.farmstory.dto.ArticleDTO;
+import kr.co.farmstory.dto.FileDTO;
 import kr.co.farmstory.dto.PageRequestDTO;
 import kr.co.farmstory.dto.PageResponseDTO;
 import kr.co.farmstory.entity.Article;
@@ -24,6 +25,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ModelMapper modelMapper;
+    private final FileService fileService;
+
     // 기본 글 목록 조회
     public PageResponseDTO selectArticles(PageRequestDTO pageRequestDTO){
 
@@ -106,6 +109,25 @@ public class ArticleService {
         }
         log.info("selectArticle ... 4 articleDTO2 : " + articleDTO.toString());
         return articleDTO;
+    }
+    // 글 작성
+    public void insertArticle(ArticleDTO articleDTO){
+
+        List<FileDTO> files = fileService.fileUpload(articleDTO);
+
+        // 파일 개수
+        articleDTO.setFile(files.size());
+
+        Article article = modelMapper.map(articleDTO, Article.class);
+
+        // 저장 후 저장한 엔티티 객체 반환(JPA sava() 메서드는 default로 저장한 Entity를 반환)
+        Article saveArticle = articleRepository.save(article);
+        log.info("insertArticle : " + saveArticle.toString());
+
+        // 파일 insert
+        int ano = saveArticle.getAno();
+        fileService.insertFile(files, ano);
+
     }
 
 }
