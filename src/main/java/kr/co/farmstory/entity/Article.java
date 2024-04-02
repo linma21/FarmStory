@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -30,4 +31,7 @@ public class Article {
 
     @Transient
     private String nick;
+
+    @Transient
+    private List<File> fileList;
 }

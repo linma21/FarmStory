@@ -3,7 +3,6 @@
     <meta charset="UTF-8">
     <title>팜스토리::커뮤니티</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <script th:src="@{/js/util.js}"></script>
     <script th:inline="javascript">
         window.onload = function (){
             const cate = [[${pageResponseDTO.cate}]];
@@ -38,39 +37,9 @@
                 communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
                                                 <p> HOME > 커뮤니티 > <em>자주묻는질문</em></p>`;
             }
+            // 게시글 삭제 , 수정
 
-            const communityForm = document.getElementById('communityForm');
-            const commentList = document.getElementById('commentList');
-            const commentForm = document.getElementById('commentForm');
-            const ano = [[${article.ano}]];
 
-            // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
-            setTimeout(async function () {
-                const comments = await fetchGet(`/farmstory/comment/${ano}`);
-
-                if(comments.length > 0){
-                    // 댓글이 있다면
-                    for(const comment of comments){
-                        const commentArticle = `<article>
-                                <span class="nick">${comment.nick}</span>
-                                <span class="date">${comment.rdate.substring(0, 10)}</span>
-                                <p class="content">댓글 내용</p>
-                                <div>
-                                    <a href="#" data-no="${comment.cno}" data-ano="${comment.ano}" class="remove">삭제</a>
-                                    <a href="#" class="modify">수정</a>
-                                </div>
-                            </article>`;
-                        // 태그 문자열 삽입
-                        commentList.insertAdjacentHTML('beforeend', commentArticle);
-                    }
-                }else {
-                    // 댓글이 없다면
-                    const commentArticle = `<article><p class="content">댓글이 없습니다. 😥 <br> 첫 번째 댓글을 남겨주세요.</p></article>`;
-                    commentList.insertAdjacentHTML('beforeend', commentArticle);
-                }
-            }, 100);
-
-            // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
 
         }
     </script>
@@ -95,7 +64,7 @@
             <li><a href="#">커뮤니티</a></li>
         </ul>
     </header>
-<main>
+
     <div id="sub">
         <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
         <section class="community">
@@ -118,46 +87,41 @@
                     </p>
                 </nav>
                 <!-- 내용 시작 -->
-                <section class="community_view">
-                    <form id="communityForm">
-                        <table>
-                            <tr>
-                                <th>제목</th>
-                                <td><input type="text" name="title" readonly th:value="${article.title}"/></td>
-                            </tr>
-                            <tr th:if="${article.file > 0}">
-                                <th>파일</th>
-                                <td>
-                                    <ul class="list-group" id="exampleFormControlInput1">
-                                        <li th:each="file:${article.fileList}"
-                                            class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="#" class="link-grey visually-hidden removeFile" th:data-fno="${file.fno}"><i class="bi bi-trash3-fill"></i> 삭제</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>내용</th>
-                                <td>
-                                    <textarea name="content" readonly>[[${article.content}]]</textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
+                <section class="cummunity_view">
+                    <table>
+                        <tr>
+                            <th>제목</th>
+                            <td><input type="text" name="title" readonly th:value="${article.title}"/></td>
+                        </tr>
+                        <tr>
+                            <th>내용</th>
+                            <td>
+                                <textarea name="content" readonly>[[${article.content}]]</textarea>
+                            </td>
+                        </tr>
+                    </table>
                     <div>
                             <a href="#" class="btn btnRemove" id="btnRemove">삭제</a>
                             <a href="#" class="btn btnModify" id="btnModify">수정</a>
                         <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
-                           class="btn btnList">목록</a>
+                           class="btn btn-primary">목록</a>
                         <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
-                           class="btn btnList">목록</a>
+                           class="btn btn-primary">목록</a>
                     </div>
 
                     <!-- 댓글목록 -->
-                    <section class="commentList" id="commentList">
-                            <!-- 댓글 내용 -->
+                    <section class="commentList">
+                        <h3>댓글목록</h3>
+                            <article>
+                                <span class="nick">닉네임</span>
+                                <span class="date">작성일</span>
+                                <p class="content">댓글 내용</p>
+                                <div>
+                                    <a href="#" data-no="${comment.no}" data-parent="${comment.parent}" class="remove">삭제</a>
+                                    <a href="#" class="modify">수정</a>
+                                </div>
+                            </article>
                     </section>
-
                     <!-- 댓글쓰기 -->
                     <section class="commentForm">
                         <h3>댓글쓰기</h3>
@@ -167,7 +131,7 @@
                             <textarea name="content" class="commentContent"></textarea>
                             <div>
                                 <a href="#" class="btn btnCancel">취소</a>
-                                <input type="submit" name="submit" value="작성완료" class="btn btnComment"/>
+                                <input type="submit" name="submit" value="작성완료" class="btn btnComplete"/>
                             </div>
                         </form>
                     </section>
@@ -178,7 +142,7 @@
 
     </div>
 
-</main>
+
     <footer>
         <img src="../images/footer_logo.png" alt="로고"/>
         <p>

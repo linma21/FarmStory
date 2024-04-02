@@ -1,5 +1,6 @@
 package kr.co.farmstory.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.farmstory.dto.ArticleDTO;
 import kr.co.farmstory.dto.PageRequestDTO;
 import kr.co.farmstory.dto.PageResponseDTO;
@@ -9,13 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.concurrent.atomic.AtomicReference;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class ArticleController {
+public class CommunityController {
 
     private final ArticleService articleService;
 
@@ -38,14 +39,12 @@ public class ArticleController {
     }
     // 글 상세 보기
     @GetMapping("/community/view")
-    public String communityView(Model model, String cate, PageRequestDTO pageRequestDTO){
-        int no = pageRequestDTO.getNo();
-        int pg = pageRequestDTO.getPg();
-
+    public String communityView(Model model, String cate,int ano, PageRequestDTO pageRequestDTO){
+        log.info("communityView...1 : " + ano);
         // 글 조회
-        ArticleDTO article = articleService.selectArticle(no);
+        ArticleDTO article = articleService.selectArticle(ano);
 
-        log.info("viewCont article1 : " + article.toString());
+        log.info("communityView...2 : " + article.toString());
 
         // 페이지 정보 build
         PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
@@ -56,5 +55,23 @@ public class ArticleController {
         model.addAttribute("article", article);
 
         return "/community/view";
+    }
+    // 글 쓰기
+    @GetMapping("/community/write")
+    public String write(Model model, @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO){
+
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+
+        model.addAttribute(pageResponseDTO);
+        return "/community/write";
+    }
+
+    @PostMapping("/article/write")
+    public String write(@ModelAttribute("writer") String writer, HttpServletRequest req, ArticleDTO articleDTO){
+
+        articleService.insertArticle(articleDTO);
+        return "redirect:/article/list?cate="+articleDTO.getCate();
     }
 }
