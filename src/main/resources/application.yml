@@ -24,7 +24,7 @@ spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         password: Abcd1234!
-        url: jdbc:mysql://127.0.0.1:3306/farmstory
+        url: jdbc:mysql://43.201.61.227:3306/farmstory
         username: farmUser
 
     devtools:
@@ -65,7 +65,6 @@ spring:
 
     thymeleaf:
         prefix: classpath:/templates
-        cache: false  # 타임리프 캐싱 설정 (배포할때 true)
 
 # 파일 업로드 설정
 file:
