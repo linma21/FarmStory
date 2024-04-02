@@ -96,15 +96,15 @@
                         <tr th:each="article, loop:${pageResponseDTO.dtoList}">
                             <td>[[${pageResponseDTO.startNo - loop.index}]]</td>
                             <td>
-                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/cummunity/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
-                                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/cummunity/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
                             </td>
                             <td th:text="${article.nick}"></td>
                             <td th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></td>
                             <td th:text="${article.hit}"></td>
                         </tr>
                     </table>
-                    <nav aria-label="Page navigation example" class="text-center">
+                    <nav aria-label="Page navigation example" class="text-center paginationNav">
                         <ul class="pagination justify-content-center">
                             <!-- 첫 페이지 -->
                             <li class="page-item">
@@ -146,6 +146,9 @@
                             </li>
                         </ul>
                     </nav>
+                    <div class="divWrite">
+                        <a th:href="@{/community/write}" class="btn btnWrite" id="btnWrite">글쓰기</a>
+                    </div>
                 </div>
 
             </article>

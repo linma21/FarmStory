@@ -17,13 +17,13 @@ public class QComment extends EntityPathBase<Comment> {
 
     private static final long serialVersionUID = -773641794L;
 
-    public static final QComment comment1 = new QComment("comment1");
+    public static final QComment comment = new QComment("comment");
 
     public final NumberPath<Integer> ano = createNumber("ano", Integer.class);
 
     public final NumberPath<Integer> cno = createNumber("cno", Integer.class);
 
-    public final StringPath comment = createString("comment");
+    public final StringPath content = createString("content");
 
     public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 

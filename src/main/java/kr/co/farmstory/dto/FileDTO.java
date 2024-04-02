@@ -6,19 +6,14 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
-public class CommentDTO {
-
-    private int cno;
+public class FileDTO {
+    private int fno;
     private int ano;
-    private String uid;
-    private String content;
+    private String oName;
+    private String sName;
     private LocalDateTime rdate;
-
-    private String nick;
-
 }
-

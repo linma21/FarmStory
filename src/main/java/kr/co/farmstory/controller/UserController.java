@@ -4,7 +4,6 @@ package kr.co.farmstory.controller;
 import kr.co.farmstory.dto.TermsDTO;
 import kr.co.farmstory.entity.Terms;
 import kr.co.farmstory.repository.TermsRepository;
-import kr.co.farmstory.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.UserDTO;
@@ -14,13 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Slf4j
@@ -36,15 +34,75 @@ public class UserController {
         return "/user/login";
     }
 
-    @GetMapping("/user/findId")
-    public String findId(){
-        return "user/findId";
+    @PostMapping("/user/login")
+    public String login(HttpServletRequest request, RedirectAttributes redirectAttributes){
+        String uid = request.getParameter("uid");
+        String pass = request.getParameter("pass");
+
+        boolean loginResult = userService.selectUser(uid, pass);
+
+        if(loginResult){
+            HttpSession session = request.getSession();
+            session.setAttribute("user", uid);
+            return "redirect:/index";
+        }else {
+            redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 일치하지않습니다.");
+            return "redirect:/user/login";
+        }
     }
 
 
-    @GetMapping("/user/findPassword")
-    public String findPassword(){
-        return "user/findPassword";
+
+    @GetMapping("/user/findId")
+    public String FindIdPage(){
+        return "/user/findId";
+    }
+
+    @PostMapping("/user/findId")
+    public String findId(@RequestParam("name") String name, @RequestParam("email") String email,@RequestParam("code") String code, HttpSession session, Model model) {
+        String sessionCode = (String) session.getAttribute("code");
+        if(sessionCode != null && sessionCode.equals(code)){
+            // 인증 코드가 일치할 경우, 아이디 찾기 로직 실행
+            String userId = userService.findUserIdByNameAndEmail(name, email);
+            if(userId != null) {
+                model.addAttribute("userId", userId);
+                return "/user/findIdResult"; // 조회 결과를 findIdResult.html에 표시
+            } else {
+                model.addAttribute("error", "아이디를 찾을 수 없습니다. 입력 정보를 확인해 주세요.");
+                return "/user/findId";
+            }
+        } else {
+            model.addAttribute("error", "인증번호가 일치하지 않습니다.");
+            return "/user/findId";
+        }
+    }
+
+    @PostMapping("/user/findIdResult")
+    public String findIdResult(@RequestParam String name, @RequestParam String email, Model model){
+        String userId = userService.findUserIdByNameAndEmail(name, email);
+        if(userId != null){
+            model.addAttribute("userId", userId);
+            return "findIdResult";
+        }else {
+            model.addAttribute("error", "아이디를 찾을 수 없습니다. 입력 정보를 확인해 주세요.");
+            return "/user/findId";
+        }
+    }
+
+
+
+    @PostMapping("/user/findPassword")
+    public String findPassword(@RequestParam("uid") String uid, @RequestParam("email") String email, Model model) {
+        // 사용자 인증 로직 (이메일로 인증 코드 발송 및 확인)
+        // 인증 성공 시 비밀번호 변경 페이지로 이동
+        return "redirect:/user/findPasswordChange";
+    }
+
+    @PostMapping("/user/changePassword")
+    public String changePassword(@RequestParam("uid") String uid, @RequestParam("newPassword") String newPassword) {
+        // 비밀번호 변경 로직
+        userService.updateUserPassword(uid, newPassword);
+        return "redirect:/user/login"; // 비밀번호 변경 후 로그인 페이지로 리다이렉트
     }
 
 

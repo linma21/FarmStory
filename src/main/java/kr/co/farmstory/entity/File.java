@@ -1,30 +1,31 @@
 package kr.co.farmstory.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "comment")
-public class Comment {
-
+@Table(name = "file")
+public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cno;
+    private int fno;
+
     private int ano;
-    private String uid;
-    private String content;
+    private String oName;
+    private String sName;
 
     @CreationTimestamp
     private LocalDateTime rdate;
 
-    @Transient
-    private String nick;
 
 }
-
