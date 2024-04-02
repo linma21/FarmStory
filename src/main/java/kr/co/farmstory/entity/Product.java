@@ -12,15 +12,14 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int prodno;
     private String prodname;
+    private int amount;
     private String thumbnail;
     private String cate;
-    private int stock;
     private int price;
-    private int discount;
+    private int stock;
     private int delCost;
     private int delType;
-    private String company;
-    @CreationTimestamp
-    private LocalDateTime rdate;
+    private int discount;
+    private String etc;
 }
 

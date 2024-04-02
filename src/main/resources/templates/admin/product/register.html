@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" th:href="@{/css/adminStyle.css}">
     <style></style>
 </head>
 
@@ -37,20 +37,20 @@
             </nav>
 
             <article>
-                <form action="#" method="post">
+                <form th:action="@{/admin/product/register}" method="post">
                     <table border="0">
                         <tr>
                             <td>상품명</td>
-                            <td><input type="text" name="productName"/></td>
+                            <td><input type="text" name="prodname"/></td>
                         </tr>
                         <tr>
                             <td>종류</td>
                             <td>
-                                <select name="type">
-                                    <option>종류</option>
+                                <select name="cate">
                                     <option>과일</option>
                                     <option>야채</option>
                                     <option>곡류</option>
+                                    <option>기타</option>
                                 </select>
                             </td>
                         </tr>
@@ -59,36 +59,45 @@
                             <td><input type="text" name="price"/></td>
                         </tr>
                         <tr>
-                            <td>포인트</td>
+                            <td>무게</td>
                             <td>
-                                <input type="text" name="point" value="100"/>
-                                포인트는 가격의 1%
+                                <input type="text" name="amount" value="100"/>
+                                g 단위로 적어주세요
                             </td>
+                        </tr>
+                        <tr>
+                            <td>재고</td>
+                            <td><input type="text" name="stock"/></td>
                         </tr>
                         <tr>
                             <td>할인</td>
                             <td>
-                                <select>
-                                    <option value="">5%</option>
-                                    <option value="">12%</option>
-                                    <option value="">15%</option>
-                                    <option value="">18%</option>
-                                    <option value="">20%</option>
+                                <select name="discount">
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="30">30%</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>배송비</td>
                             <td>
-                                <label><input type="radio" name="delivery">2,000원</label>
-                                <label><input type="radio" name="delivery">3,000원</label>
-                                <label><input type="radio" name="delivery">5,000원</label>
-                                <label><input type="radio" name="delivery">무료</label>
+                                <label><input type="radio" name="delCost" value="2000">2,000원</label>
+                                <label><input type="radio" name="delCost" value="3000">3,000원</label>
+                                <label><input type="radio" name="delCost" value="5000">5,000원</label>
+                                <label><input type="radio" name="delCost" value="0">무료</label>
                             </td>
                         </tr>
                         <tr>
-                            <td>재고</td>
-                            <td><input type="text" name="stock"/></td>
+                            <td>배송비 무료 금액</td>
+                            <td>
+                                <label><input type="radio" name="delType" value="10000">10,000원 이상</label>
+                                <label><input type="radio" name="delType" value="20000">20,000원 이상</label>
+                                <label><input type="radio" name="delType" value="30000">30,000원 이상</label>
+                                <label><input type="radio" name="delType" value="50000">50,000원 이상</label>
+                            </td>
                         </tr>
                         <tr>
                             <td>상품이미지</td>

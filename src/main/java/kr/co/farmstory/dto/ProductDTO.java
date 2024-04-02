@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 public class ProductDTO {
     private int prodno;
     private String prodname;
+    private int amount;
     private String thumbnail;
     private String cate;
-    private int stock;
     private int price;
-    private int discount;
+    private int stock;
     private int delCost;
     private int delType;
-    private String company;
-    private LocalDateTime rdate;
+    private int discount;
+    private String etc;
 }
 
