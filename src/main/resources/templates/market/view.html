@@ -40,18 +40,18 @@
     </script>
 
     <div id="sub">
-        <div><img src="../images/sub_top_tit2.png" alt="MARKET"></div>
+        <div><img th:src="@{/images/sub_top_tit2.png}" alt="MARKET"></div>
         <section class="market">
             <aside>
-                <img src="../images/sub_aside_cate2_tit.png" alt="장보기"/>
+                <img th:src="@{/images/sub_aside_cate2_tit.png}" alt="장보기"/>
 
                 <ul class="lnb">
-                    <li class="on"><a href="./market.html">장보기</a></li>
+                    <li class="on"><a th:href="@{/market.html}">장보기</a></li>
                 </ul>
             </aside>
             <article class="view">
                 <nav>
-                    <img src="../images/sub_nav_tit_cate2_tit1.png" alt="장보기"/>
+                    <img th:src="@{/images/sub_nav_tit_cate2_tit1.png}" alt="장보기"/>
                     <p>
                         HOME > 장보기 > <em>장보기</em>
                     </p>
@@ -108,13 +108,13 @@
                     </table>
 
                     <div style="float: right; margin-top: 10px;">
-                        <a href="./cart.html" id="btnCart" class="btn btnCart">장바구니</a>
-                        <a href="./order.html" id="btnOrder" class="btn btnOrder">바로구매</a>
+                        <a th:href="@{/cart.html}" id="btnCart" class="btn btnCart">장바구니</a>
+                        <a th:href="@{/order.html}" id="btnOrder" class="btn btnOrder">바로구매</a>
                     </div>
                 </div>
                 <h3>상품설명</h3>
                 <div class="detail">
-                    <img src="../images/market_detail_sample.jpg" alt="">
+                    <img th:src="@{/images/market_detail_sample.jpg}" alt="">
 
                 </div>
 
