@@ -6,12 +6,6 @@
 <div class="container" layout:fragment="content">
 
     <script th:src="@{/js/util.js}"></script>
-    <script th:inline="javascript">
-        window.onload = function (){
-            const cate = [[${pageResponseDTO.cate}]];
-            const cateLi = document.querySelectorAll(".lnb li");
-            const communityNav = document.getElementById('communityNav');
-
             // aside 현재 카테고리 표시하기 - 반복처리
             cateLi.forEach(function(item) {
 
