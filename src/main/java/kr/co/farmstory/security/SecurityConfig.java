@@ -42,7 +42,8 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                                     .requestMatchers("/").permitAll()
                                     .requestMatchers("/article/**").permitAll()
-                                    .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                                    //.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                                    .requestMatchers("/admin/**").permitAll()
                                     .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
                                     .requestMatchers("/oauth","/oauth/google","/oauth/callback/google","/oauth/naver/**").permitAll()
                                     .anyRequest().permitAll()
