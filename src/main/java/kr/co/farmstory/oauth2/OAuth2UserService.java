@@ -41,7 +41,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String email=null;
         String name = null;
 
-
         //프로바이더에 따라서 다르게 email과 name에 들어감
         if ("google".equals(provider)) {
             email = (String) attributes.get("email");
