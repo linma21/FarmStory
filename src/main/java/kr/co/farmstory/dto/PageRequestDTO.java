@@ -22,7 +22,8 @@ public class PageRequestDTO {
     @Builder.Default
     private int size = 10;
 
-    private String cate;
+    @Builder.Default
+    private String cate= "notice";
 
     private String type;
     private String keyword;

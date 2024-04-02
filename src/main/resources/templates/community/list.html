@@ -22,7 +22,7 @@
             });
             // community 상단 Nav 표시하기
             if(cate === 'notice'){
-                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
+                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit1.png" alt="자주묻는질문"/>
                                                 <p> HOME > 커뮤니티 > <em>공지사항</em></p>`;
             } else if(cate === 'menu'){
                 communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit2.png" alt="자주묻는질문"/>
@@ -84,7 +84,7 @@
                     </p>
                 </nav>
 
-                <div>
+                <div layout:fragmant="content">
                     <table class="listTable">
                         <tr>
                             <th>No.</th>
