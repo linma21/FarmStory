@@ -40,7 +40,7 @@ dependencies {
     implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.3.0'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.2.3'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.2.4'
 
     // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
