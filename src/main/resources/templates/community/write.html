@@ -87,57 +87,34 @@
                     </p>
                 </nav>
                 <!-- 내용 시작 -->
-                <section class="cummunity_view">
-                    <table>
-                        <tr>
-                            <th>제목</th>
-                            <td><input type="text" name="title" readonly th:value="${article.title}"/></td>
-                        </tr>
-                        <tr>
-                            <th>내용</th>
-                            <td>
-                                <textarea name="content" readonly>[[${article.content}]]</textarea>
-                            </td>
-                        </tr>
-                    </table>
-                    <div>
-                            <a href="#" class="btn btnRemove" id="btnRemove">삭제</a>
-                            <a href="#" class="btn btnModify" id="btnModify">수정</a>
-                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
-                           class="btn btn-primary">목록</a>
-                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
-                           class="btn btn-primary">목록</a>
-                    </div>
-
-                    <!-- 댓글목록 -->
-                    <section class="commentList">
-                        <h3>댓글목록</h3>
-                            <article>
-                                <span class="nick">닉네임</span>
-                                <span class="date">작성일</span>
-                                <p class="content">댓글 내용</p>
-                                <div>
-                                    <a href="#" data-no="${comment.no}" data-parent="${comment.parent}" class="remove">삭제</a>
-                                    <a href="#" class="modify">수정</a>
+                <div id="community_view">
+                    <article class="community_post">
+                        <form id="communityForm">
+                            <input type="hidden" name="cate" th:value="${cate}">
+                            <header>
+                                <div class="title">
+                                    <input type="text" name="title">
+                                    <p></p>
                                 </div>
-                            </article>
-                    </section>
-                    <!-- 댓글쓰기 -->
-                    <section class="commentForm">
-                        <h3>댓글쓰기</h3>
-                        <form action="#" name="commentForm" method="post">
-                            <input type="hidden" name="writer" value="${sessUser.uid}">
-                            <input type="hidden" name="parent" value="${articleDTO.no}">
-                            <textarea name="content" class="commentContent"></textarea>
-                            <div>
-                                <a href="#" class="btn btnCancel">취소</a>
-                                <input type="submit" name="submit" value="작성완료" class="btn btnComplete"/>
-                            </div>
+                            </header>
+                            <textarea class="commentForm" name="content" placeholder="내용입력"></textarea>
+                            <p> </p>
+                            <footer>
+                                    <label for="formFileMultiple" class="form-label">파일첨부</label>
+                                    <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
+                            </footer>
                         </form>
-                    </section>
-                </section>
+                    </article>
+                </div>
                 <!-- 내용 끝 -->
             </article>
+            <div class="text-end">
+                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                   class="btn btnCancel">취소</a>
+                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                   class="btn btnCancel">취소</a>
+                <a th:href="@{/article/write}" id="btnSubmit" class="btn btnComment">등록</a>
+            </div>
         </section>
 
     </div>

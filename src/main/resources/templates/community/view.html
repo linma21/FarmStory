@@ -118,32 +118,36 @@
                     </p>
                 </nav>
                 <!-- 내용 시작 -->
+                <div id="community_view">
+                    <article class="community_post">
+                        <form>
+                        <header>
+                            <div class="title">
+                                <h2>[[${article.title}]]</h2>
+                                <p></p>
+                            </div>
+                            <div class="meta">
+                                <time class="published" datetime="2015-11-01">[[${article.rdate}]]</time>
+                                <a href="#" class="author"><span class="name">[[${article.nick}]]</span><img th:src="@{/images/community/avatar.jpg}" alt="" /></a>
+                            </div>
+                        </header>
+                        <span class="image featured"><img th:src="@{/images/community/avatar.jpg}" alt="" /></span>
+                        <p>[[${article.content}]]</p>
+                        <p> </p>
+                        <footer>
+                            <ul class="stats">
+                                <li><a href="#">첨부파일</a></li>
+                                <li th:each="file:${article.fileList}"
+                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="#" class="link-grey visually-hidden removeFile" th:data-fno="${file.fno}"><i class="bi bi-trash3-fill"></i> 삭제</a>
+                                </li>
+                            </ul>
+                        </footer>
+                        </form>
+                    </article>
+
+                </div>
                 <section class="community_view">
-                    <form id="communityForm">
-                        <table>
-                            <tr>
-                                <th>제목</th>
-                                <td><input type="text" name="title" readonly th:value="${article.title}"/></td>
-                            </tr>
-                            <tr th:if="${article.file > 0}">
-                                <th>파일</th>
-                                <td>
-                                    <ul class="list-group" id="exampleFormControlInput1">
-                                        <li th:each="file:${article.fileList}"
-                                            class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="#" class="link-grey visually-hidden removeFile" th:data-fno="${file.fno}"><i class="bi bi-trash3-fill"></i> 삭제</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>내용</th>
-                                <td>
-                                    <textarea name="content" readonly>[[${article.content}]]</textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
                     <div>
                             <a href="#" class="btn btnRemove" id="btnRemove">삭제</a>
                             <a href="#" class="btn btnModify" id="btnModify">수정</a>
