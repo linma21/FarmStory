@@ -23,7 +23,6 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-
     private final JavaMailSender javaMailSender;
 
 
@@ -74,11 +73,30 @@ public class UserService {
 
     }
 
-    /*
-    public UserDTO selectUser(UserDTO userDTO){
-        return userMapper.selectUser(userDTO.getName(), userDTO.getEmail());
+
+    // 아이디 비밀번호 확인후 로그인
+    public boolean selectUser(String uid, String pass){
+        UserDTO user = userMapper.selectUserByUid(uid);
+
+        if(user != null){
+            return passwordEncoder.matches(pass, user.getPass());
+        }
+        return false;
     }
-*/
+
+
+    // 아이디/비밀번호 찾기
+    public String findUserIdByNameAndEmail(String name, String email){
+        UserDTO user = userMapper.selectUserByNameAndEmail(name, email);
+        return user != null ? user.getUid() : null;
+    }
+
+    public void updateUserPassword(String uid, String newPassword){
+
+        String encodedPass = passwordEncoder.encode(newPassword);
+        userMapper.updateUserPassword(uid, encodedPass);
+
+    }
 
 
 }
