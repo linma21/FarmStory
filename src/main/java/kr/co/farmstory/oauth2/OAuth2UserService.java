@@ -40,11 +40,14 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         String email=null;
         String name = null;
+        String uid = null;
 
         //프로바이더에 따라서 다르게 email과 name에 들어감
         if ("google".equals(provider)) {
             email = (String) attributes.get("email");
             name = (String) attributes.get("name");
+            uid = email.substring(0,email.lastIndexOf("@"));
+
             // 구글 속성 사용
         } else if ("kakao".equals(provider)) {
 
@@ -53,6 +56,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
             email = (String) kakaoAccount.get("email");
             name = (String) profile.get("nickname");
+            uid = email.substring(0,email.lastIndexOf("@"));
             // 카카오 속성 사용
         }
 
@@ -66,7 +70,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         //String name = (String) attributes.get("name");
         String email = (String) kakaoAccount.get("email");
         String name = (String)attributes.get("profile_nickname");
-        String uid = email.substring(0,email.lastIndexOf("@"));
+
 
 
 */
@@ -76,7 +80,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                         .uid(email)
                         .email(email)
                         .name(name)
-                        .nick(name)
+                        .nick(uid)
                         .role("USER")
                         .provider(provider)
                         .build());
