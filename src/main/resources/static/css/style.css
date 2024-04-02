@@ -523,7 +523,7 @@ main > .info > div > .account {
     color: #8c8c8c;
     padding-left: 20px;
     box-sizing: border-box;
-    background-image: url(/static/images/sub_page_nav_ico.gif);
+    background-image: url('../images/sub_page_nav_ico.gif');
     background-repeat: no-repeat;
     background-position: 10px;
 }
@@ -685,7 +685,6 @@ main > .info > div > .account {
     width: 100px;
     height: 40px;
     border: none;
-    color: #fff;
     text-align: center;
     line-height: 40px;
 }
@@ -1000,6 +999,105 @@ input[type=number]::-webkit-outer-spin-button {
 #sub > .community .lnb > li:nth-child(4).on > a {background-image: url('../images/sub_cate5_lnb4_ov.png');}
 #sub > .community .lnb > li:nth-child(5).on > a {background-image: url('../images/sub_cate5_lnb5_ov.png');}
 
+/* 커뮤니티 뷰 */
+/* 글보기 */
+.cummunity_view {
+    width: 720px;
+    height: auto;
+    margin: 60px auto;
+    overflow: hidden;
+}
+.cummunity_view table {
+    width: 100%;
+    height: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-top: 2px solid #111;
+}
+.cummunity_view table caption{
+    text-align: left;
+    margin-bottom: 6px;
+}
+.cummunity_view table th {
+    width: 112px;
+    height: 50px;
+    background: #bfd1bf;
+    font-size: 16px;
+    border-bottom: 1px solid #e9e9e9;
+}
+.cummunity_view table td {
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e9e9e9;
+}
+.cummunity_view table td > input {
+    width: 400px;
+    height: 24px;
+    border: none;
+}
+.cummunity_view table td > textarea {
+    width: 100%;
+    height: 280px;
+    resize: none;
+    border: none;
+}
+
+.cummunity_view > div {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.cummunity_view > section {
+    width: 100%;
+    height: auto;
+    border: 1px solid #e3e3e3;
+    background: #f9f9f9;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 16px;
+}
+
+.cummunity_view > section > h3 {
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 1px dotted #111;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.cummunity_view > .commentList {}
+.cummunity_view > .commentList > article {
+    overflow: hidden;
+    border-bottom: 1px dotted #111;
+    padding: 5px 0;
+}
+.cummunity_view > .commentList .nick {}
+.cummunity_view > .commentList .date {}
+.cummunity_view > .commentList .content {padding: 10px;}
+.cummunity_view > .commentList > article > div {float: right;}
+.cummunity_view > .commentList > article .remove {}
+.cummunity_view > .commentList > article .modify {}
+.cummunity_view > .commentList > .empty {
+    margin: 20px;
+    text-align: center;
+}
+
+.cummunity_view > .commentForm {
+    overflow: hidden;
+}
+.cummunity_view > .commentForm textarea {
+    width: 100%;
+    height: 60px;
+    border: 1px solid #e4eaec;
+    padding: 6px;
+    box-sizing: border-box;
+    resize: none;
+}
+.cummunity_view > .commentForm div {
+    float: right;
+    margin-top: 10px;
+}
 
 /* user */
 #sub > .user > article {
