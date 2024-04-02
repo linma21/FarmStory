@@ -18,7 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private String connectPath = "/imagePath/**";
 
     // 로컬
-    private String resourcePath = "file:///Users/devimjae/Desktop/workspace/Spring/sboard/profile/";
+    private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/files";
+
     // 배포
     // private String resourcePath = "file:///home/sboard/profile/";
 
