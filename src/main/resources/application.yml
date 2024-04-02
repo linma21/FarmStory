@@ -65,7 +65,6 @@ spring:
 
     thymeleaf:
         prefix: classpath:/templates
-        cache: false  # 타임리프 캐싱 설정 (배포할때 true)
 
 # 파일 업로드 설정
 file:
