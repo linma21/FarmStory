@@ -33,4 +33,15 @@ public class CommentController {
         log.info(commentResponseEntity.getBody().toString());
         return commentResponseEntity;
     }
+    // 댓글 삭제
+    @DeleteMapping("/comment/{cno}")
+    public ResponseEntity<?> deleteComment(@PathVariable("cno") int cno){
+        return commentService.deleteComment(cno);
+    }
+    // 댓글 수정
+    @PutMapping("/comment")
+    public ResponseEntity<?> modifyComment(@RequestBody CommentDTO commentDTO){
+        log.info("modifyComment : " +commentDTO.toString());
+        return commentService.updateComment(commentDTO);
+    }
 }

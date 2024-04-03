@@ -29,33 +29,36 @@
                 </nav>
                 <!-- 내용 시작 -->
                 <div id="community_view">
-                    <article class="community_post">
-                        <form>
+                    <article class="community_content">
+                        <form id="communityForm"  th:action="@{/community/modify}" method="post" >
                             <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
-                        <header>
-                            <div class="title">
-                                <h2>[[${article.title}]]</h2>
-                                <input type="hidden" th:value="${#authentication.principal.user.uid}">
+                            <div>
+                                <div class="title">
+                                    <h2>[[${article.title}]]</h2>
+                                    <input type="hidden" th:value="${#authentication.principal.user.uid}" id="user">
+                                </div>
+                                <div class="info">
+                                    <span style="float: left">작성자 : [[${article.writer}]]</span>
+                                    <span style="float: right">[[${article.rdate}]]</span>
+                                </div>
                             </div>
-                            <div class="meta">
-                                <time class="published" datetime="2015-11-01">[[${article.rdate}]]</time>
-                                <a href="#" class="author"><span class="name">[[${article.nick}]]</span><img th:src="@{/images/community/avatar.jpg}" alt="" /></a>
+                            <div class="community_textarea">
+                                <textarea id="contentTextarea" readonly>
+                                    [[${article.content}]]
+                                </textarea>
                             </div>
-                        </header>
-                        <p>[[${article.content}]]</p>
-                        <p> </p>
-                        <footer>
-                            <!-- 첨부파일 -->
-                            <ul class="stats">
-                                <li><a href="#">첨부파일</a></li>
-                                <li th:each="file:${article.fileList}"
-                                    class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a th:href="@{/file/download/{fno}(fno=${file.fno})}" class="fileLink"
-                                       th:data-fno="${file.fno}">[[${file.oName}]]</a>
-                                    <a href="#" class="visually-hidden removeFile" th:data-fno="${file.fno}"> 삭제</a>
-                                </li>
-                            </ul>
-                        </footer>
+                            <div class="community_file">
+                                <!-- 첨부파일 -->
+                                <ul>
+                                    <li>첨부파일</li>
+                                    <li>
+                                        <th:block  th:each="file:${article.fileList}">
+                                            <a th:href="@{/file/download/{fno}(fno=${file.fno})}" class="fileLink"
+                                               th:data-fno="${file.fno}">[[${file.oName}]]</a>
+                                        </th:block>
+                                    </li>
+                                </ul>
+                            </div>
                         </form>
                     </article>
 
@@ -65,8 +68,8 @@
                     <div>
                         <!-- 작성 당사자에게만 출력 -->
                         <th:block th:if="${article.writer} == ${#authentication.principal.user.uid}">
-                            <a th:href="@{/article/modify(ano=${article.ano})}" class="btn btnRemove" id="btnModify">수정</a>
-                            <a th:href="@{/article/delete(ano=${article.ano}, cate=${article.cate})}" class="btn btnModify" id="btnRemove">삭제</a>
+                            <button type="button" class="btn" id="btnArtModify" data-art="modify">수정</button>
+                            <button type="button" class="btn" id="btnArtRemove" data-art="remove">삭제</button>
                         </th:block>
                         <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                            class="btn btnList">목록</a>

@@ -1304,6 +1304,83 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 
+/* new 글보기 */
+.community_content{
+    width: 720px;
+    height: auto;
+    font-family: '고딕';
+    margin: 20px;
+}
+.community_content .title {
+    width: 100%;
+    height: 40px;
+    padding: 10px 0;
+    border-bottom: 2px solid #e7e7e7;
+}
+.community_content .title > h2 {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 6px;
+}
+.community_content .info {
+    width: 100%;
+    height: 30px;
+    padding: 8px 0;
+    border-bottom: 2px solid #e7e7e7;
+}
+.community_content .info > span {
+    display: inline;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px;
+}
+.community_content .community_textarea {
+    border-bottom: 2px solid #e7e7e7;
+    height: auto;
+    padding: 20px 0;
+}
+.community_content .community_textarea > textarea {
+    width: 100%;
+    font-size: 14px;
+    border: 0;
+    outline-style: none;
+    resize: none;
+    padding: 10px;
+    overflow-y: hidden;
+    box-sizing: border-box;
+}
+.community_content .community_file {
+    height: auto;
+    padding: 10px;
+    border-bottom: 2px solid #e7e7e7;
+}
+.community_content .community_file li:nth-child(1) {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 14px;
+}
+.community_content .community_file li .fileLink {
+    display: inline-block;
+    border: 1px solid #91BA15;
+    border-radius: 10px;
+    padding: 6px;
+    margin-right: 10px;
+
+}
+.community_content .community_file li .fileLink:hover {
+    background-color: #91BA15;
+    color: white;
+}
+/* 커뮤니티 댓글 임시 */
+.commentText{
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid 2px #b6d7b6;
+    border-radius: 5px;
+    resize: none;
+}
 .community_view {
     width: 720px;
     height: auto;
