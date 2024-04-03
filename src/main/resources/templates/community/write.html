@@ -1,50 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/userLayout}">
+      layout:decorate="~{/layout/userLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <div class="container" layout:fragment="content">
 
-    <script th:inline="javascript">
-        window.onload = function (){
-            const cate = [[${pageResponseDTO.cate}]];
-            const cateLi = document.querySelectorAll(".lnb li");
-            const communityNav = document.getElementById('communityNav');
-
-            // aside 현재 카테고리 표시하기 - 반복처리
-            cateLi.forEach(function(item) {
-
-                const dataCate = item.getAttribute("data-cate");
-
-                // 현재 cate와 li의 data-cate 값을 비교하여 일치하는 경우
-                if (dataCate === cate) {
-                    // 해당 요소에 클래스 추가
-                    item.classList.add("on");
-                }
-            });
-            // community 상단 Nav 표시하기
-            if(cate === 'notice'){
-                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit1.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>공지사항</em></p>`;
-            } else if(cate === 'menu'){
-                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit2.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>오늘의식단</em></p>`;
-            } else if(cate === 'chef'){
-                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit3.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>나도요리사</em></p>`;
-            } else if(cate === 'qna'){
-                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit4.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>1:1고객문의</em></p>`;
-            } else if(cate === 'faq'){
-                communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>자주묻는질문</em></p>`;
-            }
-            // 게시글 삭제 , 수정
-
-
-
-        }
-    </script>
+    <script th:inline="javascript" th:src="@{/js/communityWrite.js}"></script>
 
     <div id="sub">
         <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
@@ -68,14 +30,15 @@
                     </p>
                 </nav>
                 <!-- 내용 시작 -->
-                <div id="community_view">
+                <div id="community_write">
                     <article class="community_post">
-                        <form id="communityForm">
-                            <input type="hidden" name="cate" th:value="${cate}">
+                        <form th:action="@{/community/write}" id="formWrite" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ano" value="0" id="ano"/>
+                            <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate">
+                            <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
                             <header>
                                 <div class="title">
                                     <input type="text" name="title">
-                                    <p></p>
                                 </div>
                             </header>
                             <textarea class="commentForm" name="content" placeholder="내용입력"></textarea>
@@ -90,11 +53,11 @@
                 <!-- 내용 끝 -->
             </article>
             <div class="text-end">
-                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                    class="btn btnCancel">취소</a>
-                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                    class="btn btnCancel">취소</a>
-                <a th:href="@{/article/write}" id="btnSubmit" class="btn btnComment">등록</a>
+                <a th:href="@{/community/write}" id="btnWrite" class="btn btnWrite">등록</a>
             </div>
         </section>
 

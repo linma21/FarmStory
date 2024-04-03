@@ -17,7 +17,7 @@ public class ProductDTO {
     private int prodno;
     private String prodname;
     private int amount;
-    private String thumbnail;
+    private String thumb;
     private String cate;
     private int price;
     private int stock;
@@ -25,5 +25,9 @@ public class ProductDTO {
     private int delType;
     private int discount;
     private String etc;
+    private LocalDateTime rdate;
+    // 상품 사진 출력을 위한 추가 필드
+    private String titleImg;
+    private String contentImg;
 }
 

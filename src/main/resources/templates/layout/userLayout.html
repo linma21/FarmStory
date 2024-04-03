@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">팜스토리::사용자</title>
@@ -22,7 +23,10 @@
         <a th:href="@{/index}" class="logo"><img th:src="@{/images/logo.png}" alt="로고"/></a>
         <p>
             <a th:href="@{/index}" style="color: #111111">HOME |</a>
-            <a th:href="@{/user/login}" style="color: #111111">로그인 |</a>
+            <th:block>
+                <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인|</a>
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃|</a>
+            </th:block>
             <a th:href="@{/user/register}" style="color: #111111">회원가입 |</a>
             <a th:href="@{./admin/}" style="color: #111111">관리자 |</a>
             <a th:href="@{#}" style="color: #111111">고객센터</a>
@@ -53,7 +57,5 @@
 
     </footer>
 </div>
-<script th:src="@{/js/user.js}" defer="defer"></script>
-<script th:src="@{/js/community.js}" defer="defer"></script>
 </body>
 </html>

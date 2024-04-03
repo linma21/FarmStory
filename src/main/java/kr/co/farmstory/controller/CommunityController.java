@@ -7,11 +7,11 @@ import kr.co.farmstory.dto.PageResponseDTO;
 import kr.co.farmstory.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -68,10 +68,21 @@ public class CommunityController {
         return "/community/write";
     }
 
-    @PostMapping("/article/write")
-    public String write(@ModelAttribute("writer") String writer, HttpServletRequest req, ArticleDTO articleDTO){
+    @PostMapping("/community/write")
+    public String write(ArticleDTO articleDTO){
 
         articleService.insertArticle(articleDTO);
-        return "redirect:/article/list?cate="+articleDTO.getCate();
+        return "redirect:/community/list?cate="+articleDTO.getCate();
+    }
+    // 글 수정
+    @PostMapping("/community/modify")
+    public ResponseEntity<?> modify(ArticleDTO articleDTO) {
+
+        log.info("modifyArticle : " + articleDTO.toString());
+        return articleService.updateArticle(articleDTO);
+    }
+    @DeleteMapping("/community/{ano}")
+    public ResponseEntity<?> deleteArticle(@PathVariable("ano") int ano){
+        return articleService.deleteArticle(ano);
     }
 }

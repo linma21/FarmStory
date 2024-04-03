@@ -19,7 +19,7 @@ header {
     position: relative;
     width: 100%;
     height: auto;
-    background-image: url('/static/images/admin/admin_bg.jpg');
+    background-image: url('../images/admin/admin_bg.jpg');
     padding: 12px;
     box-sizing: border-box;
 }

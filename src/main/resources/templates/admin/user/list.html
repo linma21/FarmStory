@@ -1,27 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>팜스토리</title>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/adminLayout}">
 
-<body>
-<div id="container">
-    <header>
-        <a href="./index.html" class="logo"><img src="../images/admin_logo.jpg" alt="로고"/></a>
-        <p>
-            <a href="#">HOME |</a>
-            <a href="#">로그아웃 |</a>
-            <a href="#">고객센터</a>
-        </p>
-    </header>
-    <main>
+<main layout:fragment="content">
+
         <aside>
             <h3>주요기능</h3>
             <ul>
@@ -49,82 +31,44 @@
                         <th>가입일</th>
                         <th>확인</th>
                     </tr>
-                    <tr>
+                    <tr th:each="user : ${userResponseDTO.dtoList}">
                         <td><input type="checkbox" name=""/></td>
-                        <td>a101</td>
-                        <td>김유신</td>
-                        <td>유신101</td>
-                        <td>yusin101@naver.com</td>
-                        <td>010-1234-1001</td>
+                        <td th:text="${user.uid}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.nick}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.hp}"></td>
                         <td>
                             <select name="grade">
-                                <option>1</option>
-                                <option selected>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option th:each="grade : ${#numbers.sequence(1,5)}"
+                                        th:value="${grade}"
+                                        th:selected="${grade == user.level}"
+                                        th:text="${grade}"></option>
                             </select>
                         </td>
-                        <td>2023-01-01 13:06:14</td>
-                        <td><a href="./detail.html">[상세확인]</a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name=""/></td>
-                        <td>a102</td>
-                        <td>김춘추</td>
-                        <td>춘추102</td>
-                        <td>chunchu102@naver.com</td>
-                        <td>010-1234-1002</td>
-                        <td>
-                            <select name="grade">
-                                <option>1</option>
-                                <option selected>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </td>
-                        <td>2023-01-02 13:06:14</td>
-                        <td><a href="./detail.html">[상세확인]</a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name=""/></td>
-                        <td>a103</td>
-                        <td>장보고</td>
-                        <td>보고103</td>
-                        <td>bogo103@naver.com</td>
-                        <td>010-1234-1003</td>
-                        <td>
-                            <select name="grade">
-                                <option>1</option>
-                                <option selected>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </td>
-                        <td>2023-01-03 13:06:14</td>
-                        <td><a href="./detail.html">[상세확인]</a></td>
+                        <td th:text="${#temporals.format(user.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td><a th:href="@{/admin/user/view(uid=${user.uid})}">[상세확인]</a></td>
                     </tr>
                 </table>
 
+                <!-- 페이징 처리 -->
                 <p class="paging">
-                    <a href="#"><</a>
-                    <a href="#" class="on">[1]</a>
-                    <a href="#">[2]</a>
-                    <a href="#">[3]</a>
-                    <a href="#">[4]</a>
-                    <a href="#">[5]</a>
-                    <a href="#">></a>
+                    <th:block th:if="${userResponseDTO.prev}">
+                        <a th:href="@{/admin/user/list(pg=${userResponseDTO.start - 1})}">이전</a>
+
+                    </th:block>
+                    <th:block th:each="n : ${#numbers.sequence(userResponseDTO.start, userResponseDTO.end)}">
+                        <a th:if="${userResponseDTO.keyword == null}" th:href="@{/admin/user/list(pg=${n})}" th:text="${n}"></a>
+
+                    </th:block>
+                    <th:block th:if="${userResponseDTO.next}">
+                        <a th:if="${userResponseDTO.keyword == null}" th:href="@{/admin/user/list(pg=${userResponseDTO.end + 1})}">다음</a>
+
+                    </th:block>
                 </p>
+
+
             </article>
         </section>
     </main>
-    <footer>
-        <p>
-            Copyright(C)Farmstory All rights reserved. FARMSTORY ADMINISTRATOR Version 1.0.1
-        </p>
-    </footer>
-</div>
-</body>
-</html>
+

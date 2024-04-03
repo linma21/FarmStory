@@ -7,11 +7,15 @@ import kr.co.farmstory.dto.PageRequestDTO;
 import kr.co.farmstory.dto.PageResponseDTO;
 import kr.co.farmstory.entity.Article;
 import kr.co.farmstory.repository.ArticleRepository;
+import kr.co.farmstory.repository.CommentRepository;
+import kr.co.farmstory.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,8 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final FileRepository fileRepository;
+    private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
     private final FileService fileService;
 
@@ -129,5 +135,51 @@ public class ArticleService {
         fileService.insertFile(files, ano);
 
     }
+    // 글 수정
+    @Transactional
+    public ResponseEntity<?> updateArticle(ArticleDTO articleDTO){
+        log.info("updateArticle : " + articleDTO.toString());
 
+        List<FileDTO> files = fileService.fileUpload(articleDTO);
+        // 해당 게시글이 있는지 확인
+        Article article = articleRepository.findById(articleDTO.getAno()).get();
+        
+        // 해당 게시글이 있을 경우
+        if(article != null){
+            // 변경한 글내용 삽입
+            article.setContent(articleDTO.getContent());
+            // 저장 후 저장한 엔티티 객체 반환
+            Article updateArticle = articleRepository.save(article);
+            log.info("updateArticle : " + updateArticle.toString());
+            return ResponseEntity.ok().body(updateArticle);
+        }
+        // 해당 게시글이 없을 경우
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+    }
+    // 글 삭제 + 해당 게시글의 댓글, 파일 삭제
+    @Transactional
+    public ResponseEntity<?> deleteArticle(int ano){
+
+        log.info("deleteArticle ano :" + ano);
+        // 해당 게시글이 있는지 확인
+        Optional<Article> optArticle = articleRepository.findById(ano);
+        log.info("deleteArticle optArticle :" + optArticle.toString());
+
+        // 해당 게시글이 있으면
+        if (optArticle.isPresent()){
+            // 파일 삭제
+            Article article = optArticle.get();
+            if(article.getFile() > 0) {
+                fileRepository.deleteFilesByAno(ano);
+            }
+            // 댓글 삭제
+                commentRepository.deleteCommentByAno(ano);
+            // 게시글 삭제
+            articleRepository.deleteById(ano);
+
+            return ResponseEntity.ok().body(optArticle.get());
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+        }
+    }
 }

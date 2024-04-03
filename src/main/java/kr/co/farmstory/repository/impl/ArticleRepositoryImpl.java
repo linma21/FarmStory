@@ -31,6 +31,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     public Page<Tuple> selectArticles(PageRequestDTO pageRequestDTO, Pageable pageable){
         String cate = pageRequestDTO.getCate();
 
+        long total = 0;
         // article 테이블과 User 테이블을 Join해서 article목록, 닉네임을 select
         QueryResults<Tuple> results = jpaQueryFactory
                 .select(qArticle, qUser.nick)
@@ -44,7 +45,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .fetchResults();
 
         List<Tuple> content = results.getResults();
-        long total = results.getTotal();
+        total = jpaQueryFactory.selectFrom(qArticle).where(qArticle.cate.eq(cate)).fetchCount();
 
         // 페이지 처리용 page 객체 리턴
         return new PageImpl<>(content, pageable, total);
@@ -79,6 +80,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             expression = qArticle.cate.eq(cate).and(qUser.nick.contains(keyword));
             log.info("expression" + expression);
         }
+        long total = 0;
         // select * from article where `cate`= '' and `type` contains(k) limit 0,10;
         QueryResults<Tuple> results = jpaQueryFactory
                 .select(qArticle, qUser.nick)
@@ -92,7 +94,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .fetchResults();
 
         List<Tuple> content = results.getResults();
-        long total = results.getTotal();
+        total = jpaQueryFactory.selectFrom(qArticle).where(expression).fetchCount();
 
         // 페이지 처리용 page 객체 리턴
         return new PageImpl<>(content, pageable, total);

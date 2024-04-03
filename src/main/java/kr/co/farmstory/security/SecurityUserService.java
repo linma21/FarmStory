@@ -21,7 +21,7 @@ public class SecurityUserService implements UserDetailsService {
     // 인증 수행
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("SecurityUserService");
+        log.info("SecurityUserService : "+username);
         Optional<User> result = userRepository.findById(username);
 
         UserDetails userDetails = null;
@@ -29,6 +29,7 @@ public class SecurityUserService implements UserDetailsService {
         if(!result.isEmpty()){
             // 해당하는 사용자가 존재하면 인증 객체 생성
             User user = result.get();
+            log.info("SecurityUserService user: "+user);
             userDetails = MyUserDetails.builder().user(user).build();
             log.info(userDetails.toString());
         }
