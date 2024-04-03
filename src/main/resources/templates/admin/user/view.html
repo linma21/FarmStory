@@ -76,6 +76,7 @@
             }
         });
     });
+
 </script>
 
 <body>
@@ -105,7 +106,7 @@
             </nav>
             <article>
                 <form th:action="@{/admin/user/update}" th:object="${user}" method="post">
-                    <input type="hidden" th:field="*{uid}" />
+                    <input type="hidden" th:field="*{uid}"/>
                     <table>
                         <tr>
                             <th>항목</th>

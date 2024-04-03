@@ -27,5 +27,4 @@ public class MainController {
         model.addAttribute("appVersion",appVersion);
         return "/index";
     }
-
 }

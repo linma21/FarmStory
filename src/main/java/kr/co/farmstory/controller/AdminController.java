@@ -37,14 +37,26 @@ public class AdminController {
     @GetMapping("/admin/index")
     public String adminIndex(Model model){
 
-        log.info("AdminController - adminIndex : 들어옴");
+        //여기는 상품현황 시작
+        log.info("AdminController - adminIndex-product : 들어옴");
 
         List<ProductDTO> products= adminService.products();
 
         log.info("AdminController - adminIndex : "+products);
 
         model.addAttribute("products",products);
-        //상품현황(limit 3)->더보기를 누르면 product list로 넘어가도록
+
+        //상품현황 끝
+
+        //여기는 회원현황 시작
+        log.info("AdminController-adminIndex-User : 들어옴");
+
+        List<UserDTO> users = userService.allUser();
+
+        log.info("AdminController-adminIndex-User :"+users);
+
+        model.addAttribute("users",users);
+
 
         return "/admin/index";
     }
@@ -104,7 +116,8 @@ public class AdminController {
     // 상세정보
     @GetMapping("/admin/user/view")
     public String userview(@RequestParam("uid") String uid, Model model){
-        UserDTO userDTO = userService.getUserByUid(uid);
+        UserDTO userDTO = userService.getUserByUid(uid);//유저 정보를 가져옴
+        log.info("userDTO :"+userDTO);
         model.addAttribute("user", userDTO);
         return "/admin/user/view";
     }
@@ -129,6 +142,7 @@ public class AdminController {
             return ResponseEntity.internalServerError().body(Map.of("success", false, "message", "정보 업데이트 중 오류가 발생했습니다."));
         }
     }
+
 
     @PostMapping("/admin/user/delete")
     @ResponseBody

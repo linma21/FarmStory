@@ -53,10 +53,14 @@ public class CommentService {
         log.info("insertComment cno : " + cno);
         // user join 해서 nick 가져오기
         Tuple saveTuple =  commentRepository.selectCommentAndNick(cno);
-        log.info("insertComment saveTuple : " + saveTuple.toString());
+        log.info("insertComment saveTuple : " + saveTuple.get(0, Comment.class));
+        log.info("insertComment saveTuple : " + saveTuple.get(1, String.class));
         // tuple -> Entity
-        Comment saveComment = modelMapper.map(saveTuple, Comment.class);
+        Comment saveComment = saveTuple.get(0, Comment.class);
+        String nick = saveTuple.get(1, String.class);
+        saveComment.setNick(nick);
 
+        log.info("insertComment saveComment : " + saveComment.toString());
         return ResponseEntity.ok().body(saveComment);
     }
 }

@@ -6,6 +6,9 @@ window.onload = function (){
     const cate = cateData.value;
     const anoData = document.getElementById("ano");
     const ano = anoData.value;
+    const commentList = document.getElementById('commentList');
+    const commentForm = document.getElementById('commentForm');
+    const btnComment = document.getElementById('btnComment');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
     const cateLi = document.querySelectorAll(".lnb li");
@@ -39,12 +42,6 @@ window.onload = function (){
         communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
                                                 <p> HOME > 커뮤니티 > <em>자주묻는질문</em></p>`;
     }
-
-    const communityForm = document.getElementById('communityForm');
-    const commentList = document.getElementById('commentList');
-    const commentForm = document.getElementById('commentForm');
-
-
     // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
     setTimeout(async function () {
         const comments = await fetchGet(`/farmstory/comment/${ano}`);
@@ -72,14 +69,39 @@ window.onload = function (){
     }, 100);
 
     // 댓글 쓰기 /////////////////////////////////////////////////////////////////////////
-
-
-    // 글쓰기 /////////////////////////////////////////////////////////
-    const btnWrite = document.getElementById('btnWrite');
-    const formWrite = document.getElementById('formWrite');
-
-    btnWrite.addEventListener('click', function (e){
+    btnComment.onclick = async function (e){
         e.preventDefault();
-        formWrite.submit();
-    });
+        const uid = commentForm.uid.value;
+        const content = commentForm.content.value;
+        const jsonData = {
+            "uid": uid,
+            "ano": ano,
+            "content": content
+        };
+        console.log(jsonData);
+        // 댓글 내용이 있는 경우만 작성 요청
+        if(content != null) {
+            const data = await fetchPost('/farmstory/comment', jsonData);
+            console.log(data);
+            const noComment = document.getElementById('noComment');
+            // 만약 댓글이 없는 상태였다면, 'noComment' 태그 삭제
+            if (noComment) {
+                noComment.remove();
+            }
+            // 새 댓글 목록에 추가
+            const commentArticle = `<article>
+                                                    <span class="nick">${data.uid}</span>
+                                                    <span class="date">${data.rdate.substring(0, 10)}</span>
+                                                    <p class="content">${data.content}</p>
+                                                    <div>
+                                                        <a href="#" data-no="${data.cno}" data-ano="${data.ano}" class="remove">삭제</a>
+                                                        <a href="#" class="modify">수정</a>
+                                                    </div>
+                                                </article>`;
+            // 태그 문자열 삽입
+            commentList.insertAdjacentHTML('beforeend', commentArticle);
+            // 댓글 작성 폼 비우기
+            commentForm.content.value = "";
+        }
+    };
 }
