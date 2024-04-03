@@ -64,53 +64,53 @@
 
                     <table border="0">
                         <tr>
-                            <td>상품명</td>
-                            <td>[[${productDTO.prodname}]]</td>
+                            <td class="prodTitle">[[${productDTO.prodname}]]
+                                <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
+                                <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
+                            </td>
                         </tr>
                         <tr>
-                            <td>상품코드</td>
-                            <td>[[${productDTO.prodno}]]</td>
+                            <td class="prodPrice">
+                                <span id="discount">[[${productDTO.discount}]]</span>%
+                                <span>[[${productDTO.price}]] - ( [[${productDTO.price}]] x [[${productDTO.discount}]] / 100 )</span>원<br>
+                                <span id="price">[[${productDTO.price}]]</span>원 (100g 당 <span th:text="${productDTO.price}/${productDTO.amount}*100"></span>원)
+
+                            </td>
                         </tr>
                         <tr>
-                            <td>배송비</td>
+                            <td>[[${productDTO.stock}]]개 남음</td>
+                        </tr>
+                        <tr>
+                            <td class="prodDel">00월 00일 도착 예정</td>
+                        </tr>
+                        <tr>
                             <td>
-                                <span id="delCost">[[${productDTO.delCost}]]</span>원
+                                <span>적립</span>
+                                <span>팜 포인트 (구입금액의10%)원 적립 예정</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                배송비 <span id="delCost">[[${productDTO.delCost}]]</span>원
                                 <em><i id="delType">[[${productDTO.delType}]]</i>원 이상 무료배송</em>
                             </td>
                         </tr>
                         <tr>
-                            <td>판매가격</td>
-                            <td><i id="price">[[${productDTO.price}]]</i>원</td>
-                        </tr>
-                        <tr>
-                            <td>할인</td>
-                            <td><i id="discount">[[${productDTO.discount}]]</i>%</td>
-                        </tr>
-                        <tr>
-                            <td>구매수량</td>
-                            <td>
-                                <input type="number" name="count" min="1" value="0" id="count">
+                            <td class="prodOrder">
+                                <input type="number" name="count" min="1" value="0" id="count" style="width: 50px;">
+                                <a th:href="@{/cart.html}" id="btnCart" class="btn btnCart">장바구니</a>
+                                <a th:href="@{/order.html}" id="btnOrder" class="btn btnOrder">바로구매</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>합계</td>
                             <td class="total">
-                                +<i id="totalPrice"></i>원<br>
-                                -<i id="discountRatio"></i>원<br>
-                                +<i id="deliveryCost"></i>원<br>
-                                =<i id="finalPrice"></i>원
+                                <span>금액 </span>+<i id="totalPrice"></i>원<br>
+                                <span>할인 </span>-<i id="discountRatio"></i>원<br>
+                                <span>배송 </span>+<i id="deliveryCost"></i>원<br>
+                                <span>합계 </span>=<i id="finalPrice"></i>원
                             </td>
                         </tr>
-                        <style>
-
-                        </style>
-
                     </table>
-
-                    <div style="float: right; margin-top: 10px;">
-                        <a th:href="@{/cart.html}" id="btnCart" class="btn btnCart">장바구니</a>
-                        <a th:href="@{/order.html}" id="btnOrder" class="btn btnOrder">바로구매</a>
-                    </div>
                 </div>
                 <h3>상품설명</h3>
                 <div class="detail">
