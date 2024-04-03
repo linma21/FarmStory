@@ -1,21 +1,28 @@
 package kr.co.farmstory.service;
 
+import com.querydsl.core.Tuple;
 import kr.co.farmstory.dto.ImagesDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.entity.Images;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.repository.ImagesRepository;
 import kr.co.farmstory.repository.MarketRepository;
+import kr.co.farmstory.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,13 +31,14 @@ public class AdminService {
 
     private final MarketRepository marketRepository;
     private final ImagesRepository imagesRepository;
+    private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
 
     @Value("${file.prodImg.path}")
     private String fileUploadPath;
 
     // 상품 등록
-    public void productRegister(ProductDTO productDTO, MultipartFile thumb120, MultipartFile thumb240, MultipartFile thumb750){
+    public void productRegister(ProductDTO productDTO, MultipartFile thumb120, MultipartFile thumb240, MultipartFile thumb750) {
 
         log.info("파일 업로드 service1 productDTO : " + productDTO.toString());
         log.info("파일 업로드 service2 thumb120 : " + thumb120);
@@ -39,7 +47,7 @@ public class AdminService {
 
         // 상품 정보 등록 (정보 저장 & thumb120 저장)
         File file = new File(fileUploadPath);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdir();
         }
 
@@ -48,7 +56,7 @@ public class AdminService {
         // 저장
         Product savedProduct = new Product();
 
-        if (!thumb120.isEmpty()){
+        if (!thumb120.isEmpty()) {
             // oName, sName 구하기
             String oName = thumb120.getOriginalFilename();
             String ext = oName.substring(oName.lastIndexOf("."));
@@ -74,7 +82,7 @@ public class AdminService {
 
         // 상품 이미지 등록
         Images savedImage = new Images();
-        if (!thumb240.isEmpty() && !thumb750.isEmpty()){
+        if (!thumb240.isEmpty() && !thumb750.isEmpty()) {
             // oName, sName 구하기
             String thumb240oName = thumb240.getOriginalFilename();
             String thumb240ext = thumb240oName.substring(thumb240oName.lastIndexOf("."));
@@ -113,4 +121,31 @@ public class AdminService {
         log.info("파일 업로드 service11 끝");
 
     }
+
+
+    /*
+    public List<ProductDTO> getAllProductDTOs(Product product) {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private ProductDTO convertToDto(Product product) {
+        return modelMapper.map(product, ProductDTO.class);
+    }
+
+     */
+
+    
+    //제품 목록을 조회
+    public List<ProductDTO> products(){
+        List<Product> products = productRepository.findAll();
+
+        log.info("AdminService - products : "+products.toString());
+
+        return products.stream().map(product -> modelMapper.map(product,ProductDTO.class))
+                .collect(Collectors.toList());
+    }
 }
+

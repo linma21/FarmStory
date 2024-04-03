@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>팜스토리</title>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css"/>
+    <link rel="stylesheet" th:href="@{https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" th:href="@{/css/adminStyle.css}">
 </head>
 <body>
 <div id="container">
     <header>
-        <a href="./index.html" class="logo"><img src="./images/admin_logo.jpg" alt="로고"/></a>
+        <a th:href="@{/index}" class="logo"><img th:src="@{/images/admin/admin_logo.jpg}" alt="로고"/></a>
         <p>
             <a href="/">HOME |</a>
             <a href="#">로그아웃 |</a>
@@ -55,41 +55,31 @@
             <article>
                 <h3>
                     <a href="#">상품현황</a>
-                    <a href="#" class="more">+ 더보기</a>
+                    <a th:href="@{/admin/product/list}" class="more">+ 더보기</a>
                 </h3>
                 <table border="0">
                     <tr>
                         <th>상품번호</th>
                         <th>상품명</th>
+                        <th>무게</th>
                         <th>구분</th>
                         <th>가격</th>
                         <th>재고</th>
                         <th>등록일</th>
                     </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>과일</td>
-                        <td>4,000원</td>
-                        <td>100</td>
-                        <td>2023-01-01</td>
+                    <tr th:each="product, index :${products}" th:if="${index.index < 3}">
+                        <td th:text="${product.prodno}"></td>
+                        <td th:text="${product.prodname}"></td>
+                        <td>
+                            <span th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></span>
+                            <span th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></span>
+                        </td>
+                        <td th:text="${product.cate}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.stock}"></td>
+                        <td th:text="${#strings.substring(product.rdate,0,10)}"></td>
                     </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>과일</td>
-                        <td>4,000원</td>
-                        <td>100</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>과일</td>
-                        <td>4,000원</td>
-                        <td>100</td>
-                        <td>2023-01-01</td>
-                    </tr>
+
                 </table>
             </article>
 
