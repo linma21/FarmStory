@@ -484,28 +484,12 @@ window.onload = function () {
         return true;
     }
 
-}
-
 
 //////////////////////////////////////terms//////////////////////////////////////////////////
-window.onload = function () {
-    const agree1 = document.getElementsByName('agree1')[0];
-    const agree2 = document.getElementsByName('agree2')[0];
-    const btnNext = document.getElementsByClassName('btnNext')[0];
-
-    btnNext.onclick = function () {
-        if (agree1.checked && agree2.checked) {
-            return true;
-        } else {
-            alert('이용약관과 개인정보 취급방침은 필수 동의입니다.');
-            return false;
-        }
-    };
-}
 
 
 /////////////////////////////////////////login////////////////////////////////////////////
-window.onload = function () {
+
     const success = [[${success}]];
 
     if (success == 100) {
@@ -516,5 +500,3 @@ window.onload = function () {
         showModal('로그아웃 되었습니다. 안녕히 가세요. 😃');
     }
 }
-
-

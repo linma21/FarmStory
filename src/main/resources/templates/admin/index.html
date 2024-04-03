@@ -3,6 +3,7 @@
       layout:decorate="~{/layout/adminLayout}">
 
     <main layout:fragment="content">
+
         <aside>
             <h3>주요기능</h3>
             <ul>
@@ -37,41 +38,31 @@
             <article>
                 <h3>
                     <a href="#">상품현황</a>
-                    <a href="#" class="more">+ 더보기</a>
+                    <a th:href="@{/admin/product/list}" class="more">+ 더보기</a>
                 </h3>
                 <table border="0">
                     <tr>
                         <th>상품번호</th>
                         <th>상품명</th>
+                        <th>무게</th>
                         <th>구분</th>
                         <th>가격</th>
                         <th>재고</th>
                         <th>등록일</th>
                     </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>과일</td>
-                        <td>4,000원</td>
-                        <td>100</td>
-                        <td>2023-01-01</td>
+                    <tr th:each="product, index :${products}" th:if="${index.index < 3}">
+                        <td th:text="${product.prodno}"></td>
+                        <td th:text="${product.prodname}"></td>
+                        <td>
+                            <span th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></span>
+                            <span th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></span>
+                        </td>
+                        <td th:text="${product.cate}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.stock}"></td>
+                        <td th:text="${#strings.substring(product.rdate,0,10)}"></td>
                     </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>과일</td>
-                        <td>4,000원</td>
-                        <td>100</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>과일</td>
-                        <td>4,000원</td>
-                        <td>100</td>
-                        <td>2023-01-01</td>
-                    </tr>
+
                 </table>
             </article>
 

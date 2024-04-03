@@ -1,6 +1,5 @@
 package kr.co.farmstory.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import kr.co.farmstory.dto.CommentDTO;
 import kr.co.farmstory.entity.Comment;
 import kr.co.farmstory.service.CommentService;
@@ -29,6 +28,9 @@ public class CommentController {
     public ResponseEntity<Comment> commentWrite(@RequestBody CommentDTO commentDTO) {
         log.info("commentWrite : " + commentDTO);
 
-        return commentService.insertComment(commentDTO);
+        ResponseEntity<Comment> commentResponseEntity = commentService.insertComment(commentDTO);
+        log.info("commentWrite ...2 : ");
+        log.info(commentResponseEntity.getBody().toString());
+        return commentResponseEntity;
     }
 }

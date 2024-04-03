@@ -45,9 +45,22 @@ public class CommentService {
     public ResponseEntity<Comment> insertComment(CommentDTO commentDTO){
         // DTO -> Entity
         Comment comment = modelMapper.map(commentDTO, Comment.class);
-        log.info("insertComment : " + comment.toString());
-        // DB insert 후 저장한 객체 반환
-        Comment saveArticle = commentRepository.save(comment);
-        return ResponseEntity.ok().body(saveArticle);
+        log.info("insertComment : " + comment);
+
+        // DB insert 후 저장한 객체 반환 //////////
+        // DB insert 시 저장한 객체 Pk 반환
+        int cno = commentRepository.save(comment).getCno();
+        log.info("insertComment cno : " + cno);
+        // user join 해서 nick 가져오기
+        Tuple saveTuple =  commentRepository.selectCommentAndNick(cno);
+        log.info("insertComment saveTuple : " + saveTuple.get(0, Comment.class));
+        log.info("insertComment saveTuple : " + saveTuple.get(1, String.class));
+        // tuple -> Entity
+        Comment saveComment = saveTuple.get(0, Comment.class);
+        String nick = saveTuple.get(1, String.class);
+        saveComment.setNick(nick);
+
+        log.info("insertComment saveComment : " + saveComment.toString());
+        return ResponseEntity.ok().body(saveComment);
     }
 }
