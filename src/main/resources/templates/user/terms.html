@@ -2,13 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/userLayout}">
-<script>
-
-
-</script>
 
     <div class="container" layout:fragment="content">
+        <script>
+            window.onload = function () {
+                const agree1 = document.getElementsByName('agree1')[0];
+                const agree2 = document.getElementsByName('agree2')[0];
+                const btnNext = document.getElementById('btnNext'); // '.btnNext' 대신에 구체적인 클래스 이름을 사용하시는 것이 좋습니다.
 
+                btnNext.onclick = function (e) {
+                    if (!(agree1.checked && agree2.checked)) {
+                        alert('이용약관과 개인정보 취급방침은 필수 동의입니다.');
+                        console.log(agree1.checked);
+                        console.log(agree2.checked);
+                        e.preventDefault(); // '다음' 버튼이 실제로 `<a>` 태그인 경우 여기에 preventDefault를 호출
+                    } else {
+                        // 필수 동의가 모두 체크되었을 때만 페이지 이동
+                        window.location.href = this.getAttribute('href'); // 이동할 URL을 `<a>` 태그의 href 속성에서 가져옵니다.
+                    }
+                };
+            }
+        </script>
         <section class="terms">
             <table>
                 <caption>사이트 이용약관</caption>
@@ -34,7 +48,7 @@
             </table>
             <div>
                 <a th:href="@{/user/login}" class="btnCancel">취소</a>
-                <a th:href="@{/user/register}" class="btnNext">다음</a>
+                <a th:href="@{/user/register}" id="btnNext" class="btnNext">다음</a>
             </div>
         </section>
     </div>
