@@ -81,25 +81,27 @@
                 formWrite.submit();
             });
             // 댓글 쓰기 ///////////////////////////////////////////////////////////////////////
-            btnComment.onclick = async function (e){
+            commentForm.onsubmit = async function (e){
                 e.preventDefault();
                 const uid = commentForm.uid.value;
                 const content = commentForm.content.value;
                 const jsonData = {
                     "uid": uid,
                     "ano": ano,
-                    "content": content,
+                    "content": content
                 };
                 console.log(jsonData);
-                const data = await fetchPost('/farmstory/comment', jsonData);
-                console.log(data);
-                const noComment = document.getElementById('noComment');
-                // 만약 댓글이 없는 상태였다면, 'noComment' 태그 삭제
-                if (noComment) {
-                    noComment.remove();
-                }
-                // 새 댓글 목록에 추가
-                const commentArticle = `<article>
+                // 댓글 내용이 있는 경우만 작성 요청
+                if(content != null) {
+                    const data = await fetchPost('/farmstory/comment', jsonData);
+                    console.log(data);
+                    const noComment = document.getElementById('noComment');
+                    // 만약 댓글이 없는 상태였다면, 'noComment' 태그 삭제
+                    if (noComment) {
+                        noComment.remove();
+                    }
+                    // 새 댓글 목록에 추가
+                    const commentArticle = `<article>
                                                     <span class="nick">${data.uid}</span>
                                                     <span class="date">${data.rdate.substring(0, 10)}</span>
                                                     <p class="content">${data.content}</p>
@@ -108,10 +110,11 @@
                                                         <a href="#" class="modify">수정</a>
                                                     </div>
                                                 </article>`;
-                // 태그 문자열 삽입
-                commentList.insertAdjacentHTML('beforeend', commentArticle);
-                // 댓글 작성 폼 비우기
-                commentForm.content.value = "";
+                    // 태그 문자열 삽입
+                    commentList.insertAdjacentHTML('beforeend', commentArticle);
+                    // 댓글 작성 폼 비우기
+                    commentForm.content.value = "";
+                }
             }
         }
     </script>
@@ -153,7 +156,6 @@
                                 <a href="#" class="author"><span class="name">[[${article.nick}]]</span><img th:src="@{/images/community/avatar.jpg}" alt="" /></a>
                             </div>
                         </header>
-                        <span class="image featured"><img th:src="@{/images/community/avatar.jpg}" alt="" /></span>
                         <p>[[${article.content}]]</p>
                         <p> </p>
                         <footer>
@@ -192,7 +194,7 @@
                         <!-- 댓글쓰기 -->
                         <section class="commentForm">
                             <h3>댓글쓰기</h3>
-                            <form action="#" name="commentForm" method="post" id="commentForm">
+                            <form th:action="@{/comment}" name="commentForm" method="post" id="commentForm">
                                 <input type="hidden" name="uid" th:value="${#authentication.principal.user.uid}">
                                 <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
                                 <textarea name="content" class="commentContent"></textarea>
