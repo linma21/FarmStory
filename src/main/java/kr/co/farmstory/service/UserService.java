@@ -5,10 +5,8 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpSession;
-import kr.co.farmstory.dto.PageRequestDTO;
-import kr.co.farmstory.dto.PageResponseDTO;
-import kr.co.farmstory.dto.UserDTO;
-import kr.co.farmstory.dto.UserResponseDTO;
+import kr.co.farmstory.dto.*;
+import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.entity.User;
 import kr.co.farmstory.mapper.UserMapper;
 import kr.co.farmstory.repository.UserRepository;
@@ -19,12 +17,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -42,11 +42,13 @@ public class UserService {
     private final JavaMailSender javaMailSender;
 
 
+    //회원 등록이 되어 있는지 확인하는 기능(0또는 1)
     public int selectCountUser(String type,String value){
 
         return userMapper.selectCountUser(type,value);
     }
 
+    //회원 가입 기능
     public void insertUser(UserDTO userDTO){
 
         String encoded = passwordEncoder.encode(userDTO.getPass());
@@ -57,9 +59,9 @@ public class UserService {
     }
 
 
-    @Value("${spring.mail.username}")
+    @Value("${spring.mail.username}")//이메일 보내는 사람 주소
     private String sender;
-
+    //이메일 보내기 기능
     public void sendEmailCode(HttpSession session, String receiver){
 
         log.info("sender : " + sender);
@@ -132,28 +134,34 @@ public class UserService {
         return (int) userRepository.count();
     }
 
-    // 상세페이지
+    // 상세페이지(id로 그 유저의 정보를 가져온다)
     public UserDTO getUserByUid(String uid){
         User user = userRepository.findById(uid).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new UserDTO(user.getUid(), user.getPass(), user.getName(), user.getEmail(), user.getNick(), user.getHp(), user.getRole(), user.getLevel(), user.getZip(), user.getAddr1(), user.getAddr2(), user.getRegip(), user.getRegDate(), user.getLeaveDate(), user.getProvider());
     }
 
-    public void updateUser(UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(UserDTO userDTO) {
         log.info("updateUser....1");
-        User user = userRepository.findById(userDTO.getUid())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userDTO.getUid()));
-        log.info("updateUser....2" + user);
-        user.setName(userDTO.getName());
-        log.info("updateUser....3" + user.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setNick(userDTO.getNick());
-        user.setHp(userDTO.getHp());
-        user.setLevel(userDTO.getLevel());
-        user.setRole(userDTO.getRole());
-        // 여기에 추가적으로 업데이트 해야 할 필드가 있다면 추가합니다.
 
-        userRepository.save(user); // 변경된 사용자 정보 저장
+        log.info("UserService - updateUser - userDTO:"+userDTO);
+
+        String level = userDTO.getLevel();//먼저 들고온 level과 role을 따로 저장해놓음
+        String role = userDTO.getRole();
+
+        //여기서 사용자 정보를 가지고 온다.(DTO에 id로 검색해서 데이터 저장)
+        Optional<User> result = userRepository.findById(userDTO.getUid());
+
+        UserDTO user12 = modelMapper.map(result,UserDTO.class);//user12에 id로 검색한 값이 DTO형태로 저장되어 있음
+
+        user12.setLevel(level);
+        user12.setRole(role);
+
+        User user11 = modelMapper.map(userDTO,User.class);
+
+        User saveUser = userRepository.save(user11); // 변경된 사용자 정보 저장
         log.info("updateUser....4 save");
+
+        return ResponseEntity.ok().body(saveUser);
     }
 
 
@@ -161,5 +169,14 @@ public class UserService {
         // userRepository를 사용하여 사용자를 삭제합니다.
         userRepository.deleteById(uid);
     }
+
+    public List<UserDTO> allUser(){
+
+        List<User> users = userRepository.findAll();
+
+        return users.stream().map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
 
