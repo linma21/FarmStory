@@ -38,4 +38,17 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         // List<Tuple> 리턴
         return results.getResults();
     }
+    // 댓글 작성 후 불러오기
+    public Tuple selectCommentAndNick(int cno){
+
+        Tuple results = jpaQueryFactory
+                                .select(qComment, qUser.nick)
+                                .from(qComment)
+                                .where(qComment.cno.eq(cno))
+                                .join(qUser)
+                                .on(qComment.uid.eq(qUser.uid))
+                                .fetchOne();
+
+        return results;
+    }
 }

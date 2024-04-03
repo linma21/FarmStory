@@ -26,7 +26,7 @@ public class CommentController {
     }
     // 댓글 작성
     @PostMapping("/comment")
-    public ResponseEntity<Comment> commentWrite(@RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<Comment> commentWrite(CommentDTO commentDTO) {
         log.info("commentWrite : " + commentDTO);
 
         return commentService.insertComment(commentDTO);
