@@ -15,34 +15,34 @@ async function fetchGet(url){
     }
 }
 // POST
-async function fetchPost(url, jsonData){
+async function fetchPost(url, jsonData) {
+    console.log("fetchPost...1", jsonData);
 
-    console.log("fetchPost...1" +jsonData);
-
-    try{
-        console.log("fetchPost...2");
+    try {
         const response = await fetch(url, {
             method: 'POST',
             headers: {"Content-type":"application/json"},
             body: JSON.stringify(jsonData)
         });
-        console.log("fetchPost...3"+JSON.stringify(jsonData));
 
-        if(!response.ok){
+        console.log("fetchPost...3", JSON.stringify(jsonData));
+
+        if (!response.ok) {
             console.log("fetchPost...4");
             return null;
         }
 
         const data = await response.json();
-        console.log("fetchData2...5 : " + data);
+        console.log("fetchData2...5 : ", data);
 
         return data;
-
-    }catch (err) {
+    } catch (err) {
         console.log(err);
         return null;
     }
 }
+
+
 // PUT
 async function fetchPut(url, jsonData){
     console.log("fetchPut...1");
