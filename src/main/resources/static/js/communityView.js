@@ -17,6 +17,7 @@ window.onload = function (){
     const btnComment = document.getElementById('btnComment');
     const btnArtRemove = document.getElementById('btnArtRemove');
     const btnArtModify = document.getElementById('btnArtModify');
+    const fileLinks = document.getElementsByClassName('fileLink');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
     const cateLi = document.querySelectorAll(".lnb li");
@@ -57,6 +58,19 @@ window.onload = function (){
     textareas.forEach(textarea => {
         autoResize(textarea);
     });
+    // 파일 다운로드 - 다운로드 카운트 칼럼 생기면
+    /*
+    for (const fileLink of fileLinks) {
+        // 파일 다운로드 요청과 동시에 다운로드 카운트 요청
+        fileLink.onclick = async function () {
+            const fno = this.dataset.fno;
+
+            const count = this.nextElementSibling.innerText;
+            this.nextElementSibling.innerHTML = parseInt(count) + 1;
+        }
+    }
+    
+     */
     // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
     setTimeout(async function () {
         const comments = await fetchGet(`/farmstory/comment/${ano}`);
@@ -172,7 +186,7 @@ window.onload = function (){
             commentForm.content.value = "";
         }
     };
-
+/*
     // 댓글 수정 삭제 /////////////////////////////////////////////////////////////////////////
     document.addEventListener('click', async function (e) {
 
@@ -236,7 +250,9 @@ window.onload = function (){
             }
             // 게시글 삭제 수정 ///////////////////////////////////////////////////////////
             // 게시글 수정 시작 ///////////////////////////////////////////////////////////
-        }else if(e.target.tagName === 'BUTTON') {
+        }
+        /*
+        else if(e.target.tagName === 'BUTTON') {
 
             if (e.target.id === 'btnArtModify' && e.target.dataset.art === 'modify') {
                 // 수정 모드
@@ -280,6 +296,8 @@ window.onload = function (){
             }
         }
     });
+ */
+
 }
 // 텍스트 입력시 textarea 자동 높이 조절 - onload 밖에 둬야함
 function autoResize(textarea) {

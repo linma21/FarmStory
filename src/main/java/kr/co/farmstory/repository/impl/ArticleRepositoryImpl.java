@@ -99,4 +99,19 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         // 페이지 처리용 page 객체 리턴
         return new PageImpl<>(content, pageable, total);
     }
+    // 기본 글 상세 조회
+    @Override
+    public Tuple selectArticleAndNick(int ano){
+        
+        // user 조인 조회
+        Tuple results = jpaQueryFactory
+                .select(qArticle, qUser.nick)
+                .from(qArticle)
+                .where(qArticle.ano.eq(ano))
+                .join(qUser)
+                .on(qArticle.writer.eq(qUser.uid))
+                .fetchOne();
+
+        return results;
+    }
 }
