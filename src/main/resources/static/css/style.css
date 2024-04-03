@@ -1398,7 +1398,15 @@ input[type=number]::-webkit-outer-spin-button {
     float: right;
     margin-top: 10px;
 }
-
+/* 글 쓰기 */
+#community_write {
+    -moz-flex-grow: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-grow: 1;
+    flex-grow: 1;
+    -ms-flex: 1;
+    width: 100%;
+}
 /* user */
 #sub > .user > article {
     float: none;
@@ -1710,6 +1718,13 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .btnWrite {
+
+    padding: 7px;
+    border: 1px solid #3b3c3f;
+    background: #4b545e;
+    color: #fff;
+}
+.btnGoWrite {
 
     padding: 7px;
     border: 1px solid #3b3c3f;

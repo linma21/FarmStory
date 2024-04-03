@@ -1,9 +1,7 @@
 package kr.co.farmstory.dto;
 
-import jakarta.persistence.*;
 import kr.co.farmstory.entity.File;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;

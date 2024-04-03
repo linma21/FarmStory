@@ -68,10 +68,10 @@ public class CommunityController {
         return "/community/write";
     }
 
-    @PostMapping("/article/write")
-    public String write(@ModelAttribute("writer") String writer, HttpServletRequest req, ArticleDTO articleDTO){
+    @PostMapping("/community/write")
+    public String write(ArticleDTO articleDTO){
 
         articleService.insertArticle(articleDTO);
-        return "redirect:/article/list?cate="+articleDTO.getCate();
+        return "redirect:/community/list?cate="+articleDTO.getCate();
     }
 }

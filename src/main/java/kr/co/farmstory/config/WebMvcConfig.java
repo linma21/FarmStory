@@ -1,7 +1,10 @@
 package kr.co.farmstory.config;
 
+import kr.co.farmstory.intercepter.Appinfointercepter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
@@ -27,5 +30,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(connectPath)
                 .addResourceLocations(resourcePath);
+    }
+
+    // 버전 정보 띄우기
+    @Autowired
+    private AppInfo appInfo;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new Appinfointercepter(appInfo));
+
     }
 }
