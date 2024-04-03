@@ -1,11 +1,13 @@
-
-//////////////////////////////////////////view//////////////////////////////////////////////////
+// util.js 함수 호출
+document.write('<script src="../js/util.js"></script>');
 window.onload = function (){
-    //document.write('<script src="/js/util.js"></script>');
-    //const cate = [[${pageResponseDTO.cate}]];
+    <!-- thymeleaf 변수를 js 파일에서 사용하기 위해 input value 가져오기 -->
     const cateData = document.getElementById("cate");
     const cate = cateData.value;
-    console.log("function " + cate);
+    const anoData = document.getElementById("ano");
+    const ano = anoData.value;
+
+    // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
     const cateLi = document.querySelectorAll(".lnb li");
     const communityNav = document.getElementById('communityNav');
 
@@ -69,6 +71,15 @@ window.onload = function (){
         }
     }, 100);
 
-    // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
+    // 댓글 쓰기 /////////////////////////////////////////////////////////////////////////
 
+
+    // 글쓰기 /////////////////////////////////////////////////////////
+    const btnWrite = document.getElementById('btnWrite');
+    const formWrite = document.getElementById('formWrite');
+
+    btnWrite.addEventListener('click', function (e){
+        e.preventDefault();
+        formWrite.submit();
+    });
 }

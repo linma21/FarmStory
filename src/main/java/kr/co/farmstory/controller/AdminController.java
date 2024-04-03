@@ -2,6 +2,10 @@ package kr.co.farmstory.controller;
 
 import kr.co.farmstory.dto.*;
 import kr.co.farmstory.entity.User;
+import kr.co.farmstory.dto.MarketPageRequestDTO;
+import kr.co.farmstory.dto.MarketPageResponseDTO;
+import kr.co.farmstory.dto.ProductDTO;
+import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.service.AdminService;
 import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
@@ -31,7 +35,16 @@ public class AdminController {
 
     // admin 메인 페이지
     @GetMapping("/admin/index")
-    public String adminIndex() {
+    public String adminIndex(Model model){
+
+        log.info("AdminController - adminIndex : 들어옴");
+
+        List<ProductDTO> products= adminService.products();
+
+        log.info("AdminController - adminIndex : "+products);
+
+        model.addAttribute("products",products);
+        //상품현황(limit 3)->더보기를 누르면 product list로 넘어가도록
 
         return "/admin/index";
     }

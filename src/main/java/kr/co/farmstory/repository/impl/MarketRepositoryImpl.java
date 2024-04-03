@@ -1,8 +1,11 @@
 package kr.co.farmstory.repository.impl;
 
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.entity.Product;
+import kr.co.farmstory.entity.QImages;
 import kr.co.farmstory.entity.QProduct;
 import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +24,11 @@ import java.util.List;
 public class MarketRepositoryImpl implements MarketRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProduct qProduct = QProduct.product;
+    private final QImages qImages = QImages.images;
 
+    // 장보기 게시판 목록 출력 (market/list)
     @Override
     public Page<Product> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable) {
-
         /*
             3가지로 분기 // 중복 코드 합치기
             1. 파라미터 하나도 없을 때
@@ -64,4 +68,19 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         return new PageImpl<>(productList, pageable, total);
     }
 
+    // 장보기 게시판 게시글 출력 (market/view)
+    public List<Tuple> selectProduct(int prodno){
+        // select * from `product` as a join `images` as b on a.prodno = b.prodno where a`prodno` = ?
+        List<Tuple> joinProduct = jpaQueryFactory
+                                        .select(qProduct, qImages)
+                                        .from(qProduct)
+                                        .join(qImages)
+                                        .on(qProduct.prodno.eq(qImages.prodno))
+                                        .where(qProduct.prodno.eq(prodno))
+                                        .fetch();
+
+        log.info("results : " + joinProduct);
+        return joinProduct;
+
+    };
 }
