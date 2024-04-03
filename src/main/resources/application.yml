@@ -65,7 +65,10 @@ spring:
 
     thymeleaf:
         prefix: classpath:/templates
-
+    mvc:
+      hiddenmethod:
+        filter:
+            enabled: true
 
     security:
         oauth2:
