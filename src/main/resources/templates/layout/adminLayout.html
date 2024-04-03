@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>팜스토리</title>
+    <link rel="stylesheet" th:href="@{/css/adminStyle.css}">
+</head>
+<body>
+<div id="container">
+    <header>
+        <a th:href="@{/admin/index}" class="logo"><img th:src="@{/images/admin/admin_logo.jpg}" alt="로고"/></a>
+        <p>
+            <a href="/">HOME |</a>
+            <a href="#">로그아웃 |</a>
+            <a href="#">고객센터</a>
+        </p>
+    </header>
+    <div layout:fragment="content">
+    <!--내용-->
+    </div>
+    <footer>
+        <p>
+            Copyright(C)Farmstory All rights reserved. FARMSTORY ADMINISTRATOR [[${appInfo.version}]]
+        </p>
+    </footer>
+</div>
+
+</body>
+</html>

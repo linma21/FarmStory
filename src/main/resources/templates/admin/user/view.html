@@ -4,9 +4,84 @@
     <meta charset="UTF-8">
     <title>회원 상세 정보 - 팜스토리</title>
     <link rel="stylesheet" th:href="@{/css/adminStyle.css}">
-    <!-- 필요한 추가 CSS 및 JavaScript 링크 -->
+
 </head>
+<script>
+    // 수정
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('updateBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            const userInfo = {
+                uid: document.querySelector('input[name="uid"]').value,
+                level: document.querySelector('select[name="level"]').value,
+                role: document.querySelector('select[name="role"]').value
+                // 필요한 나머지 필드도 추가
+            };
+
+            fetch("/farmstory/admin/user/update", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // CSRF 토큰이 필요하다면 'X-CSRF-TOKEN': token 추가
+                },
+                body: JSON.stringify(userInfo)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        // 페이지 리로드 또는 다른 페이지로 이동
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    alert('정보 업데이트 중 오류가 발생했습니다.');
+                });
+
+
+        }); // 삭제 버튼 이벤트 리스너 추가
+        document.querySelector('.deleteBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            const uid = document.querySelector('input[name="uid"]').value;
+
+            if(confirm('정말로 삭제하시겠습니까?')) {
+                fetch(`/farmstory/admin/user/delete?uid=${uid}`, {
+                    method: 'POST',
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.href = '/farmstory/admin/user/list';
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        alert('사용자 삭제 중 오류가 발생했습니다.');
+                    });
+            }
+        });
+    });
+
+</script>
+
 <body>
+
+
 <div id="container">
     <header>
         <a th:href="@{/}" class="logo"><img th:src="@{/images/admin/admin_logo.jpg}" alt="로고"/></a>
@@ -31,7 +106,7 @@
             </nav>
             <article>
                 <form th:action="@{/admin/user/update}" th:object="${user}" method="post">
-                    <input type="hidden" th:field="*{uid}" />
+                    <input type="hidden" th:field="*{uid}"/>
                     <table>
                         <tr>
                             <th>항목</th>
@@ -39,23 +114,23 @@
                         </tr>
                         <tr>
                             <td>아이디</td>
-                            <td th:text="*{uid}"></td>
+                            <td th:text="*{uid}" ></td>
                         </tr>
                         <tr>
                             <td>이름</td>
-                            <td th:text="*{name}"/></td>
+                            <td th:text="*{name}" ></td>
                         </tr>
                         <tr>
                             <td>별명</td>
-                            <td th:text="*{nick}"/></td>
+                            <td th:text="*{nick}"></td>
                         </tr>
                         <tr>
                             <td>이메일</td>
-                            <td th:text="*{email}" /></td>
+                            <td th:text="*{email}"></td>
                         </tr>
                         <tr>
                             <td>휴대폰</td>
-                            <td th:text="*{hp}" /></td>
+                            <td th:text="*{hp}" ></td>
                         </tr>
                         <tr>
                             <td>등급</td>
@@ -82,11 +157,11 @@
                             </td>
                         </tr>
                     </table>
-                    <button>정보 수정</button>
+                    <button type="button" id="updateBtn">정보 수정</button>
                 </form>
                 <form th:action="@{/admin/user/delete}" method="post">
                     <input type="hidden" th:name="uid" th:value="${user.uid}" />
-                    <button class="deleteBtn">회원 삭제</button>
+                    <a href="#" class="deleteBtn">회원 삭제</a>
                 </form>
             </article>
         </section>

@@ -14,12 +14,13 @@ public interface UserMapper {
 
     UserDTO selectUserByNameAndEmail(@Param("name") String name, @Param("email") String email);
     void updateUserPassword(@Param("uid") String uid, @Param("password") String password);
+    public UserDTO findById(String uid);
 
     /*
     public String selectUser(String email);
     public UserDTO selectUser(String name, String email);
     public UserDTO findPass(String uid, String email);
-    public UserDTO findById(String uid);
+
     public void updatePass(String pass,String uid);
     public void updateInfo(UserDTO userDTO);
 

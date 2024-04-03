@@ -631,24 +631,51 @@ main > .info > div > .account {
 
 #sub > .market > .view > .basic {
     width: 100%;
-    height: 270px;
+    height: 400px;
     position: relative;
     overflow: hidden;
 }
 #sub > .market > .view > .basic > img {
     float: left;
+    padding: 20px;
 }
 #sub > .market > .view > .basic > table {
     float: right;
     width: 60%;
-    height: 200px;
+    height: 220px;
     margin-left: 16px;
-    border-top: 2px solid #e7e7e7;
     border-bottom: 2px solid #e7e7e7;
+}
+#sub > .market > .view > .basic > table tr .prodTitle{
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid #e7e7e7;
+}
+#sub > .market > .view > .basic > table tr .prodPrice{
+    padding: 10px 2px;
+    border-bottom: 1px solid #e7e7e7;
+    font-size: 20px;
+    line-height: 28px;
+}
+#sub > .market > .view > .basic > table tr .prodDel{
+    padding: 10px 2px;
+    font-weight: bold;
+    color: #0d6efd;
+}
+#sub > .market > .view > .basic > table tr .prodOrder{
+    padding-top: 20px;
+}
+#sub > .market > .view > .basic > table tr > td {
+    padding: 4px 2px;
+    font-size: 16px;
+}
+#sub > .market > .view > .basic > table tr > td > span {
+    padding: 4px 2px;
+    font-size: 16px;
 }
 
 #sub > .market > .view > .basic > table em {
-    color: #777;
+    color: #91BA15;
 }
 #sub > .market > .view > .basic > table .total {
     font-weight: bold;
@@ -685,19 +712,26 @@ main > .info > div > .account {
 
 #sub > .market > .view .btn {
     display: inline-block;
-    width: 100px;
-    height: 40px;
+    width: 120px;
+    height: 30px;
     border: none;
     text-align: center;
-    line-height: 40px;
+    font-size: 18px;
+    line-height: 30px;
 }
 
 #sub > .market > .view .btnCart {
-    background-color: #769b0a;
+    border: 2px solid #91BA15;
+    border-radius: 10px;
+    color: #91BA15;
+    font-weight: bold;
 }
 
 #sub > .market > .view .btnOrder {
-    background-color: #960d1a;
+    border: 2px solid #960d1a;
+    border-radius: 10px;
+    color: #960d1a;
+    font-weight: bold;
 }
 
 
@@ -1013,7 +1047,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 /* 글보기 */
 .community_post {
-    padding: 3em 3em 1em 3em ;
+    padding: 10px 10px 4px 10px;
     background: #ffffff;
     border: solid 1px rgba(160, 160, 160, 0.3);
     margin: 0 0 3em 0;
@@ -1304,6 +1338,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 
+
 /* new 글보기 */
 .community_content{
     width: 720px;
@@ -1381,6 +1416,9 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 5px;
     resize: none;
 }
+
+
+    /**/
 .community_view {
     width: 720px;
     height: auto;
