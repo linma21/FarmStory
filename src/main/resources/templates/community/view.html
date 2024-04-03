@@ -4,6 +4,25 @@
 <div class="container" layout:fragment="content">
     <!--<script th:inline="javascript" th:src="@{/js/community.js}"></script>-->
     <script th:inline="javascript" th:src="@{/js/communityView.js}"></script>
+    <script>
+        window.onload = function (){
+            // 페이지 로드시 textarea 자동 높이 조절
+            const textareas = document.querySelectorAll('textarea');
+
+            // 선택된 각 textarea 요소에 대해 autoResize 함수를 호출합니다.
+            textareas.forEach(textarea => {
+                autoResize(textarea);
+            });
+        }
+        // 텍스트 입력시 textarea 자동 높이 조절 - onload 밖에 둬야함
+        function autoResize(textarea) {
+            // 텍스트 영역의 스크롤 높이 설정을 임시로 해제
+            textarea.style.height = 'auto';
+
+            // 텍스트 영역의 스크롤 높이를 내용에 맞게 조절
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+    </script>
 
     <main>
         <div id="sub">
@@ -29,37 +48,41 @@
                 </nav>
                 <!-- 내용 시작 -->
                 <div id="community_view">
-                    <article class="community_post">
+                    <article class="community_content">
                         <form>
                             <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
-                        <header>
+                        <div>
                             <div class="title">
                                 <h2>[[${article.title}]]</h2>
                                 <input type="hidden" th:value="${#authentication.principal.user.uid}">
                             </div>
-                            <div class="meta">
-                                <time class="published" datetime="2015-11-01">[[${article.rdate}]]</time>
-                                <a href="#" class="author"><span class="name">[[${article.nick}]]</span><img th:src="@{/images/community/avatar.jpg}" alt="" /></a>
+                            <div class="info">
+                                <span style="float: left">작성자 : [[${article.writer}]]</span>
+                                <span style="float: right">[[${article.rdate}]]</span>
                             </div>
-                        </header>
-                        <p>[[${article.content}]]</p>
-                        <p> </p>
-                        <footer>
+                        </div>
+                        <div class="community_textarea">
+                            <textarea readonly>
+                                [[${article.content}]]
+                            </textarea>
+                        </div>
+
+                        <div class="community_file">
                             <!-- 첨부파일 -->
-                            <ul class="stats">
-                                <li><a href="#">첨부파일</a></li>
-                                <li th:each="file:${article.fileList}"
-                                    class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a th:href="@{/file/download/{fno}(fno=${file.fno})}" class="fileLink"
-                                       th:data-fno="${file.fno}">[[${file.oName}]]</a>
-                                    <a href="#" class="visually-hidden removeFile" th:data-fno="${file.fno}"> 삭제</a>
+                            <ul>
+                                <li>첨부파일</li>
+                                <li>
+                                    <th:block  th:each="file:${article.fileList}">
+                                        <a th:href="@{/file/download/{fno}(fno=${file.fno})}" class="fileLink"
+                                            th:data-fno="${file.fno}">[[${file.oName}]]</a>
+                                    </th:block>
                                 </li>
                             </ul>
-                        </footer>
+                        </div>
                         </form>
                     </article>
-
                 </div>
+
                 <section class="community_view">
                     <!-- 수정 / 삭제 / 목록 버튼 -->
                     <div>

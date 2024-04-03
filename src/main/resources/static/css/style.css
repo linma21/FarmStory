@@ -1047,7 +1047,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 /* 글보기 */
 .community_post {
-    padding: 3em 3em 1em 3em ;
+    padding: 10px 10px 4px 10px;
     background: #ffffff;
     border: solid 1px rgba(160, 160, 160, 0.3);
     margin: 0 0 3em 0;
@@ -1338,6 +1338,11 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 
+
+
+
+
+    /**/
 .community_view {
     width: 720px;
     height: auto;
