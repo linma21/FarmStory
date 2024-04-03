@@ -1,11 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/userLayout}">
-
-
 <div class="container" layout:fragment="content">
+    <script>
+        const cate = [[${pageResponseDTO.cate}]];
+        const ano = [[${article.ano}]];
+    </script>
+    <script th:inline="javascript" th:src="@{/js/community.js}"></script>
 
-    <script th:src="@{/js/util.js}"></script>
     <main>
         <div id="sub">
             <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
@@ -32,10 +34,11 @@
                 <div id="community_view">
                     <article class="community_post">
                         <form>
+                            <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
                         <header>
                             <div class="title">
                                 <h2>[[${article.title}]]</h2>
-                                <p></p>
+                                <input type="hidden" th:value="${#authentication.principal.user.uid}">
                             </div>
                             <div class="meta">
                                 <time class="published" datetime="2015-11-01">[[${article.rdate}]]</time>
@@ -46,11 +49,14 @@
                         <p>[[${article.content}]]</p>
                         <p> </p>
                         <footer>
+                            <!-- 첨부파일 -->
                             <ul class="stats">
                                 <li><a href="#">첨부파일</a></li>
                                 <li th:each="file:${article.fileList}"
                                     class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="#" class="link-grey visually-hidden removeFile" th:data-fno="${file.fno}"><i class="bi bi-trash3-fill"></i> 삭제</a>
+                                    <a th:href="@{/file/download/{fno}(fno=${file.fno})}" class="fileLink"
+                                       th:data-fno="${file.fno}">[[${file.oName}]]</a>
+                                    <a href="#" class="visually-hidden removeFile" th:data-fno="${file.fno}"> 삭제</a>
                                 </li>
                             </ul>
                         </footer>
@@ -59,20 +65,22 @@
 
                 </div>
                 <section class="community_view">
+                    <!-- 수정 / 삭제 / 목록 버튼 -->
                     <div>
-                            <a href="#" class="btn btnRemove" id="btnRemove">삭제</a>
-                            <a href="#" class="btn btnModify" id="btnModify">수정</a>
+                        <!-- 작성 당사자에게만 출력 -->
+                        <th:block th:if="${article.writer} == ${#authentication.principal.user.uid}">
+                            <a th:href="@{/article/modify(ano=${article.ano})}" class="btn btnRemove" id="btnModify">수정</a>
+                            <a th:href="@{/article/delete(ano=${article.ano}, cate=${article.cate})}" class="btn btnModify" id="btnRemove">삭제</a>
+                        </th:block>
                         <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                            class="btn btnList">목록</a>
                         <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                            class="btn btnList">목록</a>
                     </div>
-
                         <!-- 댓글목록 -->
                         <section class="commentList" id="commentList">
                                 <!-- 댓글 내용 -->
                         </section>
-
                         <!-- 댓글쓰기 -->
                         <section class="commentForm">
                             <h3>댓글쓰기</h3>

@@ -44,9 +44,9 @@
                     <tr th:each="product : ${marketPageResponseDTO.dtoList}">
                         <td>
                             <a th:if="${marketPageResponseDTO.pg}==null" th:href="@{/market/view(prodno=${product.prodno}, cate=${marketPageResponseDTO.cate}, type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">
-                                <img th:src="@{/images/__${product.thumbnail}__}" th:alt="${product.prodname}"></a>
+                                <img th:src="@{/images/__${product.thumb}__}" th:alt="${product.prodname}"></a>
                             <a th:if="${marketPageResponseDTO.pg}!=null" th:href="@{/market/view(prodno=${product.prodno}, cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.pg}, type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">
-                                <img th:src="@{/images/__${product.thumbnail}__}" th:alt="${product.prodname}"></a>
+                                <img th:src="@{/images/__${product.thumb}__}" th:alt="${product.prodname}"></a>
                         </td>
                         <td class="type">[[${product.cate}]]</td>
                         <td class="title"><a href="#">[[${product.prodname}]]</a></td>
