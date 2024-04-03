@@ -145,7 +145,7 @@ public class UserService {
         return new UserDTO(user.getUid(), user.getPass(), user.getName(), user.getEmail(), user.getNick(), user.getHp(), user.getRole(), user.getLevel(), user.getZip(), user.getAddr1(), user.getAddr2(), user.getRegip(), user.getRegDate(), user.getLeaveDate(), user.getProvider());
     }
 
-    public ResponseEntity<?> updateUser(UserDTO userDTO) {
+    public void updateUser(UserDTO userDTO) {
         log.info("updateUser....1");
         User user = userRepository.findById(userDTO.getUid())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userDTO.getUid()));
@@ -157,7 +157,6 @@ public class UserService {
         userRepository.save(user); // 변경된 사용자 정보 저장
         log.info("updateUser....4 save");
 
-        return ResponseEntity.ok().body(saveUser);
     }
 
 
