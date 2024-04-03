@@ -7,11 +7,13 @@ import kr.co.farmstory.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -62,5 +64,46 @@ public class CommentService {
 
         log.info("insertComment saveComment : " + saveComment.toString());
         return ResponseEntity.ok().body(saveComment);
+    }
+    // 댓글 삭제
+    public ResponseEntity<?> deleteComment(int cno) {
+
+        log.info("deleteComment no :" + cno);
+
+        Optional<Comment> optComment = commentRepository.findById(cno);
+
+        log.info("deleteComment optArticle :" + optComment);
+
+        // 댓글이 아직 있으면
+        if(optComment.isPresent()){
+            // 댓글 삭제
+            commentRepository.deleteById(cno);
+            return ResponseEntity.ok().body(optComment.get());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+        }
+    }
+    // 댓글 수정
+    public ResponseEntity<?> updateComment(CommentDTO commentDTO){
+        log.info("updateComment ...1 : " +commentDTO.toString());
+        Optional<Comment> optComment = commentRepository.findById(commentDTO.getCno());
+
+        log.info("updateComment ...2 optArticle :" + optComment);
+
+        if(optComment.isPresent()){
+            // 댓글 수정
+            Comment comment = optComment.get();
+            comment.setContent(commentDTO.getContent());
+
+            log.info("updateComment ...3 : "+ comment);
+
+            Comment modifiedComment = commentRepository.save(comment);
+            log.info("updateComment ...4 : "+ modifiedComment);
+            // 수정 후 데이터 반환
+            return ResponseEntity.ok().body(modifiedComment);
+
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+        }
     }
 }

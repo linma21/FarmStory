@@ -67,3 +67,22 @@ async function fetchPut(url, jsonData){
         return null;
     }
 }
+// DELETE
+async function fetchDelete(url) {
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE'
+        });
+        console.log("fetchDelete : " + response);
+        if (!response.ok) {
+            throw new Error("response not ok");
+        }
+        const data = await response.json();
+        console.log("fetchDelete data : " + data);
+
+        return data;
+
+    } catch (err) {
+        console.log(err);
+    }
+}
