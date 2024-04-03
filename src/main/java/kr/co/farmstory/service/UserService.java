@@ -107,6 +107,11 @@ public class UserService {
         return user != null ? user.getUid() : null;
     }
 
+    public UserDTO findById(String uid){
+        return userMapper.findById(uid);
+    }
+
+
     public void updateUserPassword(String uid, String newPassword){
 
         String encodedPass = passwordEncoder.encode(newPassword);
@@ -142,16 +147,11 @@ public class UserService {
         log.info("updateUser....1");
         User user = userRepository.findById(userDTO.getUid())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userDTO.getUid()));
-        log.info("updateUser....2" + user);
-        user.setName(userDTO.getName());
-        log.info("updateUser....3" + user.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setNick(userDTO.getNick());
-        user.setHp(userDTO.getHp());
+        log.info("updateUser....2" + user.toString());
         user.setLevel(userDTO.getLevel());
         user.setRole(userDTO.getRole());
         // 여기에 추가적으로 업데이트 해야 할 필드가 있다면 추가합니다.
-
+        log.info("updateUser....3" + user.toString());
         userRepository.save(user); // 변경된 사용자 정보 저장
         log.info("updateUser....4 save");
     }
@@ -159,6 +159,8 @@ public class UserService {
 
     public void deleteUser(String uid) {
         // userRepository를 사용하여 사용자를 삭제합니다.
+
+
         userRepository.deleteById(uid);
     }
 }

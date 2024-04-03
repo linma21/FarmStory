@@ -11,18 +11,18 @@ import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.Console;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -110,17 +110,37 @@ public class AdminController {
     }
 
     @PostMapping("/admin/user/update")
-    public String updateUser(UserDTO userDTO, RedirectAttributes redirectAttributes){
-        userService.updateUser(userDTO);
-        log.info("userDTO : " + userDTO);
-        redirectAttributes.addFlashAttribute("message", "사용자 정보가 성공적으로 업데이트 되었습니다.");
-        return "redirect:/admin/user/list";
+    @ResponseBody
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
+        try {
+            UserDTO userDTO1 = userService.findById(userDTO.getUid());
+            if (userDTO1 != null) {
+                userService.updateUser(userDTO);
+                log.info("Updated UserDTO : " + userDTO);
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", true);
+                response.put("message", "사용자 정보가 성공적으로 업데이트 되었습니다.");
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "해당 사용자를 찾을 수 없습니다."));
+            }
+        } catch (Exception e) {
+            log.error("Update Error", e);
+            return ResponseEntity.internalServerError().body(Map.of("success", false, "message", "정보 업데이트 중 오류가 발생했습니다."));
+        }
     }
 
     @PostMapping("/admin/user/delete")
-    public String deleteUser(@RequestParam("uid") String uid){
-        userService.deleteUser(uid);
-        return "redirect:/admin/user/list";
+    @ResponseBody
+    public ResponseEntity<?> deleteUser(@RequestParam("uid") String uid) {
+        try {
+            userService.deleteUser(uid);
+            log.info("Deleted User: " + uid);
+            return ResponseEntity.ok(Map.of("success", true, "message", "사용자가 성공적으로 삭제되었습니다."));
+        } catch (Exception e) {
+            log.error("Delete Error", e);
+            return ResponseEntity.internalServerError().body(Map.of("success", false, "message", "사용자 삭제 중 오류가 발생했습니다."));
+        }
     }
 
 }
