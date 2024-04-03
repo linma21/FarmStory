@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,5 +40,14 @@ public class CommentService {
                 .toList();
 
         return ResponseEntity.ok().body(dtoList);
+    }
+    // 댓글 작성
+    public ResponseEntity<Comment> insertComment(CommentDTO commentDTO){
+        // DTO -> Entity
+        Comment comment = modelMapper.map(commentDTO, Comment.class);
+        log.info("insertComment : " + comment.toString());
+        // DB insert 후 저장한 객체 반환
+        Comment saveArticle = commentRepository.save(comment);
+        return ResponseEntity.ok().body(saveArticle);
     }
 }
