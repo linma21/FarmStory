@@ -146,33 +146,17 @@
                         <th>등급</th>
                         <th>회원가입일</th>
                     </tr>
-                    <tr>
-                        <td>a101</td>
-                        <td>김유신</td>
-                        <td>유신123</td>
-                        <td>010-1234-1001</td>
-                        <td>yusin123@naver.com</td>
-                        <td>2</td>
-                        <td>2023-01-01</td>
+
+                    <tr th:each="user, index :${users}" th:if="${index.index < 3}">
+                        <th th:text="${user.uid}">회원아이디</th>
+                        <th th:text="${user.name}">이름</th>
+                        <th th:text="${user.nick}">닉네임</th>
+                        <th th:text="${user.hp}">휴대폰</th>
+                        <th th:text="${user.email}">이메일</th>
+                        <th th:text="${user.level}">등급</th>
+                        <th th:text="${#strings.substring(user.regDate,0,10)}">회원가입일</th>
                     </tr>
-                    <tr>
-                        <td>a101</td>
-                        <td>김유신</td>
-                        <td>유신123</td>
-                        <td>010-1234-1001</td>
-                        <td>yusin123@naver.com</td>
-                        <td>2</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>a101</td>
-                        <td>김유신</td>
-                        <td>유신123</td>
-                        <td>010-1234-1001</td>
-                        <td>yusin123@naver.com</td>
-                        <td>2</td>
-                        <td>2023-01-01</td>
-                    </tr>
+
                 </table>
             </article>
         </section>

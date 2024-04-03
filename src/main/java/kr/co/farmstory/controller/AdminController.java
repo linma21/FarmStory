@@ -11,12 +11,10 @@ import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,14 +35,26 @@ public class AdminController {
     @GetMapping("/admin/index")
     public String adminIndex(Model model){
 
-        log.info("AdminController - adminIndex : 들어옴");
+        //여기는 상품현황 시작
+        log.info("AdminController - adminIndex-product : 들어옴");
 
         List<ProductDTO> products= adminService.products();
 
         log.info("AdminController - adminIndex : "+products);
 
         model.addAttribute("products",products);
-        //상품현황(limit 3)->더보기를 누르면 product list로 넘어가도록
+
+        //상품현황 끝
+
+        //여기는 회원현황 시작
+        log.info("AdminController-adminIndex-User : 들어옴");
+
+        List<UserDTO> users = userService.allUser();
+
+        log.info("AdminController-adminIndex-User :"+users);
+
+        model.addAttribute("users",users);
+
 
         return "/admin/index";
     }
@@ -104,18 +114,26 @@ public class AdminController {
     // 상세정보
     @GetMapping("/admin/user/view")
     public String userview(@RequestParam("uid") String uid, Model model){
-        UserDTO userDTO = userService.getUserByUid(uid);
+        UserDTO userDTO = userService.getUserByUid(uid);//유저 정보를 가져옴
+        log.info("userDTO :"+userDTO);
         model.addAttribute("user", userDTO);
         return "/admin/user/view";
     }
 
     @PostMapping("/admin/user/update")
-    public String updateUser(UserDTO userDTO, RedirectAttributes redirectAttributes){
+    public String updateUser(@RequestBody UserDTO userDTO, RedirectAttributes redirectAttributes){
+        log.info("여기는 들어오니?admin/user/update controller");
+        //들어온거는 userDTO 변경된 사항이 들어옴
+
+        UserDTO user = userService.getUserByUid(userDTO.getUid());
+        log.info("받아온 아이디로 userDTO를 불러와봤음 : "+user);
+
         userService.updateUser(userDTO);
         log.info("userDTO : " + userDTO);
-        redirectAttributes.addFlashAttribute("message", "사용자 정보가 성공적으로 업데이트 되었습니다.");
-        return "redirect:/admin/user/list";
+
+        return "/admin/user/list";
     }
+
 
     @PostMapping("/admin/user/delete")
     public String deleteUser(@RequestParam("uid") String uid){
