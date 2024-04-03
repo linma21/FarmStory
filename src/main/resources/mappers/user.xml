@@ -31,5 +31,8 @@
         regDate=NOW()
     </insert>
 
+    <select id="findById" resultType="kr.co.farmstory.dto.UserDTO">
+        select * from `user` where `uid`=#{uid}
+    </select>
 
 </mapper>

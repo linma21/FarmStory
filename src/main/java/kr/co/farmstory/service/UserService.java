@@ -109,6 +109,11 @@ public class UserService {
         return user != null ? user.getUid() : null;
     }
 
+    public UserDTO findById(String uid){
+        return userMapper.findById(uid);
+    }
+
+
     public void updateUserPassword(String uid, String newPassword){
 
         String encodedPass = passwordEncoder.encode(newPassword);
@@ -142,23 +147,14 @@ public class UserService {
 
     public ResponseEntity<?> updateUser(UserDTO userDTO) {
         log.info("updateUser....1");
-
-        log.info("UserService - updateUser - userDTO:"+userDTO);
-
-        String level = userDTO.getLevel();//먼저 들고온 level과 role을 따로 저장해놓음
-        String role = userDTO.getRole();
-
-        //여기서 사용자 정보를 가지고 온다.(DTO에 id로 검색해서 데이터 저장)
-        Optional<User> result = userRepository.findById(userDTO.getUid());
-
-        UserDTO user12 = modelMapper.map(result,UserDTO.class);//user12에 id로 검색한 값이 DTO형태로 저장되어 있음
-
-        user12.setLevel(level);
-        user12.setRole(role);
-
-        User user11 = modelMapper.map(userDTO,User.class);
-
-        User saveUser = userRepository.save(user11); // 변경된 사용자 정보 저장
+        User user = userRepository.findById(userDTO.getUid())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userDTO.getUid()));
+        log.info("updateUser....2" + user.toString());
+        user.setLevel(userDTO.getLevel());
+        user.setRole(userDTO.getRole());
+        // 여기에 추가적으로 업데이트 해야 할 필드가 있다면 추가합니다.
+        log.info("updateUser....3" + user.toString());
+        userRepository.save(user); // 변경된 사용자 정보 저장
         log.info("updateUser....4 save");
 
         return ResponseEntity.ok().body(saveUser);
@@ -167,6 +163,8 @@ public class UserService {
 
     public void deleteUser(String uid) {
         // userRepository를 사용하여 사용자를 삭제합니다.
+
+
         userRepository.deleteById(uid);
     }
 
