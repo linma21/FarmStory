@@ -32,6 +32,6 @@ public class Article {
     @Transient
     private String nick;
 
-    @Transient
+    @OneToMany(mappedBy = "ano")
     private List<File> fileList;
 }
