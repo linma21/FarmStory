@@ -26,5 +26,8 @@ public class ProductDTO {
     private int discount;
     private String etc;
     private LocalDateTime rdate;
+    // 상품 사진 출력을 위한 추가 필드
+    private String titleImg;
+    private String contentImg;
 }
 

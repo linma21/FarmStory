@@ -44,14 +44,14 @@
                     <tr th:each="product : ${marketPageResponseDTO.dtoList}">
                         <td>
                             <a th:if="${marketPageResponseDTO.pg}==null" th:href="@{/market/view(prodno=${product.prodno}, cate=${marketPageResponseDTO.cate}, type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">
-                                <img th:src="@{/images/__${product.thumb}__}" th:alt="${product.prodname}"></a>
+                                <img th:src="@{'/imagePath/'+${product.thumb}}" th:alt="${product.prodname}"></a>
                             <a th:if="${marketPageResponseDTO.pg}!=null" th:href="@{/market/view(prodno=${product.prodno}, cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.pg}, type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">
-                                <img th:src="@{/images/__${product.thumb}__}" th:alt="${product.prodname}"></a>
+                                <img th:src="@{'/imagePath/'+${product.thumb}}" th:alt="${product.prodname}"></a>
                         </td>
                         <td class="type">[[${product.cate}]]</td>
                         <td class="title"><a href="#">[[${product.prodname}]]</a></td>
                         <td class="discount">[[${product.discount}]]</td>
-                        <td class="point">[[${product.price} * ${product.discount} / 100]]</td>
+                        <td class="point">[[(${product.price} - (${product.price} * ${product.discount} / 100)) / 10]] </td>
                         <td class="price">
                             <strong>[[${product.price} - (${product.price} * ${product.discount} / 100)]]</strong><br>
                             <del>[[${product.price}]]</del>
