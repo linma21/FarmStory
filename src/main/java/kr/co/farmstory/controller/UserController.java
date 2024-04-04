@@ -187,7 +187,7 @@ public class UserController {
 
         userService.insertUser(userDTO);
 
-        return "redirect:/user/register?success=200";
+        return "/user/login";
     }
 
 }
