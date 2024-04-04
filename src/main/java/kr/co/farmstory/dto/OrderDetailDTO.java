@@ -14,7 +14,7 @@ public class OrderDetailDTO {
     private int detailno;
     private int prodno;
     private int orderNo;
-    private int price;
+    private int count;
 
 }
 

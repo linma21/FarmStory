@@ -1,17 +1,18 @@
 package kr.co.farmstory.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
-@Entity
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @ToString
+@Entity
 @Table(name = "comment")
 public class Comment {
 

@@ -10,20 +10,16 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QOrder is a Querydsl query type for Order
+ * QOrders is a Querydsl query type for Orders
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QOrder extends EntityPathBase<Order> {
+public class QOrders extends EntityPathBase<Orders> {
 
-    private static final long serialVersionUID = -2045505939L;
+    private static final long serialVersionUID = 1013825446L;
 
-    public static final QOrder order = new QOrder("order1");
+    public static final QOrders orders = new QOrders("orders");
 
     public final StringPath memo = createString("memo");
-
-    public final NumberPath<Integer> orderCount = createNumber("orderCount", Integer.class);
-
-    public final DateTimePath<java.time.LocalDateTime> orderDate = createDateTime("orderDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> orderNo = createNumber("orderNo", Integer.class);
 
@@ -39,20 +35,18 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final StringPath status = createString("status");
 
-    public final NumberPath<Integer> totalPrice = createNumber("totalPrice", Integer.class);
-
     public final StringPath uid = createString("uid");
 
-    public QOrder(String variable) {
-        super(Order.class, forVariable(variable));
+    public QOrders(String variable) {
+        super(Orders.class, forVariable(variable));
     }
 
-    public QOrder(Path<? extends Order> path) {
+    public QOrders(Path<? extends Orders> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QOrder(PathMetadata metadata) {
-        super(Order.class, metadata);
+    public QOrders(PathMetadata metadata) {
+        super(Orders.class, metadata);
     }
 
 }

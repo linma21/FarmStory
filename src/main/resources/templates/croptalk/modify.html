@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/userLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="container" layout:fragment="content">
+
+    <script th:inline="javascript" th:src="@{/js/croptalkModify.js}"></script>
+
+    <div id="sub">
+        <div><img th:src="@{/images/sub_top_tit3.png}" alt="CROP TALK"></div>
+        <section class="croptalk">
+            <aside>
+                <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
+                <ul class="lnb">
+                    <li data-cate="story"><a th:href="@{/croptalk/list(cate=story)}">농작물이야기</a></li>
+                    <li data-cate="grow"><a th:href="@{/croptalk/list(cate=grow)}">텃밭가꾸기</a></li>
+                    <li data-cate="school"><a th:href="@{/croptalk/list(cate=school)}">귀농학교</a></li>
+                </ul>
+            </aside>
+            <article>
+                <nav id="communityNav">
+                    <img src="../images/sub_nav_tit_cate3_tit2.png" alt="텃밭가꾸기"/>
+                    <p>
+                        HOME > 농작물이야기 > <em>텃밭가꾸기</em>
+                    </p>
+                </nav>
+                <!-- 내용 시작 -->
+                <div id="community_view">
+                    <article class="community_modify">
+                        <form id="communityForm" th:action="@{/croptalk/modify}" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
+                            <input type="hidden" name="pg" th:value="${pageResponseDTO.pg}">
+                            <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
+                            <input type="hidden" name="keyword" th:value="${pageResponseDTO.keyword}" th:if="${pageResponseDTO.keyword != null}">
+                            <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
+                            <input type="hidden" name="file" th:value="${article.file}">
+                            <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
+                            <div>
+                                <div class="title">
+                                    <input type="text" name="title" th:value="${article.title}">
+                                </div>
+                                <div class="info">
+                                    <span style="float: left">작성자 : [[${article.nick}]]</span>
+                                    <span style="float: right">[[${article.rdate}]]</span>
+                                </div>
+                            </div>
+                            <div class="community_textarea">
+                                <textarea id="contentTextarea" name="content">[[${article.content}]]</textarea>
+                            </div>
+                            <div class="community_file">
+                                <!--기존 첨부 파일-->
+                                <ul class="list-group" th:if="${article.file > 0}">
+                                    <label class="form-label">■ 기존 첨부 파일</label>
+                                    <li th:each="file : ${article.fileList}">
+                                        <th:block >
+                                            <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink"
+                                               th:data-fno="${file.fno}">[[${file.oName}]]</a>
+                                        </th:block>
+                                        <button type="button" class="btn-close" aria-label="Close" th:data-fno="${file.fno}"></button>
+                                    </li>
+                                </ul>
+                                <!-- 새 파일첨부 -->
+                                <ul>
+                                    <li>파일첨부</li>
+                                    <li>
+                                        <label for="formFileMultiple" class="form-label">■ 새 첨부 파일 선택</label>
+                                        <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </article>
+                </div>
+                <!-- 내용 끝 -->
+            </article>
+            <section class="community_view">
+                <div class="text-end">
+                    <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                       class="btn btnCancel">취소</a>
+                    <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                       class="btn btnCancel">취소</a>
+                    <a th:href="@{/croptalk/write}" id="btnSubmit" class="btn btnSubmit">등록</a>
+                </div>
+            </section>
+        </section>
+
+    </div>
+</div>
+
+</html>

@@ -12,11 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 public class OrderDTO {
     private int orderNo;
-
     private String uid;
-    private Integer orderCount;
-    private LocalDateTime orderDate;
-    private Integer totalPrice;
     private String reciver;
     private String rechp;
     private String recaddr;

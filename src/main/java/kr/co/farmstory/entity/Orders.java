@@ -1,22 +1,25 @@
 package kr.co.farmstory.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
 @Entity
-@Table(name = "order")
-public class Order {
+@Table(name = "orders")
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderNo;
-
     private String uid;
-    private Integer orderCount;
-    private LocalDateTime orderDate;
-    private Integer totalPrice;
     private String reciver;
     private String rechp;
     private String recaddr;

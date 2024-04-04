@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@ToString
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @Entity
 @Table(name = "terms")
 public class Terms {
