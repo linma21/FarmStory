@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class CropTalkController {
+public class EventController {
 
     private final ArticleService articleService;
 
     // 글 목록 조회
-    @GetMapping("/croptalk/list")
-    public String cropTalk(Model model, String cate, PageRequestDTO pageRequestDTO){
+    @GetMapping("/event/list")
+    public String event(Model model, String cate, PageRequestDTO pageRequestDTO){
         PageResponseDTO pageResponseDTO = null;
 
         if(pageRequestDTO.getKeyword() == null) {
@@ -34,16 +34,16 @@ public class CropTalkController {
         log.info("pageResponseDTO : " + pageResponseDTO);
 
         model.addAttribute(pageResponseDTO);
-        return "/croptalk/list";
+        return "/event/list";
     }
     // 글 상세 보기
-    @GetMapping("/croptalk/view")
-    public String cropTalkView(Model model, String cate, int ano, PageRequestDTO pageRequestDTO){
-        log.info("cropTalkView...1 : " + ano);
+    @GetMapping("/event/view")
+    public String eventView(Model model, String cate, int ano, PageRequestDTO pageRequestDTO){
+        log.info("eventView...1 : " + ano);
         // 글 조회
         ArticleDTO article = articleService.selectArticleAndNick(ano);
 
-        log.info("cropTalkView...2 : " + article.toString());
+        log.info("eventView...2 : " + article.toString());
 
         // 페이지 정보 build
         PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
@@ -53,10 +53,10 @@ public class CropTalkController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("article", article);
 
-        return "/croptalk/view";
+        return "/event/view";
     }
     // 글 쓰기
-    @GetMapping("/croptalk/write")
+    @GetMapping("/event/write")
     public String write(Model model, @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO){
 
         PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
@@ -64,17 +64,17 @@ public class CropTalkController {
                 .build();
 
         model.addAttribute(pageResponseDTO);
-        return "/croptalk/write";
+        return "/event/write";
     }
 
-    @PostMapping("/croptalk/write")
+    @PostMapping("/event/write")
     public String write(ArticleDTO articleDTO){
 
         articleService.insertArticle(articleDTO);
-        return "redirect:/croptalk/list?cate="+articleDTO.getCate();
+        return "redirect:/event/list?cate="+articleDTO.getCate();
     }
     // 글 수정 - 글 상세 정보
-    @GetMapping("/croptalk/modify")
+    @GetMapping("/event/modify")
     public String modify(Model model, int ano, PageRequestDTO pageRequestDTO) {
 
         log.info("글 수정 글 조회 ...1 : " + ano);
@@ -90,10 +90,10 @@ public class CropTalkController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("article", article);
 
-        return "/croptalk/modify";
+        return "/event/modify";
     }
     // 글 수정
-    @PostMapping("/croptalk/modify")
+    @PostMapping("/event/modify")
     public String modify(ArticleDTO articleDTO, PageRequestDTO pageRequestDTO) {
 
         log.info("글 수정 Cont : " + articleDTO.toString());
@@ -104,10 +104,10 @@ public class CropTalkController {
                 .build();
 
         // view로 리턴
-        return "redirect:/croptalk/view?ano=" + articleDTO.getAno() + "&cate=" + articleDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
+        return "redirect:/event/view?ano=" + articleDTO.getAno() + "&cate=" + articleDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
     }
     // 글 삭제
-    @GetMapping("/croptalk/delete")
+    @GetMapping("/event/delete")
     public String deleteArticle(Model model, int ano, PageRequestDTO pageRequestDTO){
         log.info("글 삭제 Cont : " + ano);
         articleService.deleteArticle(ano);
@@ -121,9 +121,9 @@ public class CropTalkController {
 
         if(pageRequestDTO.getKeyword() == null){
             // 검색해서 들어온게 아니면
-            return "redirect:/croptalk/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
+            return "redirect:/event/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
         }
         // 검색한 경우
-        return "redirect:/croptalk/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg()+ "&type=" + pageRequestDTO.getType()+ "&keyword=" + pageRequestDTO.getKeyword();
+        return "redirect:/event/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg()+ "&type=" + pageRequestDTO.getType()+ "&keyword=" + pageRequestDTO.getKeyword();
     }
 }

@@ -39,4 +39,21 @@ public class MarketController {
         model.addAttribute(marketPageRequestDTO);
         return "/market/view";
     }
+
+    // 장바구니 목록 페이지 매핑
+    @GetMapping("/market/cart")
+    public String marketCart(Model model, String uid){
+        log.info("marketCartController1");
+        List<ProductDTO> productDTO = marketService.selectCartForMarket(uid);
+        log.info("marketCartController2 : " + productDTO.toString());
+        model.addAttribute("productDTO", productDTO);
+        return "/market/cart";
+    }
+
+    // 주문하기 페이지 매핑
+    @GetMapping("/market/order")
+    public String marketOrder(){
+
+        return "/market/order";
+    }
 }

@@ -15,7 +15,8 @@ public interface MarketRepositoryCustom {
     public Page<Product> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable);
     // market/view 페이지 product 조회
     public List<Tuple> selectProduct(int prodno);
-
+    // admin/order/list 페이지 조회
     public Page<Tuple> orderList(PageRequestDTO pageRequestDTO, Pageable pageable);
-
+    // market/cart 페이지 cart_product 조회
+    public List<Tuple> selectCartForMarket(String uid);
 }

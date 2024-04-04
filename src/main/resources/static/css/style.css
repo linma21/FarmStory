@@ -1003,21 +1003,21 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 /* 농작물 이야기 */
-#sub > .croptalk .lnb > li:nth-child(1) > a {background-image: url('static/images/sub_cate3_lnb1.png');}
-#sub > .croptalk .lnb > li:nth-child(2) > a {background-image: url('static/images/sub_cate3_lnb2.png');}
-#sub > .croptalk .lnb > li:nth-child(3) > a {background-image: url('static/images/sub_cate3_lnb3.png');}
-#sub > .croptalk .lnb > li:nth-child(1) > a:hover {background-image: url('static/images/sub_cate3_lnb1_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(2) > a:hover {background-image: url('static/images/sub_cate3_lnb2_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(3) > a:hover {background-image: url('static/images/sub_cate3_lnb3_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(1).on > a {background-image: url('static/images/sub_cate3_lnb1_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(2).on > a {background-image: url('static/images/sub_cate3_lnb2_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(3).on > a {background-image: url('static/images/sub_cate3_lnb3_ov.png');}
+#sub > .croptalk .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate3_lnb1.png');}
+#sub > .croptalk .lnb > li:nth-child(2) > a {background-image: url('../images/sub_cate3_lnb2.png');}
+#sub > .croptalk .lnb > li:nth-child(3) > a {background-image: url('../images/sub_cate3_lnb3.png');}
+#sub > .croptalk .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate3_lnb1_ov.png');}
+#sub > .croptalk .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate3_lnb2_ov.png');}
+#sub > .croptalk .lnb > li:nth-child(3) > a:hover {background-image: url('../images/sub_cate3_lnb3_ov.png');}
+#sub > .croptalk .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate3_lnb1_ov.png');}
+#sub > .croptalk .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate3_lnb2_ov.png');}
+#sub > .croptalk .lnb > li:nth-child(3).on > a {background-image: url('../images/sub_cate3_lnb3_ov.png');}
 
 
 /* 이벤트 */
-#sub > .event .lnb > li:nth-child(1) > a {background-image: url('static/images/sub_cate4_lnb1.png');}
-#sub > .event .lnb > li:nth-child(1) > a:hover {background-image: url('static/images/sub_cate4_lnb1_ov.png');}
-#sub > .event .lnb > li:nth-child(1).on > a {background-image: url('static/images/sub_cate4_lnb1_ov.png');}
+#sub > .event .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate4_lnb1.png');}
+#sub > .event .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate4_lnb1_ov.png');}
+#sub > .event .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate4_lnb1_ov.png');}
 
 /* 커뮤니티 */
 #sub > .community .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate5_lnb1.png');}

@@ -6,8 +6,10 @@ import kr.co.farmstory.dto.ImagesDTO;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
+import kr.co.farmstory.entity.Cart_product;
 import kr.co.farmstory.entity.Images;
 import kr.co.farmstory.entity.Product;
+import kr.co.farmstory.entity.QProduct;
 import kr.co.farmstory.repository.MarketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,5 +77,26 @@ public class MarketService {
                 .findFirst()
                 .orElse(null);
     return joinProductDTO;
+    }
+
+    // 장바구니 목록
+    public List<ProductDTO> selectCartForMarket(String uid){
+        log.info("marketCartService1");
+        List<Tuple> qProductList = marketRepository.selectCartForMarket(uid);
+        log.info("marketCartService2-qProductList : " + qProductList.toString());
+        // 참조 List
+        List<ProductDTO> productDTOs = qProductList.stream()
+                .map(tuple ->
+                    {
+                        Integer cart_product = tuple.get(0, Integer.class);
+                        Product product = tuple.get(1, Product.class);
+                        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+                        productDTO.setCount(cart_product);
+                        return productDTO;
+                    }
+                )
+            .toList();
+        log.info("marketCartService3-productDTOs : " + productDTOs.toString());
+        return productDTOs;
     }
 }
