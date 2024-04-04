@@ -103,12 +103,20 @@ window.onload = function (){
                                         </div>
                                     </div>
                                 </div>`;
-
-                if (user === comment.uid) {
-                    // 현재 접속 사용자가 댓글 작성자일 경우
-                    commentArticle = commentTop + commentBtns + commentEnd;
-                    // 태그 문자열 삽입
-                    commentList.insertAdjacentHTML('beforeend', commentArticle);
+                const userData = document.getElementById("user");
+                if(userData != null) {
+                    const user = userData.value;
+                    if (user === comment.uid) {
+                        // 현재 접속 사용자가 댓글 작성자일 경우
+                        commentArticle = commentTop + commentBtns + commentEnd;
+                        // 태그 문자열 삽입
+                        commentList.insertAdjacentHTML('beforeend', commentArticle);
+                    } else {
+                        // 사용자와 댓글 작성자가 다를 경우
+                        commentArticle = commentTop + commentEnd;
+                        // 태그 문자열 삽입
+                        commentList.insertAdjacentHTML('beforeend', commentArticle);
+                    }
                 }else {
                     // 사용자와 댓글 작성자가 다를 경우
                     commentArticle = commentTop + commentEnd;

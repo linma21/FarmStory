@@ -119,6 +119,11 @@ public class EventController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("ano", ano);
 
-        return "/event/list";
+        if(pageRequestDTO.getKeyword() == null){
+            // 검색해서 들어온게 아니면
+            return "redirect:/event/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
+        }
+        // 검색한 경우
+        return "redirect:/event/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg()+ "&type=" + pageRequestDTO.getType()+ "&keyword=" + pageRequestDTO.getKeyword();
     }
 }
