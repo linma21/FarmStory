@@ -4,7 +4,6 @@
 <div class="container" layout:fragment="content">
     <!--<script th:inline="javascript" th:src="@{/js/community.js}"></script>-->
     <script th:inline="javascript" th:src="@{/js/communityView.js}"></script>
-
     <main>
         <div id="sub">
             <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
@@ -36,16 +35,15 @@
                                 <div class="title">
                                     <h2>[[${article.title}]]</h2>
                                     <input type="hidden" th:value="${#authentication.principal.user.uid}" id="user">
+                                    <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
                                 </div>
                                 <div class="info">
-                                    <span style="float: left">작성자 : [[${article.writer}]]</span>
+                                    <span style="float: left">작성자 : [[${article.nick}]]</span>
                                     <span style="float: right">[[${article.rdate}]]</span>
                                 </div>
                             </div>
                             <div class="community_textarea">
-                                <textarea id="contentTextarea" readonly>
-                                    [[${article.content}]]
-                                </textarea>
+                                <textarea id="contentTextarea" readonly>[[${article.content}]]</textarea>
                             </div>
                             <div class="community_file">
                                 <!-- 첨부파일 -->
@@ -53,7 +51,7 @@
                                     <li>첨부파일</li>
                                     <li>
                                         <th:block  th:each="file:${article.fileList}">
-                                            <a th:href="@{/file/download/{fno}(fno=${file.fno})}" class="fileLink"
+                                            <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink"
                                                th:data-fno="${file.fno}">[[${file.oName}]]</a>
                                         </th:block>
                                     </li>
@@ -69,8 +67,21 @@
                     <div>
                         <!-- 작성 당사자에게만 출력 -->
                         <th:block th:if="${article.writer} == ${#authentication.principal.user.uid}">
-                            <button type="button" class="btn" id="btnArtModify" data-art="modify">수정</button>
-                            <button type="button" class="btn" id="btnArtRemove" data-art="remove">삭제</button>
+                            <a th:if="${pageResponseDTO.keyword == null}"
+                               th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                            <a th:if="${pageResponseDTO.keyword != null}"
+                               th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                            <!-- 삭제 버튼 -->
+                            <a th:if="${pageResponseDTO.keyword == null}"
+                               th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artRemove"
+                               onclick="return confirmDelete()">삭제</a>
+                            <a th:if="${pageResponseDTO.keyword != null}"
+                               th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artRemove"
+                               onclick="return confirmDelete()">삭제</a>
                         </th:block>
                         <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                            class="btn btnList">목록</a>
@@ -89,7 +100,7 @@
                                 <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
                                 <textarea name="content" class="commentContent"></textarea>
                                 <div>
-                                    <a href="#" class="btn btnCancel">취소</a>
+                                    <button id="btnCancel">취소</button>
                                     <button id="btnComment">댓글 작성</button>
                                 </div>
                             </form>

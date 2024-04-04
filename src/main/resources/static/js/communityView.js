@@ -15,8 +15,10 @@ window.onload = function (){
     const commentModify = document.getElementById('commentModify');
     const contentTextarea = document.getElementById('contentTextarea');
     const btnComment = document.getElementById('btnComment');
+    const btnCancel = document.getElementById('btnCancel');
     const btnArtRemove = document.getElementById('btnArtRemove');
     const btnArtModify = document.getElementById('btnArtModify');
+    const fileLinks = document.getElementsByClassName('fileLink');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
     const cateLi = document.querySelectorAll(".lnb li");
@@ -57,6 +59,19 @@ window.onload = function (){
     textareas.forEach(textarea => {
         autoResize(textarea);
     });
+    // 파일 다운로드 - 다운로드 카운트 칼럼 생기면
+    /*
+    for (const fileLink of fileLinks) {
+        // 파일 다운로드 요청과 동시에 다운로드 카운트 요청
+        fileLink.onclick = async function () {
+            const fno = this.dataset.fno;
+
+            const count = this.nextElementSibling.innerText;
+            this.nextElementSibling.innerHTML = parseInt(count) + 1;
+        }
+    }
+    
+     */
     // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
     setTimeout(async function () {
         const comments = await fetchGet(`/farmstory/comment/${ano}`);
@@ -110,12 +125,12 @@ window.onload = function (){
             }
         }else {
             // 댓글이 없다면
-            const commentArticle = `<article><p class="content">댓글이 없습니다. 😥 <br> 첫 번째 댓글을 남겨주세요.</p></article>`;
+            const commentArticle = `<article id="noComment"><p class="content">댓글이 없습니다. 😥 <br> 첫 번째 댓글을 남겨주세요.</p></article>`;
             commentList.insertAdjacentHTML('beforeend', commentArticle);
         }
     }, 100);
 
-    // 댓글 쓰기 /////////////////////////////////////////////////////////////////////////
+    // 댓글 작성 /////////////////////////////////////////////////////////////////////////
     btnComment.onclick = async function (e){
         e.preventDefault();
         const uid = commentForm.uid.value;
@@ -172,7 +187,15 @@ window.onload = function (){
             commentForm.content.value = "";
         }
     };
+    // 댓글 작성 취소 /////////////////////////////////////////////////////////////////////////
+    btnCancel.onclick = function (e){
+        e.preventDefault();
+        if(confirm('댓글 작성을 취소하시겠습니까?')){
+            // 댓글 작성 폼 비우기
+            commentForm.content.value = "";
+        }
 
+    }
     // 댓글 수정 삭제 /////////////////////////////////////////////////////////////////////////
     document.addEventListener('click', async function (e) {
 
@@ -206,9 +229,9 @@ window.onload = function (){
                 btnRemove.textContent = '취소';
                 btnRemove.dataset.mode = 'cancel';
 
-                // 수정 취소 클릭
+                // 댓글 수정 취소 클릭
             } else if (e.target.dataset.mode == 'cancel') {
-                // 수정 모드 해제
+                // 댓글 수정 모드 해제
                 textarea.readOnly = true;
                 textarea.style.outline = "none"
                 btnModify.dataset.mode = 'modify';
@@ -216,7 +239,7 @@ window.onload = function (){
                 btnRemove.dataset.mode = 'remove';
                 btnModify.textContent = ' 수정';
 
-                // 수정 완료 클릭
+                // 댓글 수정 완료 클릭
             } else if (e.target.dataset.mode == 'update') {
                 const jsonData = {
                     "cno": cno,
@@ -226,7 +249,7 @@ window.onload = function (){
                 console.log(jsonData);
                 const data = await fetchPut('/farmstory/comment', jsonData);
 
-                // 수정 모드 해제
+                // 댓글 수정 모드 해제
                 textarea.readOnly = true;
                 textarea.style.outline = "none"
                 btnModify.dataset.mode = 'modify';
@@ -234,52 +257,9 @@ window.onload = function (){
                 btnRemove.dataset.mode = 'remove';
                 btnModify.textContent = ' 수정';
             }
-            // 게시글 삭제 수정 ///////////////////////////////////////////////////////////
-            // 게시글 수정 시작 ///////////////////////////////////////////////////////////
-        }else if(e.target.tagName === 'BUTTON') {
-
-            if (e.target.id === 'btnArtModify' && e.target.dataset.art === 'modify') {
-                // 수정 모드
-                contentTextarea.readOnly = false;
-                btnArtRemove.innerText = '취소';
-                btnArtRemove.dataset.art = 'artCancel';
-                btnArtModify.innerText = '수정완료';
-                e.target.dataset.art = 'submit';
-
-                // 게시글 수정 정보 전송 ///////////////////////////////////////////////////////////
-            } else if (e.target.id === 'btnArtModify' && e.target.dataset.art === 'submit') {
-                e.preventDefault();
-                const communityForm = document.getElementById('communityForm');
-                communityForm.submit();
-                // 수정 모드 해제
-                contentTextarea.readOnly = true;
-                btnArtRemove.innerText = '삭제';
-                btnArtRemove.dataset.art = 'remove';
-                e.target.dataset.art = 'modify';
-
-                // 게시글 수정 취소  //////////////////////////////////////////////////////////
-            } else if (e.target.id === 'btnArtRemove' && e.target.dataset.art === 'artCancel') {
-                // 사용자 의사 재확인
-                if (confirm('게시글을 수정을 취소하시겠습니까?')) {
-                    // 수정 모드 해제
-                    contentTextarea.readOnly = true;
-                    btnArtRemove.innerText = '삭제';
-                    btnArtRemove.dataset.art = 'remove';
-                    e.target.dataset.art = 'modify';
-                }
-                // 게시글 삭제 //////////////////////////////////////////////////////////
-            } else if (e.target.id === 'btnArtRemove' && e.target.dataset.art === 'remove') {
-                // 사용자 의사 재확인
-                if (confirm('게시글을 삭제하시겠습니까?')) {
-                    const data = await fetchDelete(`/farmstory/community/${ano}`);
-                    if (data) {
-                        alert("삭제 되었습니다.");
-                        location.href = '/farmstory/community/list?cate=' + cate;
-                    }
-                }
-            }
         }
     });
+
 }
 // 텍스트 입력시 textarea 자동 높이 조절 - onload 밖에 둬야함
 function autoResize(textarea) {
@@ -288,4 +268,7 @@ function autoResize(textarea) {
 
     // 텍스트 영역의 스크롤 높이를 내용에 맞게 조절
     textarea.style.height = textarea.scrollHeight + 'px';
+}
+function confirmDelete() {
+    return confirm("게시글을 삭제하시겠습니까?");
 }

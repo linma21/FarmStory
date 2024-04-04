@@ -12,4 +12,7 @@ public interface ArticleRepositoryCustom {
 
     // 검색 글 목록
     public Page<Tuple> searchArticles(PageRequestDTO pageRequestDTO, Pageable pageable);
+
+    // 글 상세 조회
+    public Tuple selectArticleAndNick(int ano);
 }
