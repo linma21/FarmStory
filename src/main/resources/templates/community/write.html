@@ -36,16 +36,11 @@
                             <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
                             <div>
                                 <div class="title">
-                                    <input type="text" name="title">
-                                </div>
-                                <div class="info">
-                                    <span style="float: left"></span>
-                                    <span style="float: right"></span>
+                                    <input type="text" name="title" placeholder="제목을 입력하세요.">
                                 </div>
                             </div>
                             <div class="community_textarea">
-                                <textarea id="contentTextarea" name="content" placeholder="내용을 입력하세요.">
-                                </textarea>
+                                <textarea id="contentTextarea" name="content" placeholder="내용을 입력하세요."></textarea>
                             </div>
                             <div class="community_file">
                                 <!-- 파일첨부 -->

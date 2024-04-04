@@ -45,7 +45,7 @@
                         <tr th:each="article, loop:${pageResponseDTO.dtoList}">
                             <td>[[${pageResponseDTO.startNo - loop.index}]]</td>
                             <td>
-                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></a>
                                 <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
                             </td>
                             <td th:text="${article.nick}"></td>
