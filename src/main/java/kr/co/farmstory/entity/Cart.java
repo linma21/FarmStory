@@ -10,10 +10,11 @@ import lombok.*;
 @Builder
 @ToString
 @Entity
-@Table(name = "terms")
-public class Terms {
+@Table(name = "cart")
+public class Cart {
 
     @Id
-    private String terms;
-    private String privacy;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cartNo;
+    private String uid;
 }

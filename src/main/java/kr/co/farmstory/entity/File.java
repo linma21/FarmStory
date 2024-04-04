@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @Entity
 @Table(name = "file")
 public class File {

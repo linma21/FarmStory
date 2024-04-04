@@ -19,11 +19,11 @@ public class QOrderDetail extends EntityPathBase<OrderDetail> {
 
     public static final QOrderDetail orderDetail = new QOrderDetail("orderDetail");
 
+    public final NumberPath<Integer> count = createNumber("count", Integer.class);
+
     public final NumberPath<Integer> detailno = createNumber("detailno", Integer.class);
 
     public final NumberPath<Integer> orderNo = createNumber("orderNo", Integer.class);
-
-    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final NumberPath<Integer> prodno = createNumber("prodno", Integer.class);
 
