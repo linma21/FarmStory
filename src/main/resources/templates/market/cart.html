@@ -16,30 +16,28 @@
 
             const prodCheckBox = document.querySelector('.prodCheckBox');
 
-            // 페이지 로드시 가격 표시
-            // prodAmount prodPoint prodPrice prodTotal
+        //// 페이지 로드시 가격 표시 ////
             const prodCount = document.getElementsByName('prodCount');
             const prodPoint = document.getElementsByName('prodPoint');
             const prodPrice = document.getElementsByName('prodPrice');
             const prodDisPrice = document.getElementsByName('prodDisPrice');
             const prodTotal = document.getElementsByName('prodTotal');
-
+            // 각 품목 합계 total값들
             let totalProdCount = 0;
             let totalProdPrice = 0;
             let totalProdDisPrice = 0;
             let totalProdPoint = 0;
             let totalProdTotal = 0;
 
-            console.log(prodPoint);
-
+            // 각 포인트, 가격, 할인, 합계값 더하는 for문
             for (let i = 0; i < prodPoint.length; i++) {
                 totalProdCount += 1;
-                totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].value));
-                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText))* parseInt(prodCount[i].value);
                 totalProdPrice += (parseInt(prodPrice[i].innerText) * parseInt(prodCount[i].value));
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText))* parseInt(prodCount[i].value);
+                totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].value));
                 totalProdTotal += parseInt(prodTotal[i].innerText);
             }
-
+            // 태그에 값 출력하기
             totalCount.innerText = totalProdCount.toString();
             totalPrice.innerText = totalProdPrice.toString();
             totalDiscount.innerText = totalProdDisPrice.toString();
@@ -53,7 +51,7 @@
             document.addEventListener('click', function (e){
                 if (e.target.className === "prodCheckBox"){
                     const checkBox = e.target;
-                    const tr = checkBox.parentNode.parentNode;
+                    // const tr = checkBox.parentNode.parentNode;
                     if (checkBox.checked){
                         console.log("체크");
                         console.log(tr.querySelector('[name="prodPrice"]').innerText);
@@ -67,10 +65,101 @@
             Array.from(counts).forEach(function(count) {
                 count.addEventListener('input', function(e) {
                     alert(e.target.value);
-                    
+                    const tr = e.target.parentNode.parentNode; // 수량 변경된 항목의 tr 태그
+
+                    const priceTag = tr.querySelector('[name="prodPrice"]');
+                    const discountTag = tr.querySelector('[name="prodDiscount"]');
+                    const prodTotalTag = tr.querySelector('[name="prodTotal"]');
+
+                    const price = parseInt(priceTag.innerText); // 상품 1개당 가격
+                    const discount = parseInt(discountTag.innerText); // 상품 할인율
+                    const subTotal = parseInt(prodTotalTag.innerText); // 변경 전 상품 소계
+                    const count = subTotal / (price - (price * discount / 100)); // 변경 전 상품 수량
+                    const point = subTotal * 10 / 100; // 변경 전 상품 포인트
+                    const disPrice = (price * count) - subTotal; // 변경 전 상품 할인된 금액
+
+                    console.log("상품 1개 가격" + price);
+                    console.log("변경전 수량" + count);
+                    console.log("변경전 소계" + subTotal);
+                    console.log("변경전 포인트" + point);
+                    console.log("변경전 할인된 금액" + disPrice);
+
+                    const modCount = e.target.value; // 변경된 수량
+                    const modPrice = price * modCount; // 변경된 수량 x 가격
+                    const modDisPrice = modPrice * discount / 100 // 변경된 수량 x 할인율
+                    const modSubTotal = modPrice - modDisPrice; // 변경된 할인된 가격 (소계)
+                    const modPoint = modSubTotal * 10 / 100; // 변경된 포인트
+
+                    console.log("변경된 수량" + modCount);
+                    console.log("변경된 가격" + modPrice);
+                    console.log("변경된 할인된 가격" + modDisPrice);
+                    console.log("변경된 소계" + modSubTotal);
+                    console.log("변경된 포인트" + modPoint);
+
+                    totalPrice.innerText = (parseInt(totalPrice.innerText) - (price*count) + modPrice).toString();
+                    totalDiscount.innerText = (parseInt(totalDiscount.innerText) - disPrice + modDisPrice).toString();
+                    totalPoint.innerText = (parseInt(totalPoint.innerText) - point + modPoint).toString();
+                    totalOrder.innerText = (parseInt(totalOrder.innerText) - subTotal + modSubTotal).toString();
+                    prodTotalTag.innerText = modSubTotal; // 수량 변경된 행의 소계 변경
                 });
             });
 
+            const btnOrder = document.getElementsByClassName('btnOrder')[0];
+            btnOrder.onclick = function () {
+                alert("g2");
+                const cart_prodNo = document.getElementsByName('cart_prodNo');
+                const prodCount = document.getElementsByName('prodCount');
+                const uid = document.getElementById('uid').value;
+
+                const modCart_prodNo = []; // cart_product 번호
+                const modCount = []; // 수량
+
+                for (let i = 0; i < cart_prodNo.length; i++) {
+                    const currentProdNo = cart_prodNo[i].value; // 현재 상품 번호
+                    const currentCount = prodCount[i].value; // 현재 수량
+                    modCart_prodNo.push(currentProdNo);
+                    modCount.push(currentCount)
+                }
+                console.log(modCart_prodNo);
+                console.log(modCount);
+
+                const jsonData = {
+                    "cart_prodNo" : modCart_prodNo,
+                    "count" : modCount
+                };
+                const jsonData2 = {
+                    "uid" : uid,
+                    "cart_prodNo" : modCart_prodNo
+                };
+
+                fetch("/farmstory/market/modCount", {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(jsonData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('수량 변경에 실패했습니다.');
+                        }
+                        return response.json()
+                    })
+                    .then(data => {
+                        console.log(data);
+                        // 성공일 경우 uid, modCart_prodNo 들고 /market/order로 넘어감
+                        // window.location.href = `/market/order?uid=${uid}&cart_prodNo=${modCart_prodNo}`;
+                        if (data.data === "수량 변경 성공"){
+                            fetch("/farmstory/market/order", {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify(jsonData2)
+                            })
+                                .then(Response => Response.json())
+                                .then(data => {console.log(data);})
+                                .catch(err => console.log(err))
+                        }
+                    })
+                    .catch(err => console.log(err))
+            }
         }
     </script>
 
@@ -117,6 +206,7 @@
                 <!-- 내용 시작 -->
                 <p class="sort">
                     <a href="#" class="on">장바구니 전체(10)</a>
+                    <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
                 </p>
                 <table border="0">
                     <thead>
@@ -142,6 +232,7 @@
                     <tr th:each="product : ${productDTO}">
                         <td>
                             <input type="checkbox" name="" class="prodCheckBox">
+                            <input type="hidden" name="cart_prodNo" th:value="${product.cart_prodNo}">
                         </td>
                         <td>
                             <a href="./productDetail.html"><img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="사과 500g"></a>
@@ -155,7 +246,9 @@
                         <td>
                             <input type="number" class="count" th:name="prodCount" th:value="${product.count}">
                         </td>
-                        <td>[[${product.discount}]]%</td>
+                        <td>
+                            <span th:text="${product.discount}" th:name="prodDiscount"></span>%
+                        </td>
                         <td><span th:text="(${product.price}-(${product.price}*${product.discount}/100))*10/100" th:name="prodPoint"></span> P</td>
                         <td>
                             <span th:text="${product.price}-(${product.price}*${product.discount}/100)" th:name="prodDisPrice"></span> 원
@@ -198,7 +291,7 @@
                         </tr>
                         </tr>
                     </table>
-                    <a th:href="@{/user/login}" class="btnOrder">주문하기</a>
+                    <button class="btnOrder">주문하기</button>
                 </div>
                 <!-- 내용 끝 -->
 

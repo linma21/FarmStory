@@ -16,11 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -88,15 +88,30 @@ public class MarketService {
         List<ProductDTO> productDTOs = qProductList.stream()
                 .map(tuple ->
                     {
-                        Integer cart_product = tuple.get(0, Integer.class);
+                        Cart_product cart_product = tuple.get(0, Cart_product.class);
                         Product product = tuple.get(1, Product.class);
                         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-                        productDTO.setCount(cart_product);
+                        productDTO.setCount(cart_product.getCount());
+                        productDTO.setCart_prodNo(cart_product.getCart_prodNo());
                         return productDTO;
                     }
                 )
             .toList();
         log.info("marketCartService3-productDTOs : " + productDTOs.toString());
         return productDTOs;
+    }
+
+    // 장바구니 count 수정
+    public ResponseEntity<?> modifyCount(int[] cart_prodNos, int[] counts){
+        boolean result = marketRepository.modifyCount(cart_prodNos, counts);
+        Map<String, String> response = new HashMap<>();
+        if (result){
+            response.put("data","수량 변경 성공");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            response.put("data","수량 변경 실패");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
     }
 }

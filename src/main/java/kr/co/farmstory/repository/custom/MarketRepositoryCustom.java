@@ -19,4 +19,6 @@ public interface MarketRepositoryCustom {
     public Page<Tuple> orderList(PageRequestDTO pageRequestDTO, Pageable pageable);
     // market/cart 페이지 cart_product 조회
     public List<Tuple> selectCartForMarket(String uid);
+    // market/cart 페이지에서 market/order 넘어가면서 장바구니 count 변경
+    public boolean modifyCount(int[] cart_prodNos, int[] counts);
 }

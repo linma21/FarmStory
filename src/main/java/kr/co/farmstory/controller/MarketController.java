@@ -8,11 +8,16 @@ import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.service.MarketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,9 +55,32 @@ public class MarketController {
         return "/market/cart";
     }
 
+    // 장바구니에서 수량 변경 반영
+    @PostMapping("/market/modCount")
+    public ResponseEntity<?> modifyCount(@RequestBody Map<String, int[]> requestData) {
+        int[] cart_prodNos = requestData.get("cart_prodNo");
+        int[] counts = requestData.get("count");
+        log.info(Arrays.toString(cart_prodNos));
+        log.info(Arrays.toString(counts));
+        return marketService.modifyCount(cart_prodNos, counts);
+    }
+
     // 주문하기 페이지 매핑
+    /*
     @GetMapping("/market/order")
     public String marketOrder(){
+
+        return "/market/order";
+    }
+     */
+    @PostMapping("market/order")
+    public String marketOrder(@RequestBody Map<String, Object> requestMap) {
+        // 요청 본문에서 uid와 cart_prodNo를 추출합니다.
+        String uid = (String) requestMap.get("uid");
+        List<Integer> cart_prodNoList = (List<Integer>) requestMap.get("cart_prodNo");
+
+        log.info("uid : " + uid);
+        log.info("cart_prodNoList : " + cart_prodNoList.toString());
 
         return "/market/order";
     }

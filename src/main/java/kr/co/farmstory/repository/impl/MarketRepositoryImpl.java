@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         // SELECT * FROM `cart_product` AS a  JOIN `product` AS b ON a.prodno = b.prodno WHERE `cartNo` = ?;
         if (cartNo != null){
             productList = jpaQueryFactory
-                            .select(qCart_product.count, qProduct)
+                            .select(qCart_product, qProduct)
                             .from(qCart_product)
                             .join(qProduct)
                             .on(qCart_product.prodNo.eq(qProduct.prodno))
@@ -150,5 +151,28 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         }
         log.info("selectCartForMarket2-productList : " + productList.toString());
         return productList;
+    }
+
+    // 장바구니 count 변경
+    @Transactional
+    @Override
+    public boolean modifyCount(int[] cart_prodNos, int[] counts){
+        try {
+            for (int i=0 ; i < cart_prodNos.length ; i++){
+                long result = jpaQueryFactory
+                        .update(qCart_product)
+                        .set(qCart_product.count, counts[i])
+                        .where(qCart_product.cart_prodNo.eq(cart_prodNos[i]))
+                        .execute();
+                // update 실패시 false 반환
+                if (result == 0){
+                    return false;
+                }
+            }
+            // for문의 update 모두 성공하면 ture 반환
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
