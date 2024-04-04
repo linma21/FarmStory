@@ -39,10 +39,10 @@ public class CommunityController {
     }
     // 글 상세 보기
     @GetMapping("/community/view")
-    public String communityView(Model model, String cate,int ano, PageRequestDTO pageRequestDTO){
+    public String communityView(Model model, String cate, int ano, PageRequestDTO pageRequestDTO){
         log.info("communityView...1 : " + ano);
         // 글 조회
-        ArticleDTO article = articleService.selectArticle(ano);
+        ArticleDTO article = articleService.selectArticleAndNick(ano);
 
         log.info("communityView...2 : " + article.toString());
 
@@ -74,15 +74,52 @@ public class CommunityController {
         articleService.insertArticle(articleDTO);
         return "redirect:/community/list?cate="+articleDTO.getCate();
     }
+    // 글 수정 - 글 상세 정보
+    @GetMapping("/community/modify")
+    public String modify(Model model, int ano, PageRequestDTO pageRequestDTO) {
+
+        log.info("글 수정 글 조회 ...1 : " + ano);
+        // 글 조회
+        ArticleDTO article = articleService.selectArticleAndNickForModify(ano);
+
+        log.info("글 수정 글 조회 ...2 : " + article.toString());
+        // 페이지 정보 build
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+        model.addAttribute("article", article);
+
+        return "/community/modify";
+    }
     // 글 수정
     @PostMapping("/community/modify")
-    public ResponseEntity<?> modify(ArticleDTO articleDTO) {
+    public String modify(ArticleDTO articleDTO, PageRequestDTO pageRequestDTO) {
 
-        log.info("modifyArticle : " + articleDTO.toString());
-        return articleService.updateArticle(articleDTO);
+        log.info("글 수정 Cont : " + articleDTO.toString());
+        articleService.updateArticle(articleDTO);
+        // 페이지 정보 build
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+
+        // view로 리턴
+        return "redirect:/community/view?ano=" + articleDTO.getAno() + "&cate=" + articleDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
     }
-    @DeleteMapping("/community/{ano}")
-    public ResponseEntity<?> deleteArticle(@PathVariable("ano") int ano){
-        return articleService.deleteArticle(ano);
+    // 글 삭제
+    @GetMapping("/community/delete")
+    public String deleteArticle(Model model, int ano, PageRequestDTO pageRequestDTO){
+        log.info("글 삭제 Cont : " + ano);
+        articleService.deleteArticle(ano);
+        // 페이지 정보 build
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        log.info("글 삭제 Cont 2 : ");
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+        model.addAttribute("ano", ano);
+
+        return "/community/list";
     }
 }
