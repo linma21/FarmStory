@@ -4,9 +4,8 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
-import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.entity.QImages;
-import kr.co.farmstory.entity.QProduct;
+import kr.co.farmstory.dto.PageRequestDTO;
+import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,11 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProduct qProduct = QProduct.product;
     private final QImages qImages = QImages.images;
+    private final QUser qUser = QUser.user;
+    private final QOrders qOrders = QOrders.orders;
+    private final QOrderDetail qOrderDetail = QOrderDetail.orderDetail;
+
+
 
     // 장보기 게시판 목록 출력 (market/list)
     @Override
@@ -82,5 +86,41 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         log.info("results : " + joinProduct);
         return joinProduct;
 
-    };
+    }
+
+    //사용자가 주문한 목록을 조회(admin - order - list)
+    @Override
+    public Page<Tuple> orderList(PageRequestDTO pageRequestDTO,Pageable pageable) {
+
+        QueryResults<Tuple> results = jpaQueryFactory
+                .select(
+                        qOrders.orderNo,
+                        qOrders.rdate,
+                        qUser.name,
+                        qOrderDetail.count,
+                        qProduct.prodname,
+                        qProduct.price,
+                        qProduct.delCost,
+                        qProduct.amount)
+                .from(qUser)
+                .join(qOrders).on(qUser.uid.eq(qOrders.uid))
+                .join(qOrderDetail).on(qOrders.orderNo.eq(qOrderDetail.orderNo))
+                .join(qProduct).on(qOrderDetail.prodno.eq(qProduct.prodno))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qOrders.orderNo.desc())
+                .fetchResults();
+
+
+        log.info("orderList - results : " + results.toString());
+
+        List<Tuple> orderList = results.getResults();
+
+        log.info("orderList - results :"+orderList);
+
+        long total = results.getTotal();
+
+        return new PageImpl<>(orderList,pageable,total);
+    }
+
 }
