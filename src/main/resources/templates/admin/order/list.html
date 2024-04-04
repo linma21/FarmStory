@@ -18,11 +18,12 @@
 
             <article>
 
-                <table border="0">
+                <table border="0" class="adminTable">
                     <tr>
-                        <th><input type="checkbox" name="all"/></th>
+                        <th>순서</th>
                         <th>주문번호</th>
                         <th>상품명</th>
+                        <th>무게</th>
                         <th>판매가격</th>
                         <th>수량</th>
                         <th>배송비</th>
@@ -31,33 +32,46 @@
                         <th>주문일</th>
                         <th>확인</th>
                     </tr>
-                    <tr>
-                        <td><input type="checkbox" name=""/></td>
-                        <td>1001</td>
-                        <td>사과 500g</td>
-                        <td>4,000원</td>
-                        <td>2</td>
-                        <td>3,000원</td>
-                        <td>11,000원</td>
-                        <td>김유신</td>
-                        <td>2023-01-01 13:06:14</td>
+                    <tr th:each="order, index :${orderListResponseDTO.dtoList}">
+                        <td th:text="${index.index+1}"></td>
+                        <td th:text="${order.orderNO}">1001</td>
+                        <td th:text="${order.prodname}">사과 500g</td>
+                        <td>
+                            <span th:if="${order.amount} >= 1000" th:text="(${order.amount}/1000)+'kg'"></span>
+                            <span th:if="${order.amount} < 1000" th:text="${order.amount}+'g'"></span>
+                        </td>
+                        <td th:text="${order.price}">4,000원</td>
+                        <td th:text="${order.count}">2</td>
+                        <td th:text="${order.delCost}">3,000원</td>
+                        <td th:text="${order.sum}">11,000원</td>
+                        <td th:text="${order.name}">김유신</td>
+                        <td th:text="${#temporals.format(order.rdate,'yy-mm-dd hh:mm')}">2023-01-01 13:06:14</td>
                         <td><a href="./detail.html">[상세확인]</a></td>
                     </tr>
                 </table>
 
                 <p>
-                    <a href="#" class="orderDelete">선택삭제</a>
+
+
+
                 </p>
 
-                <p class="paging">
-                    <a href="#"><</a>
-                    <a href="#" class="on">[1]</a>
-                    <a href="#">[2]</a>
-                    <a href="#">[3]</a>
-                    <a href="#">[4]</a>
-                    <a href="#">[5]</a>
-                    <a href="#">></a>
-                </p>
+                <ul class="paging">
+                    <li th:if="${orderListResponseDTO.prev}"class="page-item">
+                        <a class="page-link" th:href="@{/admin/order/list(pg=${orderListResponseDTO.start -1})}">&#60;</a>
+                    </li>
+
+
+                    <li th:each="num:${#numbers.sequence(orderListResponseDTO.start,orderListResponseDTO.end)}" class="page-item">
+                        <a class="page-link" th:href="@{/admin/order/list(pg=${num})}">[[${num}]]</a>
+                    </li>
+
+
+
+                    <li th:if="${orderListResponseDTO.next}" class="page-item">
+                        <a class="page-link" th:href="@{/admin/order/list(pg=${orderListResponseDTO.end + 1})}">&#62;</a>
+                    </li>
+                </ul>
             </article>
         </section>
     </main>

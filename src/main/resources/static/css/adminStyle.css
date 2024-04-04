@@ -243,3 +243,8 @@ footer > p {
     font-weight: bold;
     text-decoration: underline;
 }
+
+.adminTable tr > td {
+    padding: 12px 2px;
+}
+

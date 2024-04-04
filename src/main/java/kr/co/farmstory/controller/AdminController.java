@@ -11,6 +11,7 @@ import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -155,6 +156,24 @@ public class AdminController {
             log.error("Delete Error", e);
             return ResponseEntity.internalServerError().body(Map.of("success", false, "message", "사용자 삭제 중 오류가 발생했습니다."));
         }
+    }
+
+    @GetMapping("/admin/order/list")
+    public String orderList(Model model,PageRequestDTO pageRequestDTO){
+
+        OrderListResponseDTO orderListResponseDTO = null;
+
+
+        //여기에 주문한 내용들을 띄우자.
+        orderListResponseDTO = adminService.orderList(pageRequestDTO);
+
+        log.info("controller - orderListResponseDTO : "+orderListResponseDTO);
+
+        model.addAttribute(orderListResponseDTO);
+
+        //페이지네이션도 써야함...
+
+         return "/admin/order/list";
     }
 
 }
