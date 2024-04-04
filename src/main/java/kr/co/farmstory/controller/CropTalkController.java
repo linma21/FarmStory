@@ -1,28 +1,27 @@
 package kr.co.farmstory.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import kr.co.farmstory.dto.ArticleDTO;
 import kr.co.farmstory.dto.PageRequestDTO;
 import kr.co.farmstory.dto.PageResponseDTO;
 import kr.co.farmstory.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class CommunityController {
+public class CropTalkController {
 
     private final ArticleService articleService;
 
     // 글 목록 조회
-    @GetMapping("/community/list")
-    public String community(Model model, String cate, PageRequestDTO pageRequestDTO){
+    @GetMapping("/cropTalk/list")
+    public String cropTalk(Model model, String cate, PageRequestDTO pageRequestDTO){
         PageResponseDTO pageResponseDTO = null;
 
         if(pageRequestDTO.getKeyword() == null) {
@@ -35,16 +34,16 @@ public class CommunityController {
         log.info("pageResponseDTO : " + pageResponseDTO);
 
         model.addAttribute(pageResponseDTO);
-        return "/community/list";
+        return "/cropTalk/list";
     }
     // 글 상세 보기
-    @GetMapping("/community/view")
-    public String communityView(Model model, String cate, int ano, PageRequestDTO pageRequestDTO){
-        log.info("communityView...1 : " + ano);
+    @GetMapping("/cropTalk/view")
+    public String cropTalkView(Model model, String cate, int ano, PageRequestDTO pageRequestDTO){
+        log.info("cropTalkView...1 : " + ano);
         // 글 조회
         ArticleDTO article = articleService.selectArticleAndNick(ano);
 
-        log.info("communityView...2 : " + article.toString());
+        log.info("cropTalkView...2 : " + article.toString());
 
         // 페이지 정보 build
         PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
@@ -54,10 +53,10 @@ public class CommunityController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("article", article);
 
-        return "/community/view";
+        return "/cropTalk/view";
     }
     // 글 쓰기
-    @GetMapping("/community/write")
+    @GetMapping("/cropTalk/write")
     public String write(Model model, @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO){
 
         PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
@@ -65,17 +64,17 @@ public class CommunityController {
                 .build();
 
         model.addAttribute(pageResponseDTO);
-        return "/community/write";
+        return "/cropTalk/write";
     }
 
-    @PostMapping("/community/write")
+    @PostMapping("/cropTalk/write")
     public String write(ArticleDTO articleDTO){
 
         articleService.insertArticle(articleDTO);
-        return "redirect:/community/list?cate="+articleDTO.getCate();
+        return "redirect:/cropTalk/list?cate="+articleDTO.getCate();
     }
     // 글 수정 - 글 상세 정보
-    @GetMapping("/community/modify")
+    @GetMapping("/cropTalk/modify")
     public String modify(Model model, int ano, PageRequestDTO pageRequestDTO) {
 
         log.info("글 수정 글 조회 ...1 : " + ano);
@@ -91,10 +90,10 @@ public class CommunityController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("article", article);
 
-        return "/community/modify";
+        return "/cropTalk/modify";
     }
     // 글 수정
-    @PostMapping("/community/modify")
+    @PostMapping("/cropTalk/modify")
     public String modify(ArticleDTO articleDTO, PageRequestDTO pageRequestDTO) {
 
         log.info("글 수정 Cont : " + articleDTO.toString());
@@ -105,10 +104,10 @@ public class CommunityController {
                 .build();
 
         // view로 리턴
-        return "redirect:/community/view?ano=" + articleDTO.getAno() + "&cate=" + articleDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
+        return "redirect:/cropTalk/view?ano=" + articleDTO.getAno() + "&cate=" + articleDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
     }
     // 글 삭제
-    @GetMapping("/community/delete")
+    @GetMapping("/cropTalk/delete")
     public String deleteArticle(Model model, int ano, PageRequestDTO pageRequestDTO){
         log.info("글 삭제 Cont : " + ano);
         articleService.deleteArticle(ano);
@@ -120,6 +119,6 @@ public class CommunityController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("ano", ano);
 
-        return "/community/list";
+        return "/cropTalk/list";
     }
 }

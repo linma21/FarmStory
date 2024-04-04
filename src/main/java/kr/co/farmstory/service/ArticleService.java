@@ -98,22 +98,37 @@ public class ArticleService {
     }
     // 글 상세 조회, 글 조회수 ++ 트랜잭션
     @Transactional
-    public ArticleDTO selectArticle(int ano){
-        Optional<Article> optArticle = articleRepository.findById(ano);
-        log.info("selectArticle ... 1 : " + optArticle.toString());
+    public ArticleDTO selectArticleAndNick(int ano){
+        Tuple optTuple = articleRepository.selectArticleAndNick(ano);
+        log.info("selectArticle ... 1 : " + optTuple.toString());
 
-        ArticleDTO articleDTO = null;
+        // Tuple -> Entity (Tuple -> DTO 변환은 불가)
+        Article article = optTuple.get(0, Article.class);
+        log.info("selectArticle ... 2 : " + article.toString());
+        String nick = optTuple.get(1, String.class);
+        log.info("selectArticle ... 3 nick : " + nick);
+        article.setNick(nick);
 
-        if(optArticle.isPresent()){
-            Article article = optArticle.get();
-            log.info("selectArticle ... 2 : " + article.toString());
-            articleDTO = modelMapper.map(article, ArticleDTO.class);
-            log.info("selectArticle ... 3 articleDTO1 : " + articleDTO.toString());
+        // DTO -> Entity
+        ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+        // Article hit ++
+        articleRepository.incrementHitByAno(ano);
+        return articleDTO;
+    }
+    // 글 수정 조회 : 글 수정은 조회수 변화 x
+    public ArticleDTO selectArticleAndNickForModify(int ano){
+        Tuple optTuple = articleRepository.selectArticleAndNick(ano);
+        log.info("selectArticle ... 1 : " + optTuple.toString());
 
-            // Article hit ++
-            articleRepository.incrementHitByAno(ano);
-        }
-        log.info("selectArticle ... 4 articleDTO2 : " + articleDTO.toString());
+        // Tuple -> Entity (Tuple -> DTO 변환은 불가)
+        Article article = optTuple.get(0, Article.class);
+        log.info("selectArticle ... 2 : " + article.toString());
+        String nick = optTuple.get(1, String.class);
+        log.info("selectArticle ... 3 nick : " + nick);
+        article.setNick(nick);
+
+        // DTO -> Entity
+        ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
         return articleDTO;
     }
     // 글 작성
@@ -138,7 +153,7 @@ public class ArticleService {
     // 글 수정
     @Transactional
     public ResponseEntity<?> updateArticle(ArticleDTO articleDTO){
-        log.info("updateArticle : " + articleDTO.toString());
+        log.info("글 수정 Serv : " + articleDTO.toString());
 
         List<FileDTO> files = fileService.fileUpload(articleDTO);
         // 해당 게시글이 있는지 확인
@@ -148,11 +163,20 @@ public class ArticleService {
         if(article != null){
             // 변경한 글내용 삽입
             article.setContent(articleDTO.getContent());
+            article.setTitle(articleDTO.getTitle());
+            article.setFile(articleDTO.getFile());
             // 저장 후 저장한 엔티티 객체 반환
             Article updateArticle = articleRepository.save(article);
             log.info("updateArticle : " + updateArticle.toString());
+
+            // 파일 insert
+            int ano = articleDTO.getAno();
+            fileService.insertFile(files, ano);
+
             return ResponseEntity.ok().body(updateArticle);
         }
+
+
         // 해당 게시글이 없을 경우
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
     }
@@ -160,10 +184,10 @@ public class ArticleService {
     @Transactional
     public ResponseEntity<?> deleteArticle(int ano){
 
-        log.info("deleteArticle ano :" + ano);
+        log.info("글 삭제 Serv 1 : " + ano);
         // 해당 게시글이 있는지 확인
         Optional<Article> optArticle = articleRepository.findById(ano);
-        log.info("deleteArticle optArticle :" + optArticle.toString());
+        log.info("글 삭제 Serv 2 : " + optArticle.toString());
 
         // 해당 게시글이 있으면
         if (optArticle.isPresent()){
@@ -172,8 +196,9 @@ public class ArticleService {
             if(article.getFile() > 0) {
                 fileRepository.deleteFilesByAno(ano);
             }
+            log.info("글 삭제 Serv 3 : " + article.toString());
             // 댓글 삭제
-                commentRepository.deleteCommentByAno(ano);
+            commentRepository.deleteCommentByAno(ano);
             // 게시글 삭제
             articleRepository.deleteById(ano);
 

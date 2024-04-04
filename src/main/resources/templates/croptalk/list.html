@@ -2,29 +2,24 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/userLayout}">
 <div class="container" layout:fragment="content">
-
-    <script th:inline="javascript" th:src="@{/js/communityList.js}"></script>
-
     <div id="sub">
-        <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
-        <section class="community">
+        <div><img src="../images/sub_top_tit3.png" alt="CROP TALK"></div>
+        <section class="croptalk">
             <aside>
-                <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
+                <img src="../images/sub_aside_cate3_tit.png" alt="농작물이야기"/>
 
                 <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
+                    <li><a href="story.html">농작물이야기</a></li>
+                    <li><a href="grow.html">텃밭가꾸기</a></li>
+                    <li><a href="school.html">귀농학교</a></li>
                 </ul>
 
             </aside>
             <article>
-                <nav id="communityNav">
-                    <img th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문"/>
+                <nav>
+                    <img src="../images/sub_nav_tit_cate3_tit2.png" alt="텃밭가꾸기"/>
                     <p>
-                        HOME > 커뮤니티 > <em>자주묻는질문</em>
+                        HOME > 농작물이야기 > <em>텃밭가꾸기</em>
                     </p>
                 </nav>
 
@@ -99,8 +94,13 @@
                         <a th:href="@{/community/write(cate=${pageResponseDTO.cate})}" class="btn btnGoWrite" id="btnGoWrite">글쓰기</a>
                     </div>
                 </div>
+
             </article>
         </section>
+
     </div>
+
+
 </div>
+
 </html>
