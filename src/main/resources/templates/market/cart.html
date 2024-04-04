@@ -16,22 +16,20 @@
 
             const prodCheckBox = document.querySelector('.prodCheckBox');
 
-            // 페이지 로드시 가격 표시
-            // prodAmount prodPoint prodPrice prodTotal
+        //// 페이지 로드시 가격 표시 ////
             const prodCount = document.getElementsByName('prodCount');
             const prodPoint = document.getElementsByName('prodPoint');
             const prodPrice = document.getElementsByName('prodPrice');
             const prodDisPrice = document.getElementsByName('prodDisPrice');
             const prodTotal = document.getElementsByName('prodTotal');
-
+            // 각 품목 합계 total값들
             let totalProdCount = 0;
             let totalProdPrice = 0;
             let totalProdDisPrice = 0;
             let totalProdPoint = 0;
             let totalProdTotal = 0;
 
-            console.log(prodPoint);
-
+            // 각 포인트, 가격, 할인, 합계값 더하는 for문
             for (let i = 0; i < prodPoint.length; i++) {
                 totalProdCount += 1;
                 totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].innerText));
@@ -39,7 +37,7 @@
                 totalProdPrice += (parseInt(prodPrice[i].innerText) * parseInt(prodCount[i].innerText));
                 totalProdTotal += parseInt(prodTotal[i].innerText);
             }
-
+            // 태그에 값 출력하기
             totalCount.innerText = totalProdCount.toString();
             totalPrice.innerText = totalProdPrice.toString();
             totalDiscount.innerText = totalProdDisPrice.toString();

@@ -20,7 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     private String connectPath = "/imagePath/**";
 
-    private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
+    private String resourcePath = "file:///Users/devimjae/Desktop/Workspace/farmstory/prodImg/";
 
     //private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg";
 
