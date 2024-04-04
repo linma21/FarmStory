@@ -2,34 +2,31 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/userLayout}">
 <div class="container" layout:fragment="content">
-    <!--<script th:inline="javascript" th:src="@{/js/community.js}"></script>-->
-    <script th:inline="javascript" th:src="@{/js/communityView.js}"></script>
+    <!--<script th:inline="javascript" th:src="@{/js/croptalk.js}"></script>-->
+    <script th:inline="javascript" th:src="@{/js/croptalkView.js}"></script>
     <main>
         <div id="sub">
             <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
             <section class="community">
                 <aside>
-                    <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
-
-                <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
-                </ul>
-            </aside>
-            <article class="view">
-                <nav id="communityNav">
-                    <img th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문"/>
-                    <p>
-                        HOME > 커뮤니티 > <em>자주묻는질문</em>
-                    </p>
-                </nav>
+                    <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
+                    <ul class="lnb">
+                        <li data-cate="story"><a th:href="@{/croptalk/list(cate=story)}">농작물이야기</a></li>
+                        <li data-cate="grow"><a th:href="@{/croptalk/list(cate=grow)}">텃밭가꾸기</a></li>
+                        <li data-cate="school"><a th:href="@{/croptalk/list(cate=school)}">귀농학교</a></li>
+                    </ul>
+                </aside>
+                <article>
+                    <nav id="communityNav">
+                        <img src="../images/sub_nav_tit_cate3_tit2.png" alt="텃밭가꾸기"/>
+                        <p>
+                            HOME > 농작물이야기 > <em>텃밭가꾸기</em>
+                        </p>
+                    </nav>
                 <!-- 내용 시작 -->
                 <div id="community_view">
                     <article class="community_content">
-                        <form id="communityForm"  th:action="@{/community/modify}" method="post" >
+                        <form id="communityForm"  th:action="@{/croptalk/modify}" method="post" >
                             <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
                             <div>
                                 <div class="title">
@@ -70,28 +67,28 @@
                     <div>
                         <!-- 로그인한 사용자 정보가 있는 경우 -->
                         <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
-                            <!-- 작성 당사자, 관리자에게만 출력 -->
+                            <!-- 작성 당사자에게만 출력 -->
                             <th:block th:if="${article.writer} == ${#authentication.principal.user.uid} or ${#authentication.principal.user.role} == 'ADMIN'">
                                 <a th:if="${pageResponseDTO.keyword == null}"
-                                   th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                                   th:href="@{/croptalk/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                                    class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
                                 <a th:if="${pageResponseDTO.keyword != null}"
-                                   th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                                   th:href="@{/croptalk/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
                                    class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
                                 <!-- 삭제 버튼 -->
                                 <a th:if="${pageResponseDTO.keyword == null}"
-                                   th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                                   th:href="@{/croptalk/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                                    class="btn btn-secondary btn-sm" data-art="artRemove"
                                    onclick="return confirmDelete()">삭제</a>
                                 <a th:if="${pageResponseDTO.keyword != null}"
-                                   th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                                   th:href="@{/croptalk/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
                                    class="btn btn-secondary btn-sm" data-art="artRemove"
                                    onclick="return confirmDelete()">삭제</a>
                             </th:block>
                         </th:block>
-                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                            class="btn btnList">목록</a>
-                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                            class="btn btnList">목록</a>
                     </div>
                         <!-- 댓글목록 -->
@@ -103,7 +100,7 @@
                             <h3>댓글쓰기</h3>
                             <form th:action="@{/comment}" name="commentForm" method="post" id="commentForm">
                                 <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
-                                <input type="hidden" name="uid" th:value="${#authentication.principal.user.uid}">
+                                    <input type="hidden" name="uid" th:value="${#authentication.principal.user.uid}">
                                 </th:block>
                                 <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
                                 <textarea name="content" class="commentContent"></textarea>

@@ -2,9 +2,6 @@ package kr.co.farmstory.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,15 +10,14 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @Entity
-@Table(name = "orderdetail")
-public class OrderDetail {
+@Table(name = "cart_product")
+public class Cart_product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int detailno;
-    private int prodno;
-    private int orderNo;
+    private int cart_prodNo;
     private int count;
+    private int cartNo;
+    private int prodNo;
 
 }
-

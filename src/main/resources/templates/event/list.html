@@ -2,32 +2,24 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/userLayout}">
 <div class="container" layout:fragment="content">
-
-    <script th:inline="javascript" th:src="@{/js/communityList.js}"></script>
-
     <div id="sub">
-        <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
-        <section class="community">
+        <div><img th:src="@{/images/sub_top_tit4.png}" alt="CROP TALK"></div>
+        <section class="event">
             <aside>
-                <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
+                <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
 
                 <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
+                    <li class="on"><a th:href="@{/event/list(cate=event)}">이벤트</a></li>
                 </ul>
 
             </aside>
             <article>
                 <nav id="communityNav">
-                    <img th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문"/>
+                    <img th:src="@{/images/sub_nav_tit_cate4_tit1.png}" alt="이벤트"/>
                     <p>
-                        HOME > 커뮤니티 > <em>자주묻는질문</em>
+                        HOME > 이벤트 > <em>이벤트</em>
                     </p>
                 </nav>
-
                 <div>
                     <!-- thymeleaf 변수를 js 파일에서 사용하기 위해 input 에 값넣기 -->
                     <form>
@@ -45,8 +37,8 @@
                         <tr th:each="article, loop:${pageResponseDTO.dtoList}">
                             <td>[[${pageResponseDTO.startNo - loop.index}]]</td>
                             <td>
-                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></a>
-                                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/event/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/event/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
                             </td>
                             <td th:text="${article.nick}"></td>
                             <td th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></td>
@@ -57,39 +49,39 @@
                         <ul class="pagination justify-content-center">
                             <!-- 첫 페이지 -->
                             <li class="page-item">
-                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=1)}" aria-label="firstPage">
+                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=1)}" aria-label="firstPage">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
-                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=1, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}" aria-label="firstPage">
+                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=1, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}" aria-label="firstPage">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
                             <!-- 이전 페이지 -->
                             <li th:if="${pageResponseDTO.prev}" class="page-item">
-                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}">&#60;</a>
-                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#60;</a>
+                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}">&#60;</a>
+                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#60;</a>
                             </li>
                             <!-- 페이지 넘버 반복 -->
                             <li class="page-item" th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
-                                <a  th:if="${pageResponseDTO.keyword == null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${num})}">
+                                <a  th:if="${pageResponseDTO.keyword == null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${num})}">
                                     [[${num}]]
                                 </a>
-                                <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
+                                <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                     [[${num}]]
                                 </a>
                             </li>
 
                             <!-- 다음 페이지 -->
                             <li th:if="${pageResponseDTO.next}" class="page-item">
-                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1})}">&#62;</a>
-                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#62;</a>
+                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1})}">&#62;</a>
+                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#62;</a>
                             </li>
                             <!-- 마지막 페이지 -->
                             <li class="page-item">
-                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" aria-label="last" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last})}">
+                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" aria-label="last" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last})}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
-                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" aria-label="last" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
+                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" aria-label="last" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -108,8 +100,13 @@
                         </div>
                     </th:block>>
                 </div>
+
             </article>
         </section>
+
     </div>
+
+
 </div>
+
 </html>

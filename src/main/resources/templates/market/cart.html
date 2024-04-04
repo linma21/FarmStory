@@ -1,9 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>팜스토리::장바구니</title>
     <link rel="stylesheet" href="../css/style.css"/>
+
+    <script>
+        window.onload = function () {
+
+            const totalCount = document.getElementById('totalCount');
+            const totalPrice = document.getElementById('totalPrice');
+            const totalDiscount = document.getElementById('totalDiscount');
+            const totalDelCost = document.getElementById('totalDelCost');
+            const totalPoint = document.getElementById('totalPoint');
+            const totalOrder = document.getElementById('totalOrder');
+
+            const prodCheckBox = document.querySelector('.prodCheckBox');
+
+            // 페이지 로드시 가격 표시
+            // prodAmount prodPoint prodPrice prodTotal
+            const prodCount = document.getElementsByName('prodCount');
+            const prodPoint = document.getElementsByName('prodPoint');
+            const prodPrice = document.getElementsByName('prodPrice');
+            const prodDisPrice = document.getElementsByName('prodDisPrice');
+            const prodTotal = document.getElementsByName('prodTotal');
+
+            let totalProdCount = 0;
+            let totalProdPrice = 0;
+            let totalProdDisPrice = 0;
+            let totalProdPoint = 0;
+            let totalProdTotal = 0;
+
+            console.log(prodPoint);
+
+            for (let i = 0; i < prodPoint.length; i++) {
+                totalProdCount += 1;
+                totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].innerText));
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText))* parseInt(prodCount[i].innerText);
+                totalProdPrice += (parseInt(prodPrice[i].innerText) * parseInt(prodCount[i].innerText));
+                totalProdTotal += parseInt(prodTotal[i].innerText);
+            }
+
+            totalCount.innerText = totalProdCount.toString();
+            totalPrice.innerText = totalProdPrice.toString();
+            totalDiscount.innerText = totalProdDisPrice.toString();
+            totalPoint.innerText = totalProdPoint.toString();
+            totalOrder.innerText = totalProdTotal.toString();
+
+            // prodCheckBox를 체크할때마다 최종 가격 변동
+            // prodCheckBox가 체크되어 있는 tr만 가지고와서 가격 포인트 할인 등등 더해서 밑에 보여주기
+
+
+            document.addEventListener('click', function (e){
+                if (e.target.className === "prodCheckBox"){
+                    const checkBox = e.target;
+                    const tr = checkBox.parentNode.parentNode;
+                    if (checkBox.checked){
+                        console.log("체크");
+                        console.log(tr.querySelector('[name="prodPrice"]').innerText);
+                    }else {
+                        console.log("해제");
+                    }
+                }
+
+            })
+
+
+        }
+    </script>
+
 </head>
 <body>
 <div id="container">
@@ -57,6 +121,7 @@
                         <th>이미지</th>
                         <th>종류</th>
                         <th>상품명</th>
+                        <th>무게</th>
                         <th>수량</th>
                         <th>할인</th>
                         <th>포인트</th>
@@ -65,54 +130,32 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="empty">
+                    <tr th:if="${productDTO} == null" class="empty">
                         <td colspan="9">장바구니에 상품이 없습니다.</td>
                     </tr>
-                    <tr>
+                    <tr th:each="product : ${productDTO}">
                         <td>
-                            <input type="checkbox" name="">
+                            <input type="checkbox" name="" class="prodCheckBox" checked>
                         </td>
                         <td>
-                            <a href="./productDetail.html"><img src="../images/market_item1.jpg" class="thumb" alt="사과 500g"></a>
+                            <a href="./productDetail.html"><img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="사과 500g"></a>
                         </td>
-                        <td>과일</td>
-                        <td><a href="#">사과 500g</a></td>
-                        <td>1</td>
-                        <td>10%</td>
-                        <td>40P</td>
-                        <td>4,000</td>
-                        <td><strong>3,600</strong>원</td>
+                        <td>[[${product.cate}]]</td>
+                        <td><a href="#">[[${product.prodname}]]</a></td>
+                        <td>
+                            <span th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></span>
+                            <span th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></span>
+                        </td>
+                        <td th:name="prodCount">[[${product.count}]]</td>
+                        <td>[[${product.discount}]]%</td>
+                        <td><span th:text="(${product.price}-(${product.price}*${product.discount}/100))*10/100" th:name="prodPoint"></span> P</td>
+                        <td>
+                            <span th:text="${product.price}-(${product.price}*${product.discount}/100)" th:name="prodDisPrice"></span> 원
+                            <s><span th:text="${product.price}" th:name="prodPrice"></span></s> 원
+                        </td>
+                        <td><strong th:text="(${product.price}-(${product.price}*${product.discount}/100))*${product.count}" th:name="prodTotal"></strong>원</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="">
-                        </td>
-                        <td>
-                            <a href="./productDetail.html"><img src="../images/market_item1.jpg" class="thumb" alt="사과 500g"></a>
-                        </td>
-                        <td>과일</td>
-                        <td><a href="#">사과 500g</a></td>
-                        <td>1</td>
-                        <td>10%</td>
-                        <td>40P</td>
-                        <td>4,000</td>
-                        <td><strong>3,600</strong>원</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="">
-                        </td>
-                        <td>
-                            <a href="./productDetail.html"><img src="../images/market_item1.jpg" class="thumb" alt="사과 500g"></a>
-                        </td>
-                        <td>과일</td>
-                        <td><a href="#">사과 500g</a></td>
-                        <td>1</td>
-                        <td>10%</td>
-                        <td>40P</td>
-                        <td>4,000</td>
-                        <td><strong>3,600</strong>원</td>
-                    </tr>
+
 
                     </tbody>
                 </table>
@@ -123,31 +166,31 @@
                         <caption>전체합계</caption>
                         <tr>
                             <th>상품수</th>
-                            <td>1</td>
+                            <td id="totalCount"></td>
                         </tr>
                         <tr>
                             <th>상품금액</th>
-                            <td>27,000</td>
+                            <td id="totalPrice"></td>
                         </tr>
                         <tr>
                             <th>할인금액</th>
-                            <td>5,0000원</td>
+                            <td id="totalDiscount"></td>
                         </tr>
                         <tr>
                             <th>배송비</th>
-                            <td class="delivery">5,0000원</td>
+                            <td class="delivery" id="totalDelCost"></td>
                         </tr>
                         <tr>
                             <th>포인트</th>
-                            <td>4,000원</td>
+                            <td id="totalPoint"></td>
                         </tr>
                         <tr>
                             <th>전체주문금액</th>
-                            <td class="total">22,000</td>
+                            <td class="total" id="totalOrder"></td>
                         </tr>
                         </tr>
                     </table>
-                    <input type="submit" class="btnOrder" value="주문하기">
+                    <a th:href="@{/user/login}" class="btnOrder">주문하기</a>
                 </div>
                 <!-- 내용 끝 -->
 

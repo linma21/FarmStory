@@ -4,16 +4,18 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
-import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.entity.QImages;
-import kr.co.farmstory.entity.QProduct;
+import kr.co.farmstory.dto.PageRequestDTO;
+import kr.co.farmstory.dto.ProductDTO;
+import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,11 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProduct qProduct = QProduct.product;
     private final QImages qImages = QImages.images;
+    private final QUser qUser = QUser.user;
+    private final QOrders qOrders = QOrders.orders;
+    private final QOrderDetail qOrderDetail = QOrderDetail.orderDetail;
+    private final QCart qCart = QCart.cart;
+    private final QCart_product qCart_product = QCart_product.cart_product;
 
     // 장보기 게시판 목록 출력 (market/list)
     @Override
@@ -69,6 +76,7 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
     }
 
     // 장보기 게시판 게시글 출력 (market/view)
+    @Override
     public List<Tuple> selectProduct(int prodno){
         // select * from `product` as a join `images` as b on a.prodno = b.prodno where a`prodno` = ?
         List<Tuple> joinProduct = jpaQueryFactory
@@ -82,5 +90,65 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         log.info("results : " + joinProduct);
         return joinProduct;
 
-    };
+    }
+
+    //사용자가 주문한 목록을 조회(admin - order - list)
+    @Override
+    public Page<Tuple> orderList(PageRequestDTO pageRequestDTO,Pageable pageable) {
+
+        QueryResults<Tuple> results = jpaQueryFactory
+                .select(
+                        qOrders.orderNo,
+                        qOrders.rdate,
+                        qUser.name,
+                        qOrderDetail.count,
+                        qProduct.prodname,
+                        qProduct.price,
+                        qProduct.delCost,
+                        qProduct.amount)
+                .from(qUser)
+                .join(qOrders).on(qUser.uid.eq(qOrders.uid))
+                .join(qOrderDetail).on(qOrders.orderNo.eq(qOrderDetail.orderNo))
+                .join(qProduct).on(qOrderDetail.prodno.eq(qProduct.prodno))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qOrders.orderNo.desc())
+                .fetchResults();
+
+
+        log.info("orderList - results : " + results.toString());
+
+        List<Tuple> orderList = results.getResults();
+
+        log.info("orderList - results :"+orderList);
+
+        long total = results.getTotal();
+
+        return new PageImpl<>(orderList,pageable,total);
+    }
+
+    // 장바구니 목록 출력
+    @Override
+    public List<Tuple> selectCartForMarket(String uid){
+        // select * from `cart` where uid = ?
+        Integer cartNo = jpaQueryFactory
+                                .select(qCart.cartNo)
+                                .from(qCart)
+                                .where(qCart.uid.eq(uid))
+                                .fetchOne();
+        log.info("selectCartForMarket1-cartNoList : " + cartNo);
+        List<Tuple> productList = new ArrayList<>();
+        // SELECT * FROM `cart_product` AS a  JOIN `product` AS b ON a.prodno = b.prodno WHERE `cartNo` = ?;
+        if (cartNo != null){
+            productList = jpaQueryFactory
+                            .select(qCart_product.count, qProduct)
+                            .from(qCart_product)
+                            .join(qProduct)
+                            .on(qCart_product.prodNo.eq(qProduct.prodno))
+                            .where(qCart_product.cartNo.eq(cartNo))
+                            .fetch();
+        }
+        log.info("selectCartForMarket2-productList : " + productList.toString());
+        return productList;
+    }
 }
