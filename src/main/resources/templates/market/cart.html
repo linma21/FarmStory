@@ -34,9 +34,9 @@
 
             for (let i = 0; i < prodPoint.length; i++) {
                 totalProdCount += 1;
-                totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].innerText));
-                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText))* parseInt(prodCount[i].innerText);
-                totalProdPrice += (parseInt(prodPrice[i].innerText) * parseInt(prodCount[i].innerText));
+                totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].value));
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText))* parseInt(prodCount[i].value);
+                totalProdPrice += (parseInt(prodPrice[i].innerText) * parseInt(prodCount[i].value));
                 totalProdTotal += parseInt(prodTotal[i].innerText);
             }
 
@@ -63,7 +63,13 @@
                 }
 
             })
-
+            const counts = document.getElementsByClassName('count');
+            Array.from(counts).forEach(function(count) {
+                count.addEventListener('input', function(e) {
+                    alert(e.target.value);
+                    
+                });
+            });
 
         }
     </script>
@@ -135,7 +141,7 @@
                     </tr>
                     <tr th:each="product : ${productDTO}">
                         <td>
-                            <input type="checkbox" name="" class="prodCheckBox" checked>
+                            <input type="checkbox" name="" class="prodCheckBox">
                         </td>
                         <td>
                             <a href="./productDetail.html"><img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="사과 500g"></a>
@@ -146,7 +152,9 @@
                             <span th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></span>
                             <span th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></span>
                         </td>
-                        <td th:name="prodCount">[[${product.count}]]</td>
+                        <td>
+                            <input type="number" class="count" th:name="prodCount" th:value="${product.count}">
+                        </td>
                         <td>[[${product.discount}]]%</td>
                         <td><span th:text="(${product.price}-(${product.price}*${product.discount}/100))*10/100" th:name="prodPoint"></span> P</td>
                         <td>
