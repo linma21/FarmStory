@@ -1,0 +1,118 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/userLayout}">
+<div class="container" layout:fragment="content">
+    <!--<script th:inline="javascript" th:src="@{/js/community.js}"></script>-->
+    <script th:inline="javascript" th:src="@{/js/communityView.js}"></script>
+
+
+    <main>
+        <div id="sub">
+            <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
+            <section class="community">
+                <aside>
+                    <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
+
+                <ul class="lnb">
+                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
+                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
+                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
+                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
+                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
+                </ul>
+            </aside>
+            <article class="view">
+                <nav id="communityNav">
+                    <img th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문"/>
+                    <p>
+                        HOME > 커뮤니티 > <em>자주묻는질문</em>
+                    </p>
+                </nav>
+                <!-- 내용 시작 -->
+                <div id="community_view">
+                    <article class="community_content">
+                        <form id="communityForm"  th:action="@{/community/modify}" method="post" >
+                            <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
+                            <div>
+                                <div class="title">
+                                    <h2>[[${article.title}]]</h2>
+                                    <input type="hidden" th:value="${#authentication.principal.user.uid}" id="user">
+                                    <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
+                                </div>
+                                <div class="info">
+                                    <span style="float: left">작성자 : [[${article.nick}]]</span>
+                                    <span style="float: right">[[${article.rdate}]]</span>
+                                </div>
+                            </div>
+                            <div class="community_textarea">
+                                <textarea id="contentTextarea" readonly>[[${article.content}]]</textarea>
+                            </div>
+                            <div class="community_file">
+                                <!-- 첨부파일 -->
+                                <ul>
+                                    <li>첨부파일</li>
+                                    <li>
+                                        <th:block  th:each="file:${article.fileList}">
+                                            <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink"
+                                               th:data-fno="${file.fno}">[[${file.oName}]]</a>
+                                        </th:block>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </form>
+                    </article>
+                </div>
+
+                <section class="community_view">
+                    <!-- 수정 / 삭제 / 목록 버튼 -->
+                    <div>
+                        <!-- 작성 당사자에게만 출력 -->
+                        <th:block th:if="${article.writer} == ${#authentication.principal.user.uid}">
+                            <a th:if="${pageResponseDTO.keyword == null}"
+                               th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                            <a th:if="${pageResponseDTO.keyword != null}"
+                               th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                            <!-- 삭제 버튼 -->
+                            <a th:if="${pageResponseDTO.keyword == null}"
+                               th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artRemove"
+                               onclick="return confirmDelete()">삭제</a>
+                            <a th:if="${pageResponseDTO.keyword != null}"
+                               th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                               class="btn btn-secondary btn-sm" data-art="artRemove"
+                               onclick="return confirmDelete()">삭제</a>
+                        </th:block>
+                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                           class="btn btnList">목록</a>
+                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                           class="btn btnList">목록</a>
+                    </div>
+                        <!-- 댓글목록 -->
+                        <section class="commentList" id="commentList">
+                                <!-- 댓글 내용 -->
+                        </section>
+                        <!-- 댓글쓰기 -->
+                        <section class="commentForm">
+                            <h3>댓글쓰기</h3>
+                            <form th:action="@{/comment}" name="commentForm" method="post" id="commentForm">
+                                <input type="hidden" name="uid" th:value="${#authentication.principal.user.uid}">
+                                <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
+                                <textarea name="content" class="commentContent"></textarea>
+                                <div>
+                                    <button id="btnCancel">취소</button>
+                                    <button id="btnComment">댓글 작성</button>
+                                </div>
+                            </form>
+                        </section>
+                    </section>
+                    <!-- 내용 끝 -->
+                </article>
+            </section>
+
+        </div>
+    </main>
+</div>
+</html>

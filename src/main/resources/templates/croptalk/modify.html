@@ -1,0 +1,93 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/userLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="container" layout:fragment="content">
+
+    <script th:inline="javascript" th:src="@{/js/communityModify.js}"></script>
+
+    <div id="sub">
+        <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
+        <section class="community">
+            <aside>
+                <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
+
+                <ul class="lnb">
+                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
+                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
+                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
+                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
+                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
+                </ul>
+            </aside>
+            <article class="view">
+                <nav id="communityNav">
+                    <img th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문"/>
+                    <p>
+                        HOME > 커뮤니티 > <em>자주묻는질문</em>
+                    </p>
+                </nav>
+                <!-- 내용 시작 -->
+                <div id="community_view">
+                    <article class="community_modify">
+                        <form id="communityForm" th:action="@{/community/modify}" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
+                            <input type="hidden" name="pg" th:value="${pageResponseDTO.pg}">
+                            <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
+                            <input type="hidden" name="keyword" th:value="${pageResponseDTO.keyword}" th:if="${pageResponseDTO.keyword != null}">
+                            <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
+                            <input type="hidden" name="file" th:value="${article.file}">
+                            <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
+                            <div>
+                                <div class="title">
+                                    <input type="text" name="title" th:value="${article.title}">
+                                </div>
+                                <div class="info">
+                                    <span style="float: left">작성자 : [[${article.nick}]]</span>
+                                    <span style="float: right">[[${article.rdate}]]</span>
+                                </div>
+                            </div>
+                            <div class="community_textarea">
+                                <textarea id="contentTextarea" name="content">[[${article.content}]]</textarea>
+                            </div>
+                            <div class="community_file">
+                                <!--기존 첨부 파일-->
+                                <ul class="list-group" th:if="${article.file > 0}">
+                                    <label class="form-label">■ 기존 첨부 파일</label>
+                                    <li th:each="file : ${article.fileList}">
+                                        <th:block >
+                                            <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink"
+                                               th:data-fno="${file.fno}">[[${file.oName}]]</a>
+                                        </th:block>
+                                        <button type="button" class="btn-close" aria-label="Close" th:data-fno="${file.fno}"></button>
+                                    </li>
+                                </ul>
+                                <!-- 새 파일첨부 -->
+                                <ul>
+                                    <li>파일첨부</li>
+                                    <li>
+                                        <label for="formFileMultiple" class="form-label">■ 새 첨부 파일 선택</label>
+                                        <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </article>
+                </div>
+                <!-- 내용 끝 -->
+            </article>
+            <section class="community_view">
+                <div class="text-end">
+                    <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                       class="btn btnCancel">취소</a>
+                    <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                       class="btn btnCancel">취소</a>
+                    <a th:href="@{/community/write}" id="btnSubmit" class="btn btnSubmit">등록</a>
+                </div>
+            </section>
+        </section>
+
+    </div>
+</div>
+
+</html>
