@@ -1,6 +1,5 @@
 package kr.co.farmstory.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -9,12 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class OrderDetailDTO {
-
-    private int detailno;
-    private int prodno;
-    private int orderNo;
+public class Cart_productDTO {
+    private int cart_prodNo;
     private int count;
+    private int cartNo;
+    private int prodNo;
 
 }
-
