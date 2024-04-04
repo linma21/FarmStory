@@ -8,10 +8,13 @@
         <div><img th:src="@{/images/sub_top_tit2.png}" alt="MARKET"></div>
         <section class="market">
             <aside>
-                <img src="../images/sub_aside_cate2_tit.png" alt="장보기"/>
+                <img th:src="@{/images/sub_aside_cate2_tit.png}" alt="장보기"/>
 
                 <ul class="lnb">
-                    <li class="on"><a href="./market.html">장보기</a></li>
+                    <li class="on"><a th:href="@{/market/list}">상품목록</a></li>
+                    <li class="on" th:unless="${#authentication.principal eq 'anonymousUser'}">
+                        <a th:href="@{/market/cart(uid=${#authentication.principal.user.uid})}">장바구니</a>
+                    </li>
                 </ul>
             </aside>
             <article class="list">
@@ -20,6 +23,7 @@
                     <p>
                         HOME > 장보기 > <em>장보기</em>
                     </p>
+
                 </nav>
 
                 <!-- 내용 시작 / 해당 버튼 눌렀을때 on 옮겨가게 해야함-->
@@ -51,7 +55,7 @@
                         <td class="type">[[${product.cate}]]</td>
                         <td class="title"><a href="#">[[${product.prodname}]]</a></td>
                         <td class="discount">[[${product.discount}]]</td>
-                        <td class="point">[[(${product.price} - (${product.price} * ${product.discount} / 100)) / 10]] </td>
+                        <td><span th:text="(${product.price}-(${product.price}*${product.discount}/100))*10/100"></span> P</td>
                         <td class="price">
                             <strong>[[${product.price} - (${product.price} * ${product.discount} / 100)]]</strong><br>
                             <del>[[${product.price}]]</del>
