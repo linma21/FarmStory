@@ -168,7 +168,7 @@ public class ArticleService {
             // 저장 후 저장한 엔티티 객체 반환
             Article updateArticle = articleRepository.save(article);
             log.info("updateArticle : " + updateArticle.toString());
-            
+
             // 파일 insert
             int ano = articleDTO.getAno();
             fileService.insertFile(files, ano);
@@ -184,10 +184,10 @@ public class ArticleService {
     @Transactional
     public ResponseEntity<?> deleteArticle(int ano){
 
-        log.info("deleteArticle ano :" + ano);
+        log.info("글 삭제 Serv 1 : " + ano);
         // 해당 게시글이 있는지 확인
         Optional<Article> optArticle = articleRepository.findById(ano);
-        log.info("deleteArticle optArticle :" + optArticle.toString());
+        log.info("글 삭제 Serv 2 : " + optArticle.toString());
 
         // 해당 게시글이 있으면
         if (optArticle.isPresent()){
@@ -196,8 +196,9 @@ public class ArticleService {
             if(article.getFile() > 0) {
                 fileRepository.deleteFilesByAno(ano);
             }
+            log.info("글 삭제 Serv 3 : " + article.toString());
             // 댓글 삭제
-                commentRepository.deleteCommentByAno(ano);
+            commentRepository.deleteCommentByAno(ano);
             // 게시글 삭제
             articleRepository.deleteById(ano);
 

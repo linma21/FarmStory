@@ -43,6 +43,13 @@ window.onload = function (){
         communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
                                                 <p> HOME > 커뮤니티 > <em>자주묻는질문</em></p>`;
     }
+    // 페이지 로드시 textarea 자동 높이 조절
+    const textareas = document.querySelectorAll('textarea');
+
+    // 선택된 각 textarea 요소에 대해 autoResize 함수를 호출합니다.
+    textareas.forEach(textarea => {
+        autoResize(textarea);
+    });
     // 첨부파일 삭제 - Delete는 아직 안함
     let deleteList = []; // 삭제할 파일 번호 저장해두는 배열
     for (const close of btnClose){
@@ -52,6 +59,7 @@ window.onload = function (){
                 const li = this.parentElement;
                 const fno = this.dataset.fno;
                 console.log("fno : " + fno);
+                // 삭제할 파일 리스트에 추가
                 deleteList.push(fno);
                 console.log("deleteList : " + deleteList);
                 li.remove();
@@ -82,4 +90,12 @@ window.onload = function (){
             communityForm.submit();
         }
     }
+}
+// 텍스트 입력시 textarea 자동 높이 조절 - onload 밖에 둬야함
+function autoResize(textarea) {
+    // 텍스트 영역의 스크롤 높이 설정을 임시로 해제
+    textarea.style.height = 'auto';
+
+    // 텍스트 영역의 스크롤 높이를 내용에 맞게 조절
+    textarea.style.height = textarea.scrollHeight + 'px';
 }

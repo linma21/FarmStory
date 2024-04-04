@@ -1602,6 +1602,7 @@ input[name=title] {
     font-weight: bold;
     resize: both;
 }
+/* 글 작성,수정 시 textarea가 너무 납작해서 해놨는데 크기 자동 조절이 씹히네요*/
 textarea[name=content] {
     width: 100%;
     height: 200px;

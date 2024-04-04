@@ -37,6 +37,7 @@
                                 <div class="title">
                                     <h2>[[${article.title}]]</h2>
                                     <input type="hidden" th:value="${#authentication.principal.user.uid}" id="user">
+                                    <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
                                 </div>
                                 <div class="info">
                                     <span style="float: left">작성자 : [[${article.nick}]]</span>
@@ -74,12 +75,15 @@
                             <a th:if="${pageResponseDTO.keyword != null}"
                                th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
                                class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                            <!-- 삭제 버튼 -->
                             <a th:if="${pageResponseDTO.keyword == null}"
                                th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
-                               class="btn btn-secondary btn-sm" data-art="artRemove">삭제</a>
+                               class="btn btn-secondary btn-sm" data-art="artRemove"
+                               onclick="return confirmDelete()">삭제</a>
                             <a th:if="${pageResponseDTO.keyword != null}"
                                th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
-                               class="btn btn-secondary btn-sm" data-art="artRemove">삭제</a>
+                               class="btn btn-secondary btn-sm" data-art="artRemove"
+                               onclick="return confirmDelete()">삭제</a>
                         </th:block>
                         <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                            class="btn btnList">목록</a>
@@ -98,7 +102,7 @@
                                 <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
                                 <textarea name="content" class="commentContent"></textarea>
                                 <div>
-                                    <a href="#" class="btn btnCancel">취소</a>
+                                    <button id="btnCancel">취소</button>
                                     <button id="btnComment">댓글 작성</button>
                                 </div>
                             </form>
