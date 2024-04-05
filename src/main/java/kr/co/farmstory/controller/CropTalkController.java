@@ -34,7 +34,10 @@ public class CropTalkController {
         log.info("pageResponseDTO : " + pageResponseDTO);
 
         model.addAttribute(pageResponseDTO);
-        return "/croptalk/list";
+
+
+        return "/cropTalk/list";
+
     }
     // 글 상세 보기
     @GetMapping("/croptalk/view")
