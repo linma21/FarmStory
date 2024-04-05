@@ -114,8 +114,8 @@ public class AdminController {
         return "/admin/product/register";
     }
 
-
-    ////ADMIN-User////
+////ADMIN-User////
+    // 사용자 목록
     @GetMapping("/admin/user/list")
     public String userList(Model model, PageRequestDTO pageRequestDTO) {
         List<UserDTO> userDTOList = userService.getUserList(pageRequestDTO);
@@ -136,6 +136,7 @@ public class AdminController {
         return "/admin/user/view";
     }
 
+    // 등급, 권한 수정
     @PostMapping("/admin/user/update")
     @ResponseBody
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
@@ -157,7 +158,7 @@ public class AdminController {
         }
     }
 
-
+    // 사용자 탈퇴
     @PostMapping("/admin/user/delete")
     @ResponseBody
     public ResponseEntity<?> deleteUser(@RequestParam("uid") String uid) {
