@@ -8,8 +8,6 @@ import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository

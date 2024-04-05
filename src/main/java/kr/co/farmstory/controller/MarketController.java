@@ -1,5 +1,8 @@
 package kr.co.farmstory.controller;
 
+import groovy.lang.Tuple;
+import kr.co.farmstory.dto.*;
+import kr.co.farmstory.entity.Orders;
 import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
@@ -16,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +59,20 @@ public class MarketController {
         model.addAttribute(marketPageRequestDTO);
         return "/market/view";
     }
+
+
+    // 주문목록
+    @GetMapping("/market/orderList")
+    public String getOrderDetails(Model model, @RequestParam(required = false) String userId) {
+        if (userId == null) {
+            userId = "devUser"; // 개발 단계의 임시 사용자 ID
+        }
+        List<OrderDetailProductDTO> details = marketService.getOrderDetailsWithProductByUserId(userId);
+        log.info("details!! : " + details);
+        model.addAttribute("details", details);
+        return "/market/orderList";
+    }
+}
 
     // 장바구니 목록 페이지 매핑
     @GetMapping("/market/cart")
@@ -128,3 +149,4 @@ public class MarketController {
         }
     }
 }
+
