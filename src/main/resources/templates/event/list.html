@@ -22,9 +22,27 @@
                 </nav>
                 <div>
                     <!-- thymeleaf 변수를 js 파일에서 사용하기 위해 input 에 값넣기 -->
-                    <form>
+                    <form th:action="@{/event/list}">
                         <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
-                        <input type="hidden" name="ano" value="0" id="ano"/>
+                        <!-- 키워드 검색 -->
+                        <div class="block search-keyword" id="search-keyword">
+                            <div class="form-group" id="searchTypeFrom">
+                                <label for="q_searchKeyTy" class="sr-only">항목</label>
+                                <select name="type" id="q_searchKeyTy" class="select">
+                                    <option value="">-검색선택-</option>
+                                    <option value="title">제목</option>
+                                    <option value="content">내용</option>
+                                    <option value="title_content">제목+내용</option>
+                                    <option value="writer">등록자명</option>
+                                </select>
+                            </div>
+                            <!-- 검색어 입력 -->
+                            <div class="form-group" id="keywordFrom">
+                                <label for="q_searchVal" class="sr-only">검색어</label>
+                                <input type="text" name="keyword" id="q_searchVal" value="" class="form-control" placeholder="검색어를 입력하세요.">
+                            </div>
+                            <button type="submit" class="btn btn-info btn-search">검색</button>
+                        </div>
                     </form>
                     <table class="listTable">
                         <tr>

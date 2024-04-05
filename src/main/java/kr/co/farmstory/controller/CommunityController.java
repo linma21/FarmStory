@@ -30,6 +30,7 @@ public class CommunityController {
             pageResponseDTO = articleService.selectArticles(pageRequestDTO);
         }else {
             // 검색 글 목록 조회
+            log.info("키워드 검색 Cont" + pageRequestDTO.getKeyword());
             pageResponseDTO = articleService.searchArticles(pageRequestDTO);
         }
         log.info("pageResponseDTO : " + pageResponseDTO);

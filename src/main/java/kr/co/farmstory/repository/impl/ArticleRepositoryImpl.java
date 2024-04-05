@@ -54,7 +54,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     // 검색 글 목록 조회 동적 쿼리
     @Override
     public Page<Tuple> searchArticles(PageRequestDTO pageRequestDTO, Pageable pageable) {
-
+        log.info("키워드 검색 impl : " + pageRequestDTO.getKeyword());
         String cate = pageRequestDTO.getCate();
         String type = pageRequestDTO.getType();
         String keyword = pageRequestDTO.getKeyword();
@@ -64,24 +64,23 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         // 검색 종류에 따른 where절 표현식 생성
         if(type.equals("title")){
             expression = qArticle.cate.eq(cate).and(qArticle.title.contains(keyword));
-            log.info("expression" + expression);
+            log.info("제목 검색 : " + expression);
 
         }else if(type.equals("content")){
             expression = qArticle.cate.eq(cate).and(qArticle.content.contains(keyword));
-            log.info("expression" + expression);
+            log.info("내용 검색 : " + expression);
 
         }else if(type.equals("title_content")){
             BooleanExpression titleContains = qArticle.cate.eq(cate).and(qArticle.title.contains(keyword));
             BooleanExpression contentContains = qArticle.cate.eq(cate).and(qArticle.content.contains(keyword));
             expression = qArticle.cate.eq(cate).and(titleContains).or(contentContains);
-            log.info("expression" + expression);
+            log.info("제목+내용 검색 : " + expression);
 
         }else if(type.equals("writer")){
             expression = qArticle.cate.eq(cate).and(qUser.nick.contains(keyword));
-            log.info("expression" + expression);
+            log.info("작성자 검색 : " + expression);
         }
-        long total = 0;
-        // select * from article where `cate`= '' and `type` contains(k) limit 0,10;
+        // select * from article where `cate`= ? and `type` contains(k) limit 0,10;
         QueryResults<Tuple> results = jpaQueryFactory
                 .select(qArticle, qUser.nick)
                 .from(qArticle)
@@ -92,10 +91,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
-
+        log.info("키워드 검색 5 "+results.getResults().toString());
         List<Tuple> content = results.getResults();
-        total = jpaQueryFactory.selectFrom(qArticle).where(expression).fetchCount();
-
+        log.info("키워드 검색 6 ");
+        long total = results.getTotal();
+        log.info("키워드 검색 7 ");
         // 페이지 처리용 page 객체 리턴
         return new PageImpl<>(content, pageable, total);
     }
