@@ -557,7 +557,9 @@ main > .info > div > .account {
 /* 장보기 */
 #sub > .market .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate2_lnb1.png');}
 #sub > .market .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate2_lnb1_ov.png');}
+#sub > .market .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate2_lnb1_ov.png');}
 #sub > .market .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate2_lnb1_ov.png');}
+#sub > .market .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate2_lnb1_ov.png');} /*장바구니*/
 
 #sub > .market > .list > .sort > a {
     color: #999;
@@ -1003,15 +1005,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* 글 목록 리스트 */
 /* 농작물 이야기 */
-#sub > .croptalk .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate3_lnb1.png');}
-#sub > .croptalk .lnb > li:nth-child(2) > a {background-image: url('../images/sub_cate3_lnb2.png');}
-#sub > .croptalk .lnb > li:nth-child(3) > a {background-image: url('../images/sub_cate3_lnb3.png');}
-#sub > .croptalk .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate3_lnb1_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate3_lnb2_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(3) > a:hover {background-image: url('../images/sub_cate3_lnb3_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate3_lnb1_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate3_lnb2_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(3).on > a {background-image: url('../images/sub_cate3_lnb3_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate3_lnb1.png');}
+#sub > .cropTalk .lnb > li:nth-child(2) > a {background-image: url('../images/sub_cate3_lnb2.png');}
+#sub > .cropTalk .lnb > li:nth-child(3) > a {background-image: url('../images/sub_cate3_lnb3.png');}
+#sub > .cropTalk .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate3_lnb1_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate3_lnb2_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(3) > a:hover {background-image: url('../images/sub_cate3_lnb3_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate3_lnb1_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate3_lnb2_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(3).on > a {background-image: url('../images/sub_cate3_lnb3_ov.png');}
 
 
 /* 이벤트 */
@@ -1125,7 +1127,7 @@ option {
     margin-bottom: 0;
     font-size: 14px;
     font-weight: 400;
-    line-height: 1.42857143;
+    line-height: 1;
     text-align: center;
 }
 /* 커뮤니티 뷰 */
@@ -1738,93 +1740,115 @@ textarea[name=content] {
 
 
 /* 주문목록 css */
-/* 주문 목록 컨테이너 스타일 */
-.farmstory-order-container {
+
+/* 컨테이너 스타일 */
+.order-container {
     max-width: 980px;
-    margin: 30px auto;
+    margin: 20px auto;
     padding: 20px;
     background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
-.farmstory-order-header h1 {
-    font-size: 1.5em;
-    color: #333;
-    padding-bottom: 20px;
+/* 헤더 스타일링 */
+.order-header h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #eaeaea;
-    margin-bottom: 20px;
-}
-
-.farmstory-order-nav ul {
-    padding: 0;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.farmstory-order-nav li {
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.farmstory-order-nav a {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #f4f4f4;
     color: #333;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
 }
 
-.farmstory-order-nav a:hover {
-    background-color: #e9e9e9;
+/* 네비게이션 바 스타일링 */
+.order-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.order-nav ul li {
+    float: left;
+}
+
+.order-nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
     text-decoration: none;
 }
 
-.farmstory-order-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+.order-nav ul li a:hover {
+    background-color: #111;
 }
 
-.farmstory-order-table th,
-.farmstory-order-table td {
+/* 테이블 스타일링 */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-table thead th {
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 10px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.order-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.order-table tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+/* 섹션 헤딩 */
+.order-container h3 {
+    font-size: 18px;
+    margin-top: 30px;
+    color: #333;
+}
+
+/* 이미지 섹션 스타일링 */
+.order-detail img {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+/* 배송 정보 및 교환/반품 섹션 스타일링 */
+.order-delivery, .order-exchange, .order-return-policy {
+    padding: 15px;
+    background: #e9e9e9;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.order-exchange table {
+    width: 100%;
+}
+
+.order-exchange table td {
     padding: 10px;
     border: 1px solid #ddd;
 }
 
-.farmstory-order-table th {
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-.farmstory-order-table tr:nth-child(odd) {
-    background-color: #f9f9f9;
-}
-
-.farmstory-order-table img {
-    max-width: 100px;
+/* CSS: 클래스 선택자 사용 */
+.product-image {
+    max-width: 100%;
     height: auto;
-    margin: 10px 0;
-}
-
-.farmstory-description,
-.farmstory-delivery-info,
-.farmstory-return-policy {
-    padding: 15px;
     margin-top: 20px;
-    background: #f9f9f9;
     border-radius: 4px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.farmstory-description h3,
-.farmstory-delivery-info h3,
-.farmstory-return-policy h3 {
-    margin-bottom: 10px;
-}
-
-/* Add additional custom styles below */
+/* 추가 커스텀 스타일링 필요한 경우 여기에 추가 */
 
 
 
