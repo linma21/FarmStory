@@ -2,16 +2,17 @@ package kr.co.farmstory.service;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import kr.co.farmstory.dto.ImagesDTO;
-import kr.co.farmstory.dto.MarketPageRequestDTO;
-import kr.co.farmstory.dto.MarketPageResponseDTO;
-import kr.co.farmstory.dto.ProductDTO;
-import kr.co.farmstory.entity.Images;
-import kr.co.farmstory.entity.Product;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.farmstory.dto.*;
+import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.MarketRepository;
+import kr.co.farmstory.repository.OrderRepository;
+import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,10 @@ import java.util.stream.Collectors;
 @Service
 public class MarketService {
 
+    private OrderRepository orderRepository;
     private final MarketRepository marketRepository;
     private final ModelMapper modelMapper;
+
 
     // 장보기 글목록 페이지 - 장보기 목록 출력
     public MarketPageResponseDTO selectProducts(MarketPageRequestDTO marketPageRequestDTO){
@@ -74,5 +77,31 @@ public class MarketService {
                 .findFirst()
                 .orElse(null);
     return joinProductDTO;
+    }
+
+    // 주문 목록 조회
+    public List<OrderDetailProductDTO> getOrderDetailsWithProductByUserId(String userId) {
+        List<Tuple> results = marketRepository.findOrderDetailsWithProductNameByUserId(userId);
+
+        List<OrderDetailProductDTO> orderDetailProductDTOList =  results.stream().map(tuple -> {
+            // Here, directly use the generated Q classes to access tuple elements in a type-safe manner
+            Integer detailNo = tuple.get(QOrderDetail.orderDetail.detailno);
+            Integer orderNo = tuple.get(QOrderDetail.orderDetail.orderNo);
+            Integer prodNo = tuple.get(QOrderDetail.orderDetail.prodno);
+            Integer count = tuple.get(QOrderDetail.orderDetail.count);
+            String prodName = tuple.get(QProduct.product.prodname);
+
+            // Creating and returning the DTO
+            OrderDetailProductDTO dto = new OrderDetailProductDTO();
+            dto.setDetailNo(detailNo);
+            dto.setOrderNo(orderNo);
+            dto.setProdNo(prodNo);
+            dto.setCount(count);
+            dto.setProdName(prodName);
+
+            return dto;
+        }).collect(Collectors.toList());
+        log.info("orderDetailProductDTOList : " + orderDetailProductDTOList.toString());
+        return orderDetailProductDTOList;
     }
 }

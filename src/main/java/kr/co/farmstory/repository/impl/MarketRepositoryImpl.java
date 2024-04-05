@@ -4,9 +4,7 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
-import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.entity.QImages;
-import kr.co.farmstory.entity.QProduct;
+import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +13,19 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import java.util.ArrayList;
+
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class MarketRepositoryImpl implements MarketRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProduct qProduct = QProduct.product;
     private final QImages qImages = QImages.images;
+    private final QOrders orders = QOrders.orders;
+    private final QOrderDetail orderDetail = QOrderDetail.orderDetail;
+    private final QProduct product = QProduct.product;
 
     // 장보기 게시판 목록 출력 (market/list)
     @Override
@@ -83,4 +84,20 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         return joinProduct;
 
     };
+
+
+    @Override
+    public List<Tuple> findOrderDetailsWithProductNameByUserId(String userId) {
+        QueryResults<Tuple> results = jpaQueryFactory
+                .select(orderDetail.detailno, orderDetail.count, product.prodname, product.prodno, orders.orderNo)
+                .from(orderDetail)
+                .join(orders).on(orderDetail.orderNo.eq(orders.orderNo))
+                .join(product).on(orderDetail.prodno.eq(product.prodno))
+                .where(orders.uid.eq(userId))
+                .fetchResults();
+        log.info("results! : " + results.toString());
+        log.info("results!!!!! : " + userId);
+
+        return results.getResults();
+    }
 }
