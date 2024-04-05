@@ -27,4 +27,23 @@ public class MainController {
         model.addAttribute("appVersion",appVersion);
         return "/index";
     }
+
+
+    @GetMapping("/introduction/hello")
+    public String hello(){
+
+        return "/introduction/hello";
+
+    }
+
+    @GetMapping("/introduction/direction")
+    public String direction(){
+
+        return "/introduction/direction";
+    }
+
+    @GetMapping("/notfound")
+    public String notfound(){
+        return "/notfound";
+    }
 }
