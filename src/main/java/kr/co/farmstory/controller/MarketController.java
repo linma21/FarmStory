@@ -68,6 +68,14 @@ public class MarketController {
         return marketService.modifyCount(cart_prodNos, counts);
     }
 
+    // 장바구니에서 선택 상품 삭제
+    @PostMapping("/market/deleteCart")
+    public ResponseEntity<?> deleteCart(@RequestBody Map<String, int[]> requestData){
+        int[] cart_prodNos = requestData.get("cart_prodNo");
+        log.info("controller-cart_prodNos : " + Arrays.toString(cart_prodNos));
+        return marketService.deleteCart(cart_prodNos);
+    }
+
     // 주문하기 페이지 매핑
     /*
     @GetMapping("/market/order")

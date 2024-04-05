@@ -21,4 +21,6 @@ public interface MarketRepositoryCustom {
     public List<Tuple> selectCartForMarket(String uid);
     // market/cart 페이지에서 market/order 넘어가면서 장바구니 count 변경
     public boolean modifyCount(int[] cart_prodNos, int[] counts);
+    // market/cart 페이지에서 선택 상품 cart_prodNo 테이블에서 삭제
+    public boolean deleteCart(int[] cart_prodNos);
 }

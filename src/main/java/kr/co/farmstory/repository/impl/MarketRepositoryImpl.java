@@ -175,4 +175,26 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
             return false;
         }
     }
+
+    // 장바구니에서 선택 상품 삭제
+    @Transactional
+    @Override
+    public boolean deleteCart(int[] cart_prodNos){
+        try {
+            for (int i=0 ; i < cart_prodNos.length ; i++){
+                long result = jpaQueryFactory
+                        .delete(qCart_product)
+                        .where(qCart_product.cart_prodNo.eq(cart_prodNos[i]))
+                        .execute();
+                // update 실패시 false 반환
+                if (result == 0){
+                    return false;
+                }
+            }
+            // for문의 update 모두 성공하면 ture 반환
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }
