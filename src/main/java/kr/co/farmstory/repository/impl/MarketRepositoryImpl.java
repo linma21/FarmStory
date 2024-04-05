@@ -18,16 +18,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import java.util.ArrayList;
+
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class MarketRepositoryImpl implements MarketRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProduct qProduct = QProduct.product;
     private final QImages qImages = QImages.images;
+    private final QOrders orders = QOrders.orders;
+    private final QOrderDetail orderDetail = QOrderDetail.orderDetail;
+    private final QProduct product = QProduct.product;
     private final QUser qUser = QUser.user;
     private final QOrders qOrders = QOrders.orders;
     private final QOrderDetail qOrderDetail = QOrderDetail.orderDetail;
@@ -91,6 +94,22 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         log.info("results : " + joinProduct);
         return joinProduct;
 
+    };
+
+
+    @Override
+    public List<Tuple> findOrderDetailsWithProductNameByUserId(String userId) {
+        QueryResults<Tuple> results = jpaQueryFactory
+                .select(orderDetail.detailno, orderDetail.count, product.prodname, product.prodno, orders.orderNo)
+                .from(orderDetail)
+                .join(orders).on(orderDetail.orderNo.eq(orders.orderNo))
+                .join(product).on(orderDetail.prodno.eq(product.prodno))
+                .where(orders.uid.eq(userId))
+                .fetchResults();
+        log.info("results! : " + results.toString());
+        log.info("results!!!!! : " + userId);
+
+        return results.getResults();
     }
 
     //사용자가 주문한 목록을 조회(admin - order - list)
@@ -162,6 +181,28 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
                 long result = jpaQueryFactory
                         .update(qCart_product)
                         .set(qCart_product.count, counts[i])
+                        .where(qCart_product.cart_prodNo.eq(cart_prodNos[i]))
+                        .execute();
+                // update 실패시 false 반환
+                if (result == 0){
+                    return false;
+                }
+            }
+            // for문의 update 모두 성공하면 ture 반환
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    // 장바구니에서 선택 상품 삭제
+    @Transactional
+    @Override
+    public boolean deleteCart(int[] cart_prodNos){
+        try {
+            for (int i=0 ; i < cart_prodNos.length ; i++){
+                long result = jpaQueryFactory
+                        .delete(qCart_product)
                         .where(qCart_product.cart_prodNo.eq(cart_prodNos[i]))
                         .execute();
                 // update 실패시 false 반환

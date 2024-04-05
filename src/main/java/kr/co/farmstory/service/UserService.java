@@ -4,10 +4,9 @@ import com.querydsl.core.Tuple;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import kr.co.farmstory.dto.*;
-import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.entity.User;
 import kr.co.farmstory.mapper.UserMapper;
 import kr.co.farmstory.repository.UserRepository;
@@ -17,17 +16,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -43,21 +38,29 @@ public class UserService {
     private final JavaMailSender javaMailSender;
 
 
-    //회원 등록이 되어 있는지 확인하는 기능(0또는 1)
+    // 회원 등록이 되어 있는지 확인하는 기능(0또는 1)
     public int selectCountUser(String type,String value){
 
         return userMapper.selectCountUser(type,value);
     }
 
-    //회원 가입 기능
+    // 회원 가입 기능 
     public void insertUser(UserDTO userDTO){
 
         String encoded = passwordEncoder.encode(userDTO.getPass());
 
         userDTO.setPass(encoded);
 
+        //먼저 user테이블에 회원정보를 입력
         userMapper.insertUser(userDTO);
+
+        //그다음에 account(포인트)테이블에 회원등록
+        userMapper.regiAccount(userDTO.getUid(),1,0);
+
+        //cart테이블에 회원등록
+        userMapper.regiCart(userDTO.getUid());
     }
+    
     @Value("${spring.mail.username}")//이메일 보내는 사람 주소
     private String sender;
     //이메일 보내기 기능
@@ -87,9 +90,7 @@ public class UserService {
         }catch(Exception e){
             log.error("sendEmailConde : " + e.getMessage());
         }
-
     }
-
 
     // 아이디 비밀번호 확인후 로그인
     public boolean selectUser(String uid, String pass){
@@ -101,7 +102,6 @@ public class UserService {
         return false;
     }
 
-
     // 아이디/비밀번호 찾기
     public String findUserIdByNameAndEmail(String name, String email){
         UserDTO user = userMapper.selectUserByNameAndEmail(name, email);
@@ -112,14 +112,13 @@ public class UserService {
         return userMapper.findById(uid);
     }
 
-
+    // 비밀번호 변경 - 만드는 중
     public void updateUserPassword(String uid, String newPassword){
 
         String encodedPass = passwordEncoder.encode(newPassword);
         userMapper.updateUserPassword(uid, encodedPass);
 
     }
-
 
     // 회원목록
     public List<UserDTO> getUserList(PageRequestDTO pageRequestDTO) {
@@ -132,6 +131,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    // user 테이블 총 칼럼 수 구하기
     public int getTotalCount(PageRequestDTO pageRequestDTO) {
         // 조건에 맞는 사용자 수를 반환하는 로직을 구현합니다.
         // 예시에서는 간단히 모든 사용자 수를 반환합니다.
@@ -143,6 +143,7 @@ public class UserService {
         User user = userRepository.findById(uid).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new UserDTO(user.getUid(), user.getPass(), user.getName(), user.getEmail(), user.getNick(), user.getHp(), user.getRole(), user.getLevel(), user.getZip(), user.getAddr1(), user.getAddr2(), user.getRegip(), user.getRegDate(), user.getLeaveDate(), user.getProvider(),0);
     }
+
     // 주문한 사용자와 포인트 조회
     public UserDTO selectUserForOrder(String uid){
 
@@ -159,28 +160,34 @@ public class UserService {
 
         return userDTO;
     }
+
+    // 관리자 페이지에서 유저 등급, 권한 수정
     public void updateUser(UserDTO userDTO) {
         log.info("updateUser....1");
+        // 유저 정보 조회
         User user = userRepository.findById(userDTO.getUid())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userDTO.getUid()));
+
         log.info("updateUser....2" + user.toString());
+        // 새 권한, 등급 입력
         user.setLevel(userDTO.getLevel());
         user.setRole(userDTO.getRole());
-        // 여기에 추가적으로 업데이트 해야 할 필드가 있다면 추가합니다.
         log.info("updateUser....3" + user.toString());
-        userRepository.save(user); // 변경된 사용자 정보 저장
+        // DB에 정보 수정하기
+        userRepository.save(user);
         log.info("updateUser....4 save");
 
     }
-
-
+    
+    // 유저 삭제하기 - 정보를 남기고 권한을 변경하기
+    @Transactional
     public void deleteUser(String uid) {
         // userRepository를 사용하여 사용자를 삭제합니다.
-
-
+        
         userRepository.deleteById(uid);
     }
 
+    // 관리자 페이지 회원 정보 조회 (all)
     public List<UserDTO> allUser(){
 
         List<User> users = userRepository.findAll();

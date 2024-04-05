@@ -1,0 +1,16 @@
+   @NotBlank//null, ""," " 모두 허용 안함
+    @Pattern(regexp="^[a-z0-9]{4,10}$",message ="영어 소문자와 숫자로 최소4자~최대10자 입력")
+    private String uid;
+
+    @NotEmpty//null,"" 허용 안함
+    private String name;
+
+    @NotNull//null 허용 안함
+    private String birth;
+
+    @Email//email 형식 검사
+    private String email;
+
+    @Min(1)
+    @Max(100)//최소값, 최대값 범위 검사
+    private int age;

@@ -1,7 +1,7 @@
 package kr.co.farmstory.service;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import kr.co.farmstory.dto.*;
 import kr.co.farmstory.dto.ImagesDTO;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
@@ -9,8 +9,8 @@ import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.entity.Cart_product;
 import kr.co.farmstory.entity.Images;
 import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.entity.QProduct;
 import kr.co.farmstory.repository.MarketRepository;
+import kr.co.farmstory.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -31,6 +31,7 @@ public class MarketService {
     private final MarketRepository marketRepository;
     private final ModelMapper modelMapper;
 
+
     // 장보기 글목록 페이지 - 장보기 목록 출력
     public MarketPageResponseDTO selectProducts(MarketPageRequestDTO marketPageRequestDTO){
         log.info("selectProducts Service 1");
@@ -39,7 +40,7 @@ public class MarketService {
         log.info("selectProducts Service 2 pageable : " + pageable.toString());
         log.info("selectProducts Service 2 pageable : " + marketPageRequestDTO.toString());
 
-        // select * from `product` order by no desc limt (0, 10) + 사진
+        // select * from `product` order by no desc limit (0, 10) + 사진
         Page<Product> productList = marketRepository.selectProducts(marketPageRequestDTO, pageable);
 
         log.info("productList : " + productList.toString());
@@ -58,6 +59,7 @@ public class MarketService {
                 .total(total)
                 .build();
     }
+
     // 장보기 글보기 페이지 - 장보기 게시글 출력
     public ProductDTO selectProduct(int prodeno){
         List<Tuple> joinProduct = marketRepository.selectProduct(prodeno);
@@ -77,6 +79,32 @@ public class MarketService {
                 .findFirst()
                 .orElse(null);
     return joinProductDTO;
+    }
+
+    // 주문 목록 조회
+    public List<OrderDetailProductDTO> getOrderDetailsWithProductByUserId(String userId) {
+        List<Tuple> results = marketRepository.findOrderDetailsWithProductNameByUserId(userId);
+
+        List<OrderDetailProductDTO> orderDetailProductDTOList = results.stream().map(tuple -> {
+            // Here, directly use the generated Q classes to access tuple elements in a type-safe manner
+            Integer detailNo = tuple.get(0, Integer.class);
+            Integer orderNo = tuple.get(1, Integer.class);
+            Integer prodNo = tuple.get(2, Integer.class);
+            Integer count = tuple.get(3, Integer.class);
+            String prodName = tuple.get(4, String.class);
+
+            // Creating and returning the DTO
+            OrderDetailProductDTO dto = new OrderDetailProductDTO();
+            dto.setDetailNo(detailNo);
+            dto.setOrderNo(orderNo);
+            dto.setProdNo(prodNo);
+            dto.setCount(count);
+            dto.setProdName(prodName);
+
+            return dto;
+        }).collect(Collectors.toList());
+        log.info("orderDetailProductDTOList : " + orderDetailProductDTOList.toString());
+        return orderDetailProductDTOList;
     }
 
     // 장바구니 목록
@@ -112,6 +140,18 @@ public class MarketService {
             response.put("data","수량 변경 실패");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
 
+    // 장바구니에서 선택 상품 삭제
+    public ResponseEntity<?> deleteCart(int[] cart_prodNos){
+        boolean result = marketRepository.deleteCart(cart_prodNos);
+        Map<String, String> response = new HashMap<>();
+        if (result){
+            response.put("data","삭제 성공");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            response.put("data","삭제 실패");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 }

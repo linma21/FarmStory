@@ -36,7 +36,9 @@ public class AdminController {
 
     // admin 메인 페이지
     @GetMapping("/admin/index")
-    public String adminIndex(Model model){
+    public String adminIndex(Model model,PageRequestDTO pageRequestDTO){
+
+        OrderListResponseDTO orderListResponseDTO = null;
 
         //여기는 상품현황 시작
         log.info("AdminController - adminIndex-product : 들어옴");
@@ -46,7 +48,6 @@ public class AdminController {
         log.info("AdminController - adminIndex : "+products);
 
         model.addAttribute("products",products);
-
         //상품현황 끝
 
         //여기는 회원현황 시작
@@ -57,7 +58,19 @@ public class AdminController {
         log.info("AdminController-adminIndex-User :"+users);
 
         model.addAttribute("users",users);
+        //회원현황 끝
 
+        //주문현황 시작
+        log.info("AdminController - adminIndex-orderlist :  들어옴");
+
+
+
+        //모든 주문조회 및 페이지 처리
+        orderListResponseDTO = adminService.orderList(pageRequestDTO);
+
+        log.info("AdminController - adminIndex-orderlist"+orderListResponseDTO);
+
+        model.addAttribute(orderListResponseDTO);
 
         return "/admin/index";
     }
@@ -101,8 +114,8 @@ public class AdminController {
         return "/admin/product/register";
     }
 
-
-    ////ADMIN-User////
+////ADMIN-User////
+    // 사용자 목록
     @GetMapping("/admin/user/list")
     public String userList(Model model, PageRequestDTO pageRequestDTO) {
         List<UserDTO> userDTOList = userService.getUserList(pageRequestDTO);
@@ -123,6 +136,7 @@ public class AdminController {
         return "/admin/user/view";
     }
 
+    // 등급, 권한 수정
     @PostMapping("/admin/user/update")
     @ResponseBody
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
@@ -144,7 +158,7 @@ public class AdminController {
         }
     }
 
-
+    // 사용자 탈퇴
     @PostMapping("/admin/user/delete")
     @ResponseBody
     public ResponseEntity<?> deleteUser(@RequestParam("uid") String uid) {
@@ -158,20 +172,19 @@ public class AdminController {
         }
     }
 
+
+    //주문자 리스트 불러오기
     @GetMapping("/admin/order/list")
     public String orderList(Model model,PageRequestDTO pageRequestDTO){
 
         OrderListResponseDTO orderListResponseDTO = null;
 
-
-        //여기에 주문한 내용들을 띄우자.
+        //모든 주문조회 및 페이지 처리
         orderListResponseDTO = adminService.orderList(pageRequestDTO);
 
         log.info("controller - orderListResponseDTO : "+orderListResponseDTO);
 
-        model.addAttribute(orderListResponseDTO);
-
-        //페이지네이션도 써야함...
+        model.addAttribute(orderListResponseDTO);//주문정보 및 페이지 정보를 orderListResponseDTO에 넣어둠.
 
          return "/admin/order/list";
     }

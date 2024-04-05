@@ -1,12 +1,11 @@
 package kr.co.farmstory.controller;
 
+import kr.co.farmstory.dto.*;
 import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
-import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,10 +51,25 @@ public class MarketController {
         return "/market/view";
     }
 
+
+    // 주문목록
+    @GetMapping("/market/orderList")
+    public String getOrderDetails(Model model, @RequestParam(required = false) String userId) {
+        if (userId == null) {
+            userId = "devUser"; // 개발 단계의 임시 사용자 ID
+        }
+        List<OrderDetailProductDTO> details = marketService.getOrderDetailsWithProductByUserId(userId);
+        log.info("details!! : " + details);
+        model.addAttribute("details", details);
+        return "/market/orderList";
+    }
+
     // 장바구니 목록 페이지 매핑
     @GetMapping("/market/cart")
     public String marketCart(Model model, String uid){
         log.info("marketCartController1");
+        //marketService.insertProduct(uid, prodno);
+
         List<ProductDTO> productDTO = marketService.selectCartForMarket(uid);
         log.info("marketCartController2 : " + productDTO.toString());
         model.addAttribute("productDTO", productDTO);
@@ -72,6 +85,15 @@ public class MarketController {
         log.info(Arrays.toString(counts));
         return marketService.modifyCount(cart_prodNos, counts);
     }
+
+    // 장바구니에서 선택 상품 삭제
+    @PostMapping("/market/deleteCart")
+    public ResponseEntity<?> deleteCart(@RequestBody Map<String, int[]> requestData){
+        int[] cart_prodNos = requestData.get("cart_prodNo");
+        log.info("controller-cart_prodNos : " + Arrays.toString(cart_prodNos));
+        return marketService.deleteCart(cart_prodNos);
+    }
+
     // 주문하기 페이지 매핑
     @GetMapping("/market/order")
     public String marketOrder(HttpSession httpSession,
@@ -118,3 +140,4 @@ public class MarketController {
         }
     }
 }
+

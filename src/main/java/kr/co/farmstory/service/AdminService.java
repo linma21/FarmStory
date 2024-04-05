@@ -1,11 +1,6 @@
 package kr.co.farmstory.service;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import kr.co.farmstory.dto.*;
 import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.ImagesRepository;
@@ -14,10 +9,8 @@ import kr.co.farmstory.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -97,7 +90,6 @@ public class AdminService {
             String thumb750ext = thumb750oName.substring(thumb750oName.lastIndexOf("."));
             String thumb750sName = UUID.randomUUID().toString() + thumb750ext;
 
-
             log.info("파일 업로드 service8 thumb240sName : " + thumb240sName);
             log.info("파일 업로드 service9 thumb750sName : " + thumb750sName);
 
@@ -127,22 +119,6 @@ public class AdminService {
 
     }
 
-
-    /*
-    public List<ProductDTO> getAllProductDTOs(Product product) {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
-    private ProductDTO convertToDto(Product product) {
-        return modelMapper.map(product, ProductDTO.class);
-    }
-
-     */
-
-
     //제품 목록을 조회
     public List<ProductDTO> products(){
         List<Product> products = productRepository.findAll();
@@ -153,7 +129,7 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    //사용자가 주문한 목록을 조회
+    // 사용자가 주문한 목록을 조회
     public OrderListResponseDTO orderList(PageRequestDTO pageRequestDTO){
 
         log.info("AdminService - orderList....1");
@@ -181,7 +157,6 @@ public class AdminService {
                     Integer price= tuple.get(5,Integer.class);
                     Integer delCost= tuple.get(6,Integer.class);
                     Integer amount = tuple.get(7,Integer.class);
-
 
                     OrderListDTO orderListDTO = new OrderListDTO();
 

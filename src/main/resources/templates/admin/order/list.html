@@ -6,9 +6,9 @@
         <aside>
             <h3>주요기능</h3>
             <ul>
-                <li><a href="#">상품관리</a></li>
-                <li class="on"><a href="#">주문관리</a></li>
-                <li><a href="#">회원관리</a></li>
+                <li class="on"><a th:href="@{/admin/product/list}">상품관리</a></li>
+                <li><a th:href="@{/admin/order/list}">주문관리</a></li>
+                <li><a th:href="@{/admin/user/list}">회원관리</a></li>
             </ul>
         </aside>
         <section id="orderList">
@@ -33,8 +33,8 @@
                         <th>확인</th>
                     </tr>
                     <tr th:each="order, index :${orderListResponseDTO.dtoList}">
-                        <td th:text="${index.index+1}"></td>
-                        <td th:text="${order.orderNO}">1001</td>
+                        <td th:text="${index.index+1}" style="font-weight: bold"></td>
+                        <td>[[${order.orderNO}]]</td>
                         <td th:text="${order.prodname}">사과 500g</td>
                         <td>
                             <span th:if="${order.amount} >= 1000" th:text="(${order.amount}/1000)+'kg'"></span>
