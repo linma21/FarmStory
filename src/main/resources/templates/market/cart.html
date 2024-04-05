@@ -14,7 +14,7 @@
             const totalPoint = document.getElementById('totalPoint');
             const totalOrder = document.getElementById('totalOrder');
 
-            const prodCheckBox = document.querySelector('.prodCheckBox');
+            const prodCheckBox = document.querySelectorAll('.prodCheckBox');
 
         //// 페이지 로드시 가격 표시 ////
             const prodCount = document.getElementsByName('prodCount');
@@ -44,23 +44,7 @@
             totalPoint.innerText = totalProdPoint.toString();
             totalOrder.innerText = totalProdTotal.toString();
 
-            // prodCheckBox를 체크할때마다 최종 가격 변동
-            // prodCheckBox가 체크되어 있는 tr만 가지고와서 가격 포인트 할인 등등 더해서 밑에 보여주기
-
-
-            document.addEventListener('click', function (e){
-                if (e.target.className === "prodCheckBox"){
-                    const checkBox = e.target;
-                    // const tr = checkBox.parentNode.parentNode;
-                    if (checkBox.checked){
-                        console.log("체크");
-                        console.log(tr.querySelector('[name="prodPrice"]').innerText);
-                    }else {
-                        console.log("해제");
-                    }
-                }
-
-            })
+            // 수량 조절시 실시간 가격 조정
             const counts = document.getElementsByClassName('count');
             Array.from(counts).forEach(function(count) {
                 count.addEventListener('input', function(e) {
@@ -103,7 +87,7 @@
                     prodTotalTag.innerText = modSubTotal; // 수량 변경된 행의 소계 변경
                 });
             });
-
+            // 주문하기 버튼 클릭시 DB에서 수량조절 후 order로 전달
             const btnOrder = document.getElementsByClassName('btnOrder')[0];
             btnOrder.onclick = function () {
                 alert("g2");
@@ -160,6 +144,123 @@
                     })
                     .catch(err => console.log(err))
             }
+
+
+            // prodCheckBox를 체크할때마다 최종 가격 변동
+            const allCheckBox = document.getElementById('allCheckBox');
+            let checkedTurn = 0;
+            allCheckBox.onclick = function (){
+                if (checkedTurn === 0) {
+                    prodCheckBox.forEach(checkBox => {
+                        checkBox.checked = true;
+                    })
+                    checkedTurn = 1;
+                } else {
+                    prodCheckBox.forEach(checkBox => {
+                        checkBox.checked = false;
+                    })
+                    checkedTurn = 0;
+                }
+            }
+
+            // 선택 삭제 버튼 클릭시
+            const btnDeleteProd = document.getElementById('btnDeleteProd');
+
+            btnDeleteProd.onclick = function (e) {
+                // 삭제할 상품의 번호를 저장하는 배열
+                let cart_prodNo = [];
+                let deleteTr = [];
+                // forEach로 순회하며 checked된 상품의 번호 찾기
+                prodCheckBox.forEach(check => {
+                    if (check.checked){
+                        const checkBox = check;
+                        const tr = checkBox.parentNode.parentNode;
+                        deleteTr.push(tr);
+                        cart_prodNo.push(tr.querySelector('[name="cart_prodNo"]').value);
+                    }
+                })
+                console.log(cart_prodNo);
+
+                // 삭제
+                const result = confirm("선택하신 상품을 장바구니에서 삭제하시겠습니까?");
+                if (result){
+                    const jsonData = {
+                        "cart_prodNo" : cart_prodNo
+                    }
+                    console.log("g2");
+                    fetch("/farmstory/market/deleteCart", {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(jsonData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('삭제에 실패했습니다.');
+                            }
+                            return response.json()
+                        })
+                        .then(data => {
+                            console.log("g3");
+
+                            if (data.data === "삭제 성공"){
+                                for (let i = 0; i < cart_prodNo.length; i++) {
+                                    console.log(cart_prodNo[i]);
+                                    deleteTr[i].remove();
+                                }
+                                // 다음 삭제를 위해 배열 비우기
+                                cart_prodNo = [];
+                                deleteTr = [];
+
+                                // 전체 합계 재집계
+                                totalProdCount = 0;
+                                totalProdPrice = 0;
+                                totalProdDisPrice = 0;
+                                totalProdPoint = 0;
+                                totalProdTotal = 0;
+                                // 각 포인트, 가격, 할인, 합계값 더하는 for문
+                                for (let i = 0; i < prodPoint.length; i++) {
+                                    totalProdCount += 1;
+                                    totalProdPrice += (parseInt(prodPrice[i].innerText) * parseInt(prodCount[i].value));
+                                    totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText))* parseInt(prodCount[i].value);
+                                    totalProdPoint += (parseInt(prodPoint[i].innerText) * parseInt(prodCount[i].value));
+                                    totalProdTotal += parseInt(prodTotal[i].innerText);
+                                }
+                                // 태그에 값 출력하기
+                                totalCount.innerText = totalProdCount.toString();
+                                totalPrice.innerText = totalProdPrice.toString();
+                                totalDiscount.innerText = totalProdDisPrice.toString();
+                                totalPoint.innerText = totalProdPoint.toString();
+                                totalOrder.innerText = totalProdTotal.toString();
+
+
+
+                            }
+                        })
+                        .catch(err => console.log(err))
+                }else {
+                    alert("취소되었습니다.");
+                }
+
+            }
+
+/*
+            document.addEventListener('click', function (e){
+                if (e.target.className === "prodCheckBox"){
+                    const checkBox = e.target;
+                    const tr = checkBox.parentNode.parentNode;
+                    if (checkBox.checked){
+                        console.log("체크");
+                        console.log(tr.querySelector('[name="prodPrice"]').innerText);
+                    }else {
+                        console.log("해제");
+                    }
+                }
+
+            })
+
+ */
+
+
         }
     </script>
 
@@ -212,7 +313,7 @@
                     <thead>
                     <tr>
                         <th>
-                            <input type="checkbox" name="all">
+                            <input type="checkbox" id="allCheckBox">
                         </th>
                         <th>이미지</th>
                         <th>종류</th>
@@ -260,7 +361,7 @@
 
                     </tbody>
                 </table>
-                <input type="button" name="del" value="선택삭제">
+                <input type="button" name="del" id="btnDeleteProd" value="선택삭제">
 
                 <div class="info">
                     <table border="0">
