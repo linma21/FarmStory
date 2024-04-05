@@ -112,6 +112,18 @@ public class MarketService {
             response.put("data","수량 변경 실패");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
 
+    // 장바구니에서 선택 상품 삭제
+    public ResponseEntity<?> deleteCart(int[] cart_prodNos){
+        boolean result = marketRepository.deleteCart(cart_prodNos);
+        Map<String, String> response = new HashMap<>();
+        if (result){
+            response.put("data","삭제 성공");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            response.put("data","삭제 실패");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 }
