@@ -76,8 +76,10 @@ public class MarketController {
 
     // 장바구니 목록 페이지 매핑
     @GetMapping("/market/cart")
-    public String marketCart(Model model, String uid){
+    public String marketCart(Model model, int prodno, String uid){
         log.info("marketCartController1");
+        //marketService.insertProduct(uid, prodno);
+
         List<ProductDTO> productDTO = marketService.selectCartForMarket(uid);
         log.info("marketCartController2 : " + productDTO.toString());
         model.addAttribute("productDTO", productDTO);
@@ -101,7 +103,6 @@ public class MarketController {
         log.info("controller-cart_prodNos : " + Arrays.toString(cart_prodNos));
         return marketService.deleteCart(cart_prodNos);
     }
-
 
     // 주문하기 페이지 매핑
     @GetMapping("/market/order")

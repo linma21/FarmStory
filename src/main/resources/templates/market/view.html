@@ -98,7 +98,8 @@
                         <tr>
                             <td class="prodOrder">
                                 <input type="number" name="count" min="1" value="0" id="count" style="width: 50px;">
-                                <a th:href="@{/cart.html}" id="btnCart" class="btn btnCart">장바구니</a>
+                                <!--@{/market/cart(prodno=${productDTO.prodno}, uid=${#authentication.principal.user.uid})}-->
+                                <a th:href="@{/market/cart}" id="btnCart" class="btn btnCart">장바구니</a>
                                 <a th:href="@{/order.html}" id="btnOrder" class="btn btnOrder">바로구매</a>
                             </td>
                         </tr>
