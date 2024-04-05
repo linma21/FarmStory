@@ -1,5 +1,6 @@
 package kr.co.farmstory.service;
 
+import com.querydsl.core.Tuple;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -55,10 +56,15 @@ public class UserService {
 
         userDTO.setPass(encoded);
 
+        //먼저 user테이블에 회원정보를 입력
         userMapper.insertUser(userDTO);
+
+        //그다음에 account(포인트)테이블에 회원등록
+        userMapper.regiAccount(userDTO.getUid(),1,0);
+
+        //cart테이블에 회원등록
+        userMapper.regiCart(userDTO.getUid());
     }
-
-
     @Value("${spring.mail.username}")//이메일 보내는 사람 주소
     private String sender;
     //이메일 보내기 기능
@@ -142,9 +148,24 @@ public class UserService {
     // 상세페이지(id로 그 유저의 정보를 가져온다)
     public UserDTO getUserByUid(String uid){
         User user = userRepository.findById(uid).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserDTO(user.getUid(), user.getPass(), user.getName(), user.getEmail(), user.getNick(), user.getHp(), user.getRole(), user.getLevel(), user.getZip(), user.getAddr1(), user.getAddr2(), user.getRegip(), user.getRegDate(), user.getLeaveDate(), user.getProvider());
+        return new UserDTO(user.getUid(), user.getPass(), user.getName(), user.getEmail(), user.getNick(), user.getHp(), user.getRole(), user.getLevel(), user.getZip(), user.getAddr1(), user.getAddr2(), user.getRegip(), user.getRegDate(), user.getLeaveDate(), user.getProvider(),0);
     }
+    // 주문한 사용자와 포인트 조회
+    public UserDTO selectUserForOrder(String uid){
 
+        log.info("주문하기 사용자 조회 서비스 1 :" + uid);
+        Tuple result = userRepository.selectUserForOrder(uid);
+        log.info("주문하기 사용자 조회 서비스 2 ");
+        // Tuple -> Entity
+        User user = result.get(0, User.class);
+        log.info("주문하기 사용자 조회 서비스 3 :" + user.toString());
+        int point = result.get(1, Integer.class);
+        user.setPoint(point);
+        // Entity -> DTO
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        return userDTO;
+    }
     public void updateUser(UserDTO userDTO) {
         log.info("updateUser....1");
         User user = userRepository.findById(userDTO.getUid())

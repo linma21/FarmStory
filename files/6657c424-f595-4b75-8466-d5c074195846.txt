@@ -1,0 +1,11 @@
+이클립스에서 배포하기
+
+1.배포파일 만들기(압축파일임)
+
+프로젝트 우측->export->war export
+
+
+
+2. 파일 넣기 
+C:\Users\java\Desktop\workspace\JSP\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps
+여기에 war파일 드래그->압축풀기
