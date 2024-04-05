@@ -3,31 +3,24 @@
       layout:decorate="~{/layout/userLayout}">
 <div class="container" layout:fragment="content">
     <!--<script th:inline="javascript" th:src="@{/js/community.js}"></script>-->
-    <script th:inline="javascript" th:src="@{/js/communityView.js}"></script>
-
-
+    <script th:inline="javascript" th:src="@{/js/eventView.js}"></script>
     <main>
         <div id="sub">
-            <div><img th:src="@{/images/sub_top_tit5.png}" alt="COMMUNITY"></div>
-            <section class="community">
+            <div><img th:src="@{/images/sub_top_tit4.png}" alt="CROP TALK"></div>
+            <section class="event">
                 <aside>
-                    <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
-
-                <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
-                </ul>
-            </aside>
-            <article class="view">
-                <nav id="communityNav">
-                    <img th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문"/>
-                    <p>
-                        HOME > 커뮤니티 > <em>자주묻는질문</em>
-                    </p>
-                </nav>
+                    <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
+                    <ul class="lnb">
+                        <li class="on"><a th:href="@{/event/list(cate=event)}">이벤트</a></li>
+                    </ul>
+                </aside>
+                <article>
+                    <nav id="communityNav">
+                        <img th:src="@{/images/sub_nav_tit_cate4_tit1.png}" alt="이벤트"/>
+                        <p>
+                            HOME > 이벤트 > <em>이벤트</em>
+                        </p>
+                    </nav>
                 <!-- 내용 시작 -->
                 <div id="community_view">
                     <article class="community_content">
@@ -36,7 +29,10 @@
                             <div>
                                 <div class="title">
                                     <h2>[[${article.title}]]</h2>
-                                    <input type="hidden" th:value="${#authentication.principal.user.uid}" id="user">
+                                    <!-- 로그인 하지 않은 사용자의 경우 principal.user가 없음 -->
+                                    <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
+                                        <input type="hidden" th:value="${#authentication.principal.user.uid}" id="user"  >
+                                    </th:block>
                                     <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
                                 </div>
                                 <div class="info">
@@ -67,27 +63,30 @@
                 <section class="community_view">
                     <!-- 수정 / 삭제 / 목록 버튼 -->
                     <div>
+                        <!-- 로그인한 사용자 정보가 있는 경우 -->
+                        <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
                         <!-- 작성 당사자에게만 출력 -->
-                        <th:block th:if="${article.writer} == ${#authentication.principal.user.uid}">
-                            <a th:if="${pageResponseDTO.keyword == null}"
-                               th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
-                               class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
-                            <a th:if="${pageResponseDTO.keyword != null}"
-                               th:href="@{/community/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
-                               class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
-                            <!-- 삭제 버튼 -->
-                            <a th:if="${pageResponseDTO.keyword == null}"
-                               th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
-                               class="btn btn-secondary btn-sm" data-art="artRemove"
-                               onclick="return confirmDelete()">삭제</a>
-                            <a th:if="${pageResponseDTO.keyword != null}"
-                               th:href="@{/community/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
-                               class="btn btn-secondary btn-sm" data-art="artRemove"
-                               onclick="return confirmDelete()">삭제</a>
+                            <th:block th:if="${article.writer} == ${#authentication.principal.user.uid} or ${#authentication.principal.user.role} == 'ADMIN'">
+                                <a th:if="${pageResponseDTO.keyword == null}"
+                                   th:href="@{/event/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                                   class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                                <a th:if="${pageResponseDTO.keyword != null}"
+                                   th:href="@{/event/modify(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                                   class="btn btn-secondary btn-sm" data-art="artModify">수정</a>
+                                <!-- 삭제 버튼 -->
+                                <a th:if="${pageResponseDTO.keyword == null}"
+                                   th:href="@{/event/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                                   class="btn btn-secondary btn-sm" data-art="artRemove"
+                                   onclick="return confirmDelete()">삭제</a>
+                                <a th:if="${pageResponseDTO.keyword != null}"
+                                   th:href="@{/event/delete(ano=${article.ano}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type},keyword=${pageResponseDTO.keyword}, pg=${pageResponseDTO.pg})}"
+                                   class="btn btn-secondary btn-sm" data-art="artRemove"
+                                   onclick="return confirmDelete()">삭제</a>
+                            </th:block>
                         </th:block>
-                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                        <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                            class="btn btnList">목록</a>
-                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                        <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/event/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                            class="btn btnList">목록</a>
                     </div>
                         <!-- 댓글목록 -->
@@ -98,7 +97,9 @@
                         <section class="commentForm">
                             <h3>댓글쓰기</h3>
                             <form th:action="@{/comment}" name="commentForm" method="post" id="commentForm">
-                                <input type="hidden" name="uid" th:value="${#authentication.principal.user.uid}">
+                                <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
+                                    <input type="hidden" name="uid" th:value="${#authentication.principal.user.uid}">
+                                </th:block>
                                 <input type="hidden" name="ano" th:value="${article.ano}" id="ano"/>
                                 <textarea name="content" class="commentContent"></textarea>
                                 <div>

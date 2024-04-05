@@ -6,7 +6,8 @@ window.onload = function (){
     const cate = cateData.value;
     const anoData = document.getElementById("ano");
     const ano = anoData.value;
-
+    const userData = document.getElementById("user");
+    const user = userData.value;
 
     const commentList = document.getElementById('commentList');
     const commentForm = document.getElementById('commentForm');
@@ -34,22 +35,16 @@ window.onload = function (){
             item.classList.add("on");
         }
     });
-    // community 상단 Nav 표시하기
-    if(cate === 'notice'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit1.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>공지사항</em></p>`;
-    } else if(cate === 'menu'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit2.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>오늘의식단</em></p>`;
+    // croptalk 상단 Nav 표시하기
+    if(cate === 'story'){
+        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit1.png" alt="농작물이야기"/>
+                                                <p> HOME > 농작물이야기 > <em>농작물이야기</em></p>`;
+    } else if(cate === 'grow'){
+        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit2.png" alt="귀농학교"/>
+                                                <p> HOME > 농작물이야기 > <em>귀농학교</em></p>`;
     } else if(cate === 'chef'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit3.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>나도요리사</em></p>`;
-    } else if(cate === 'qna'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit4.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>1:1고객문의</em></p>`;
-    } else if(cate === 'faq'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>자주묻는질문</em></p>`;
+        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit3.png" alt="텃밭가꾸기"/>
+                                                <p> HOME > 농작물이야기 > <em>텃밭가꾸기</em></p>`;
     }
     // 페이지 로드시 textarea 자동 높이 조절
     const textareas = document.querySelectorAll('textarea');
@@ -69,7 +64,6 @@ window.onload = function (){
             this.nextElementSibling.innerHTML = parseInt(count) + 1;
         }
     }
-    
      */
     // 댓글 불러오기 /////////////////////////////////////////////////////////////////////////
     setTimeout(async function () {

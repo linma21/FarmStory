@@ -11,6 +11,7 @@ import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,9 @@ public class AdminController {
 
     // admin 메인 페이지
     @GetMapping("/admin/index")
-    public String adminIndex(Model model){
+    public String adminIndex(Model model,PageRequestDTO pageRequestDTO){
+
+        OrderListResponseDTO orderListResponseDTO = null;
 
         //여기는 상품현황 시작
         log.info("AdminController - adminIndex-product : 들어옴");
@@ -45,7 +48,6 @@ public class AdminController {
         log.info("AdminController - adminIndex : "+products);
 
         model.addAttribute("products",products);
-
         //상품현황 끝
 
         //여기는 회원현황 시작
@@ -56,7 +58,19 @@ public class AdminController {
         log.info("AdminController-adminIndex-User :"+users);
 
         model.addAttribute("users",users);
+        //회원현황 끝
 
+        //주문현황 시작
+        log.info("AdminController - adminIndex-orderlist :  들어옴");
+
+
+
+        //모든 주문조회 및 페이지 처리
+        orderListResponseDTO = adminService.orderList(pageRequestDTO);
+
+        log.info("AdminController - adminIndex-orderlist"+orderListResponseDTO);
+
+        model.addAttribute(orderListResponseDTO);
 
         return "/admin/index";
     }
@@ -155,6 +169,23 @@ public class AdminController {
             log.error("Delete Error", e);
             return ResponseEntity.internalServerError().body(Map.of("success", false, "message", "사용자 삭제 중 오류가 발생했습니다."));
         }
+    }
+
+
+    //주문자 리스트 불러오기
+    @GetMapping("/admin/order/list")
+    public String orderList(Model model,PageRequestDTO pageRequestDTO){
+
+        OrderListResponseDTO orderListResponseDTO = null;
+
+        //모든 주문조회 및 페이지 처리
+        orderListResponseDTO = adminService.orderList(pageRequestDTO);
+
+        log.info("controller - orderListResponseDTO : "+orderListResponseDTO);
+
+        model.addAttribute(orderListResponseDTO);//주문정보 및 페이지 정보를 orderListResponseDTO에 넣어둠.
+
+         return "/admin/order/list";
     }
 
 }

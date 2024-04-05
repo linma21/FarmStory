@@ -2,6 +2,7 @@ package kr.co.farmstory.oauth2;
 
 
 import kr.co.farmstory.entity.User;
+import kr.co.farmstory.mapper.UserMapper;
 import kr.co.farmstory.repository.UserRepository;
 import kr.co.farmstory.security.MyUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +22,7 @@ import java.util.Map;
 public class OAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
 
     @Override
@@ -60,20 +63,17 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             // 카카오 속성 사용
         }
 
-        /*
-
-        Map<String,Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
-
-
-        //회원가입 처리
-        //String email = (String) attributes.get("email");
-        //String name = (String) attributes.get("name");
-        String email = (String) kakaoAccount.get("email");
-        String name = (String)attributes.get("profile_nickname");
 
 
 
-*/
+        // 사용자가 이미 존재하는지 확인
+        Optional<User> optionalUser = userRepository.findById(email);
+        if (optionalUser.isPresent()) {
+            // 이미 존재하는 경우에는 저장 및 수정을 하지 않음
+            return MyUserDetails.builder()
+                    .user(optionalUser.get())
+                    .build();
+        }
 
         User user = userRepository.findById(email)
                 .orElse(User.builder()
@@ -81,13 +81,15 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                         .email(email)
                         .name(name)
                         .nick(uid)
+                        .level("1")
                         .role("USER")
                         .provider(provider)
                         .build());
 
         //저장 or 수정
             userRepository.save(user);
-
+            userMapper.regiAccount(email,1,0);
+            userMapper.regiCart(email);
 
             //SecurityContextHolder principal(사용자 인증 객체)로 저장
         return MyUserDetails.builder()

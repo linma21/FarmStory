@@ -28,10 +28,29 @@ public class MainController {
         return "/index";
     }
 
+
     // 준비중 페이지를 위한 메서드 추가
     @GetMapping("/notfound")
     public String notFound() {
         // "notfound.html" 템플릿으로 리다이렉트
         return "notfound";
+
+
+    @GetMapping("/introduction/hello")
+    public String hello(){
+
+        return "/introduction/hello";
+
+    }
+
+    @GetMapping("/introduction/direction")
+    public String direction(){
+
+        return "/introduction/direction";
+    }
+
+    @GetMapping("/notfound")
+    public String notfound(){
+        return "/notfound";
     }
 }
