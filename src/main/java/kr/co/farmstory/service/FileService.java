@@ -39,7 +39,7 @@ public class FileService {
     @Value("${file.upload.path}")
     private String fileUploadPath;
 
-    // 파일 업로드
+    // 게시글에서 파일 업로드
     public List<FileDTO> fileUpload(ArticleDTO articleDTO) {
 
         // uploads 폴더 자동 생성
@@ -83,7 +83,7 @@ public class FileService {
         }
         return files;
     }
-    // 파일 insert
+    // 파일 DB에 insert
     public void insertFile(List<FileDTO> files, int ano){
         // 파일 각각 insert
         for(FileDTO fileDTO : files){

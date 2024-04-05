@@ -67,7 +67,7 @@ public class EventController {
         model.addAttribute(pageResponseDTO);
         return "/event/write";
     }
-
+    // 글 쓴거 보내기
     @PostMapping("/event/write")
     public String write(ArticleDTO articleDTO){
 

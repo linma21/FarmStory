@@ -557,7 +557,9 @@ main > .info > div > .account {
 /* 장보기 */
 #sub > .market .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate2_lnb1.png');}
 #sub > .market .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate2_lnb1_ov.png');}
+#sub > .market .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate2_lnb1_ov.png');}
 #sub > .market .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate2_lnb1_ov.png');}
+#sub > .market .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate2_lnb1_ov.png');} /*장바구니*/
 
 #sub > .market > .list > .sort > a {
     color: #999;
@@ -1003,15 +1005,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* 글 목록 리스트 */
 /* 농작물 이야기 */
-#sub > .croptalk .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate3_lnb1.png');}
-#sub > .croptalk .lnb > li:nth-child(2) > a {background-image: url('../images/sub_cate3_lnb2.png');}
-#sub > .croptalk .lnb > li:nth-child(3) > a {background-image: url('../images/sub_cate3_lnb3.png');}
-#sub > .croptalk .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate3_lnb1_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate3_lnb2_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(3) > a:hover {background-image: url('../images/sub_cate3_lnb3_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate3_lnb1_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate3_lnb2_ov.png');}
-#sub > .croptalk .lnb > li:nth-child(3).on > a {background-image: url('../images/sub_cate3_lnb3_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate3_lnb1.png');}
+#sub > .cropTalk .lnb > li:nth-child(2) > a {background-image: url('../images/sub_cate3_lnb2.png');}
+#sub > .cropTalk .lnb > li:nth-child(3) > a {background-image: url('../images/sub_cate3_lnb3.png');}
+#sub > .cropTalk .lnb > li:nth-child(1) > a:hover {background-image: url('../images/sub_cate3_lnb1_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(2) > a:hover {background-image: url('../images/sub_cate3_lnb2_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(3) > a:hover {background-image: url('../images/sub_cate3_lnb3_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(1).on > a {background-image: url('../images/sub_cate3_lnb1_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(2).on > a {background-image: url('../images/sub_cate3_lnb2_ov.png');}
+#sub > .cropTalk .lnb > li:nth-child(3).on > a {background-image: url('../images/sub_cate3_lnb3_ov.png');}
 
 
 /* 이벤트 */
@@ -1125,7 +1127,7 @@ option {
     margin-bottom: 0;
     font-size: 14px;
     font-weight: 400;
-    line-height: 1.42857143;
+    line-height: 1;
     text-align: center;
 }
 /* 커뮤니티 뷰 */

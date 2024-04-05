@@ -1,15 +1,11 @@
 package kr.co.farmstory.controller;
 
-import groovy.lang.Tuple;
 import kr.co.farmstory.dto.*;
-import kr.co.farmstory.entity.Orders;
 import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
-import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -72,11 +63,10 @@ public class MarketController {
         model.addAttribute("details", details);
         return "/market/orderList";
     }
-}
 
     // 장바구니 목록 페이지 매핑
     @GetMapping("/market/cart")
-    public String marketCart(Model model, int prodno, String uid){
+    public String marketCart(Model model, String uid){
         log.info("marketCartController1");
         //marketService.insertProduct(uid, prodno);
 

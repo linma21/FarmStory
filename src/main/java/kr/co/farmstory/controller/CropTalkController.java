@@ -70,7 +70,7 @@ public class CropTalkController {
         model.addAttribute(pageResponseDTO);
         return "/cropTalk/write";
     }
-
+    // 글 쓴거 보내기
     @PostMapping("/cropTalk/write")
     public String write(ArticleDTO articleDTO){
 

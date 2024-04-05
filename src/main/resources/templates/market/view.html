@@ -46,7 +46,8 @@
                 <img th:src="@{/images/sub_aside_cate2_tit.png}" alt="장보기"/>
 
                 <ul class="lnb">
-                    <li class="on"><a th:href="@{/market.html}">장보기</a></li>
+                    <li class="on"><a th:href="@{/market/list}">장보기</a></li>
+                    <li class="on"><a th:href="@{/market/cart}">장바구니</a></li>
                 </ul>
             </aside>
             <article class="view">
@@ -81,7 +82,7 @@
                             <td>[[${productDTO.stock}]]개 남음</td>
                         </tr>
                         <tr>
-                            <td class="prodDel">00월 00일 도착 예정</td>
+                            <td class="prodDel"><span th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></span>도착 예정</td>
                         </tr>
                         <tr>
                             <td>
