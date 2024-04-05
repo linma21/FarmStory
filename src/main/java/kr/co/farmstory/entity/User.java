@@ -39,5 +39,8 @@ public class User{
     private LocalDateTime regDate;
     private LocalDateTime leaveDate;
     private String provider;
+    // account 칼럼 join 조회용
+    @Transient
+    private int point;
 
  }
