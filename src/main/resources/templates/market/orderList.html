@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/userLayout}">
+
+<body>
+
+<div class="order-container" layout:fragment="content" th:object="${orders}">
+
+    <header class="order-header">
+        <h1>주문 목록</h1>
+    </header>
+
+    <nav class="order-nav">
+        <ul>
+            <li><a th:href="@{/market/list}">장보기</a></li>
+            <li><a th:href="@{/account}">계정 관리</a></li>
+        </ul>
+    </nav>
+
+    <table class="order-table">
+        <thead>
+        <tr>
+            <th>주문 번호</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>가격</th>
+            <th>할인</th>
+            <th>주문 상태</th>
+            <th>주문 날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderDetail : ${orderDetails}">
+            <td th:text="${orderDetail.orderNo}">Order No</td>
+            <td th:text="${orderDetail.prodName}">Product Name</td>
+            <td th:text="${orderDetail.count}">Quantity</td>
+            <td th:text="${orderDetail.price}">Price</td>
+            <td th:text="${orderDetail.discount}">Discount</td>
+            <td th:text="${orderDetail.status}">Status</td>
+            <td th:text="${#dates.format(orderDetail.orderDate, 'yyyy-MM-dd')}">Order Date</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:each="order : ${orders}">
+        <h3>상품설명</h3>
+        <div th:if="${order.contentImg != null}" class="order-detail">
+            <img th:src="@{'/imagePath/' + ${order.contentImg}}" th:alt="${order.prodName}" />
+        </div>
+
+        <h3>배송정보</h3>
+        <div th:if="${order.status == '배송중' || order.status == '배송완료'}" class="order-delivery">
+            <p th:text="'입금하신 이후 택배송장번호는 SMS(문자서비스)를 통해 고객님께 안내해드립니다. 송장번호: ' + ${order.trackNumber}"></p>
+        </div>
+
+        <h3>교환/반품</h3>
+        <div th:if="${order.returnPolicy != null}" class="order-exchange">
+            <p th:text="${order.returnPolicy}">교환/반품 정보가 여기에 표시됩니다.</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
