@@ -68,7 +68,7 @@ public class CommunityController {
         model.addAttribute(pageResponseDTO);
         return "/community/write";
     }
-
+    // 글 쓴거 보내기
     @PostMapping("/community/write")
     public String write(ArticleDTO articleDTO){
 

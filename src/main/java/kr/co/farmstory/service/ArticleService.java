@@ -69,6 +69,7 @@ public class ArticleService {
                 .total(total)
                 .build();
     }
+
     // 검색 글 목록 조회
     public PageResponseDTO searchArticles(PageRequestDTO pageRequestDTO){
         log.info("키워드 검색 Serv 1 : " + pageRequestDTO.getKeyword());
@@ -96,6 +97,7 @@ public class ArticleService {
                 .total(total)
                 .build();
     }
+
     // 글 상세 조회, 글 조회수 ++ 트랜잭션
     @Transactional
     public ArticleDTO selectArticleAndNick(int ano){
@@ -115,6 +117,7 @@ public class ArticleService {
         articleRepository.incrementHitByAno(ano);
         return articleDTO;
     }
+
     // 글 수정 조회 : 글 수정은 조회수 변화 x
     public ArticleDTO selectArticleAndNickForModify(int ano){
         Tuple optTuple = articleRepository.selectArticleAndNick(ano);
@@ -131,6 +134,7 @@ public class ArticleService {
         ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
         return articleDTO;
     }
+
     // 글 작성
     public void insertArticle(ArticleDTO articleDTO){
 
@@ -150,6 +154,7 @@ public class ArticleService {
         fileService.insertFile(files, ano);
 
     }
+
     // 글 수정
     @Transactional
     public ResponseEntity<?> updateArticle(ArticleDTO articleDTO){
@@ -180,6 +185,7 @@ public class ArticleService {
         // 해당 게시글이 없을 경우
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
     }
+
     // 글 삭제 + 해당 게시글의 댓글, 파일 삭제
     @Transactional
     public ResponseEntity<?> deleteArticle(int ano){

@@ -9,9 +9,9 @@
             <aside>
                 <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
                 <ul class="lnb">
-                    <li data-cate="story"><a th:href="@{/croptalk/list(cate=story)}">농작물이야기</a></li>
-                    <li data-cate="grow"><a th:href="@{/croptalk/list(cate=grow)}">텃밭가꾸기</a></li>
-                    <li data-cate="school"><a th:href="@{/croptalk/list(cate=school)}">귀농학교</a></li>
+                    <li data-cate="story"><a th:href="@{/cropTalk/list(cate=story)}">농작물이야기</a></li>
+                    <li data-cate="grow"><a th:href="@{/cropTalk/list(cate=grow)}">텃밭가꾸기</a></li>
+                    <li data-cate="school"><a th:href="@{/cropTalk/list(cate=school)}">귀농학교</a></li>
                 </ul>
             </aside>
             <article>
@@ -24,7 +24,7 @@
 
                 <div>
                     <!-- thymeleaf 변수를 js 파일에서 사용하기 위해 input 에 값넣기 -->
-                    <form th:action="@{/croptalk/list}">
+                    <form th:action="@{/cropTalk/list}">
                         <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
                         <!-- 키워드 검색 -->
                         <div class="block search-keyword" id="search-keyword">
@@ -57,8 +57,8 @@
                         <tr th:each="article, loop:${pageResponseDTO.dtoList}">
                             <td>[[${pageResponseDTO.startNo - loop.index}]]</td>
                             <td>
-                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/croptalk/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></a>
-                                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/croptalk/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/cropTalk/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></a>
+                                <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/cropTalk/view(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${article.title}]] <span th:if="${article.hit > 2 }"> ❤ </span></a>
                             </td>
                             <td th:text="${article.nick}"></td>
                             <td th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></td>
@@ -69,39 +69,39 @@
                         <ul class="pagination justify-content-center">
                             <!-- 첫 페이지 -->
                             <li class="page-item">
-                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=1)}" aria-label="firstPage">
+                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=1)}" aria-label="firstPage">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
-                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=1, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}" aria-label="firstPage">
+                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=1, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}" aria-label="firstPage">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
                             <!-- 이전 페이지 -->
                             <li th:if="${pageResponseDTO.prev}" class="page-item">
-                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}">&#60;</a>
-                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#60;</a>
+                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}">&#60;</a>
+                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#60;</a>
                             </li>
                             <!-- 페이지 넘버 반복 -->
                             <li class="page-item" th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
-                                <a  th:if="${pageResponseDTO.keyword == null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${num})}">
+                                <a  th:if="${pageResponseDTO.keyword == null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${num})}">
                                     [[${num}]]
                                 </a>
-                                <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
+                                <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link current-page' : 'page-link'" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                     [[${num}]]
                                 </a>
                             </li>
 
                             <!-- 다음 페이지 -->
                             <li th:if="${pageResponseDTO.next}" class="page-item">
-                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1})}">&#62;</a>
-                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#62;</a>
+                                <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1})}">&#62;</a>
+                                <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#62;</a>
                             </li>
                             <!-- 마지막 페이지 -->
                             <li class="page-item">
-                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" aria-label="last" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last})}">
+                                <a  th:if="${pageResponseDTO.keyword == null}" class="page-link" aria-label="last" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last})}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
-                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" aria-label="last" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
+                                <a  th:if="${pageResponseDTO.keyword != null}" class="page-link" aria-label="last" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.last}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -118,7 +118,7 @@
                                th:if="${#authentication.principal.user.role == 'ADMIN'}"
                                class="btn btnGoWrite">글쓰기</a>
                         </div>
-                    </th:block>>
+                    </th:block>
                 </div>
             </article>
         </section>

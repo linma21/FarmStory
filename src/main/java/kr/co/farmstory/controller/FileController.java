@@ -22,7 +22,7 @@ public class FileController {
         log.info("fileDownload : " + fno);
         return fileService.fileDownload(fno);
     }
-
+    // 파일 삭제
     @DeleteMapping("/fileDelete/{fno}")
     public void fileDelete(@PathVariable("fno") int fno) {
         log.info("fileDelete : " + fno);

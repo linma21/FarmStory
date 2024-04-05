@@ -8,13 +8,13 @@
 
     <div id="sub">
         <div><img th:src="@{/images/sub_top_tit3.png}" alt="CROP TALK"></div>
-        <section class="croptalk">
+        <section class="cropTalk">
             <aside>
                 <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
                 <ul class="lnb">
-                    <li data-cate="story"><a th:href="@{/croptalk/list(cate=story)}">농작물이야기</a></li>
-                    <li data-cate="grow"><a th:href="@{/croptalk/list(cate=grow)}">텃밭가꾸기</a></li>
-                    <li data-cate="school"><a th:href="@{/croptalk/list(cate=school)}">귀농학교</a></li>
+                    <li data-cate="story"><a th:href="@{/cropTalk/list(cate=story)}">농작물이야기</a></li>
+                    <li data-cate="grow"><a th:href="@{/cropTalk/list(cate=grow)}">텃밭가꾸기</a></li>
+                    <li data-cate="school"><a th:href="@{/cropTalk/list(cate=school)}">귀농학교</a></li>
                 </ul>
             </aside>
             <article>
@@ -27,7 +27,7 @@
                 <!-- 내용 시작 -->
                 <div id="community_view">
                     <article class="community_modify">
-                        <form id="communityForm" th:action="@{/croptalk/modify}" method="post" enctype="multipart/form-data">
+                        <form id="communityForm" th:action="@{/cropTalk/modify}" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="cate" th:value="${pageResponseDTO.cate}" id="cate"/>
                             <input type="hidden" name="pg" th:value="${pageResponseDTO.pg}">
                             <input type="hidden" name="type" th:value="${pageResponseDTO.type}" th:if="${pageResponseDTO.keyword != null}">
@@ -75,11 +75,11 @@
             </article>
             <section class="community_view">
                 <div class="text-end">
-                    <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
+                    <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                        class="btn btnCancel">취소</a>
-                    <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/croptalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
+                    <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/cropTalk/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                        class="btn btnCancel">취소</a>
-                    <a th:href="@{/croptalk/write}" id="btnSubmit" class="btn btnSubmit">등록</a>
+                    <a th:href="@{/cropTalk/write}" id="btnSubmit" class="btn btnSubmit">등록</a>
                 </div>
             </section>
         </section>
