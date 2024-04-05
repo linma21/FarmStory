@@ -21,7 +21,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     // 주문한 사용자와 포인트 조회
     @Override
     public Tuple selectUserForOrder(String uid){
-
+        log.info("selectUserForOrder impl ...1 " + uid);
         // select user.*, account.point from user join account on user.uid = account.uid where uid=?;
         Tuple result = jpaQueryFactory
                 .select(qUser, qAccount.point)
@@ -30,7 +30,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .join(qAccount)
                 .on(qUser.uid.eq(qAccount.uid))
                 .fetchOne();
-
+        log.info("selectUserForOrder impl ...2 " + result.toString());
         return result;
     }
 }

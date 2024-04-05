@@ -152,12 +152,15 @@ public class UserService {
     }
     // 주문한 사용자와 포인트 조회
     public UserDTO selectUserForOrder(String uid){
-        Tuple result = userRepository.selectUserForOrder(uid);
 
+        log.info("주문하기 사용자 조회 서비스 1 :" + uid);
+        Tuple result = userRepository.selectUserForOrder(uid);
+        log.info("주문하기 사용자 조회 서비스 2 ");
         // Tuple -> Entity
         User user = result.get(0, User.class);
-        log.info("주문하기 사용자 조회 서비스 :" + user.toString());
+        log.info("주문하기 사용자 조회 서비스 3 :" + user.toString());
         int point = result.get(1, Integer.class);
+        user.setPoint(point);
         // Entity -> DTO
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 

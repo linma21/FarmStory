@@ -141,16 +141,16 @@
                     <table>
                         <tr>
                             <td>주문자</td>
-                            <td><input type="text" name="orderer" th:value="${userDTO.getName()}" readonly></td>
+                            <td><input type="text" name="orderer" th:value="${userDTO.name}" readonly></td>
                         </tr>
                         <tr>
                             <td>휴대폰</td>
-                            <td><input type="text" name="orderer" value="010-1234-1001" readonly></td>
+                            <td><input type="text" name="orderer" th:value="${userDTO.hp}" readonly></td>
                         </tr>
                         <tr>
                             <td>포인트사용</td>
                             <td>
-                                <input type="text" name="pointUse" value="">
+                                <input type="text" name="pointUse" th:value="${userDTO.point}" >
                                 <button>사용하기</button>
                                 <p class="point">
                                     사용가능 <span>2,000</span>

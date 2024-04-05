@@ -137,8 +137,12 @@
                                 headers: {'Content-Type': 'application/json'},
                                 body: JSON.stringify(jsonData2)
                             })
-                                .then(Response => Response.json())
-                                .then(data => {console.log(data);})
+                                .then(Response => {
+                                    console.log(Response);
+                                    if(Response.ok) {
+                                        window.location.href = '/farmstory/market/order';
+                                    }
+                                })
                                 .catch(err => console.log(err))
                         }
                     })
