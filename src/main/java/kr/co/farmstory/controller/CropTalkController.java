@@ -34,6 +34,7 @@ public class CropTalkController {
         log.info("pageResponseDTO : " + pageResponseDTO);
 
         model.addAttribute(pageResponseDTO);
+
         return "/cropTalk/list";
     }
     // 글 상세 보기

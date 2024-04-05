@@ -55,7 +55,14 @@ public class UserService {
 
         userDTO.setPass(encoded);
 
+        //먼저 user테이블에 회원정보를 입력
         userMapper.insertUser(userDTO);
+
+        //그다음에 account(포인트)테이블에 회원등록
+        userMapper.regiAccount(userDTO.getUid(),1,0);
+
+        //cart테이블에 회원등록
+        userMapper.regiCart(userDTO.getUid());
     }
 
 

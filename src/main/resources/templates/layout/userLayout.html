@@ -28,15 +28,15 @@
                 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃|</a>
             </th:block>
             <a th:href="@{/user/register}" style="color: #111111">회원가입 |</a>
-            <a th:href="@{./admin/}" style="color: #111111">관리자 |</a>
+            <a th:href="@{/admin/index}" style="color: #111111">관리자 |</a>
             <a th:href="@{#}" style="color: #111111">고객센터</a>
         </p>
         <img th:src="@{/images/head_txt_img.png}" alt="3만원 이상 무료배송"/>
 
         <ul class="gnb">
-            <li><a th:href="@{./introduction/hello}">팜스토리소개</a></li>
+            <li><a th:href="@{/introduction/hello}">팜스토리소개</a></li>
             <li><a th:href="@{/market/list}"><img th:src="@{/images/head_menu_badge.png}" alt="30%"/>장보기</a></li>
-            <li><a th:href="@{/croptalk/story}">농작물이야기</a></li>
+            <li><a th:href="@{/cropTalk/list}">농작물이야기</a></li>
             <li><a th:href="@{/event/event}">이벤트</a></li>
             <li><a th:href="@{/community/list}">커뮤니티</a></li>
         </ul>
