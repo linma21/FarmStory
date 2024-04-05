@@ -71,18 +71,18 @@ public class ArticleService {
     }
     // 검색 글 목록 조회
     public PageResponseDTO searchArticles(PageRequestDTO pageRequestDTO){
-
+        log.info("키워드 검색 Serv 1 : " + pageRequestDTO.getKeyword());
         Pageable pageable = pageRequestDTO.getPageable("no");
 
         Page<Tuple> pageArticles = articleRepository.searchArticles(pageRequestDTO, pageable);
 
         List<ArticleDTO> dtoList = pageArticles.getContent().stream()
                 .map(tuple ->{
-                    log.info("tuple : "+ tuple);
+                    log.info("키워드 검색 Serv 2 : " + tuple);
                     Article article = tuple.get(0, Article.class);
                     String nick = tuple.get(1, String.class);
                     article.setNick(nick);
-                    log.info("article : "+ article);
+                    log.info("키워드 검색 Serv 3 : "+ article);
                     return modelMapper.map(article, ArticleDTO.class);
                 })
                 .toList();
@@ -109,7 +109,7 @@ public class ArticleService {
         log.info("selectArticle ... 3 nick : " + nick);
         article.setNick(nick);
 
-        // DTO -> Entity
+        // Entity -> DTO
         ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
         // Article hit ++
         articleRepository.incrementHitByAno(ano);

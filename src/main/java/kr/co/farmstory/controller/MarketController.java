@@ -3,9 +3,11 @@ package kr.co.farmstory.controller;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
+import kr.co.farmstory.dto.UserDTO;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.service.MarketService;
+import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,8 @@ import java.util.Map;
 public class MarketController {
 
     private final MarketService marketService;
-    
+    private final UserService userService;
+
     // 장보기 글목록 페이지 매핑 (cate, pg, type, keyword 받음)
     @GetMapping("/market/list")
     public String marketList(Model model, MarketPageRequestDTO marketPageRequestDTO){
@@ -68,7 +71,12 @@ public class MarketController {
     // 주문하기 페이지 매핑
     /*
     @GetMapping("/market/order")
-    public String marketOrder(){
+    public String marketOrder(Model model, List<Integer> cart_prodNo, String uid){
+        // 주문자와 포인트 정보 가져오기
+        UserDTO userDTO = userService.selectUserForOrder(uid);
+        model.addAttribute("userDTO", userDTO);
+        // 상품 정보 가져오기
+
 
         return "/market/order";
     }

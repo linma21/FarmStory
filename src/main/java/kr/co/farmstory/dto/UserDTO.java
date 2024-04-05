@@ -28,4 +28,7 @@ public class UserDTO {
     private LocalDateTime regDate;
     private LocalDateTime leaveDate;
     private String provider;
+    // account 칼럼 join 조회용
+    @Builder.Default
+    private int point = 0;
 }
