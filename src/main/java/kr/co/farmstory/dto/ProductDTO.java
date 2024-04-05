@@ -29,5 +29,7 @@ public class ProductDTO {
     // 상품 사진 출력을 위한 추가 필드
     private String titleImg;
     private String contentImg;
+    private int cart_prodNo;
+    private int count;
 }
 

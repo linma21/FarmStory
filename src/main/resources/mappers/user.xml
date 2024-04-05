@@ -35,4 +35,16 @@
         select * from `user` where `uid`=#{uid}
     </select>
 
+    <insert id="regiAccount">
+        insert into account set
+        uid=#{uid},
+        level=#{level},
+        point=#{point}
+    </insert>
+
+    <insert id="regiCart">
+        insert into cart set
+        uid=#{uid}
+    </insert>
+
 </mapper>

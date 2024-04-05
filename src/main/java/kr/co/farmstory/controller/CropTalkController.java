@@ -29,12 +29,16 @@ public class CropTalkController {
             pageResponseDTO = articleService.selectArticles(pageRequestDTO);
         }else {
             // 검색 글 목록 조회
+            log.info("키워드 검색 Cont" + pageRequestDTO.getKeyword());
             pageResponseDTO = articleService.searchArticles(pageRequestDTO);
         }
         log.info("pageResponseDTO : " + pageResponseDTO);
 
         model.addAttribute(pageResponseDTO);
+
+
         return "/cropTalk/list";
+
     }
     // 글 상세 보기
     @GetMapping("/cropTalk/view")
@@ -119,6 +123,11 @@ public class CropTalkController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("ano", ano);
 
-        return "/cropTalk/list";
+        if(pageRequestDTO.getKeyword() == null){
+            // 검색해서 들어온게 아니면
+            return "redirect:/cropTalk/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
+        }
+        // 검색한 경우
+        return "redirect:/cropTalk/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg()+ "&type=" + pageRequestDTO.getType()+ "&keyword=" + pageRequestDTO.getKeyword();
     }
 }

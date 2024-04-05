@@ -1,10 +1,13 @@
 package kr.co.farmstory.service;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import kr.co.farmstory.dto.ImagesDTO;
-import kr.co.farmstory.dto.ProductDTO;
-import kr.co.farmstory.entity.Images;
-import kr.co.farmstory.entity.Product;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import kr.co.farmstory.dto.*;
+import kr.co.farmstory.entity.*;
 import kr.co.farmstory.repository.ImagesRepository;
 import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.repository.ProductRepository;
@@ -14,12 +17,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -137,7 +142,7 @@ public class AdminService {
 
      */
 
-    
+
     //제품 목록을 조회
     public List<ProductDTO> products(){
         List<Product> products = productRepository.findAll();
@@ -146,6 +151,62 @@ public class AdminService {
 
         return products.stream().map(product -> modelMapper.map(product,ProductDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    //사용자가 주문한 목록을 조회
+    public OrderListResponseDTO orderList(PageRequestDTO pageRequestDTO){
+
+        log.info("AdminService - orderList....1");
+
+        Pageable pageable = pageRequestDTO.getPageable("orderNo");
+
+        log.info("AdminService - orderList....2");
+
+        Page<Tuple> orderList= marketRepository.orderList(pageRequestDTO,pageable);
+
+        log.info("AdminService - orderList...3 : "+orderList.toString());
+
+        List<OrderListDTO> orderListDTOS = orderList.getContent().stream()
+                .map(tuple ->
+                {
+                    log.info("(tuple.get(0,Orders.class) : "+tuple.get(0,Integer.class));
+                    log.info("tuple.get(1,Orders.class) : "+tuple.get(1,LocalDateTime.class));
+                    log.info("tuple.get(2,User.class) : "+tuple.get(2,User.class));
+
+                    Integer orderNo = tuple.get(0,Integer.class);
+                    LocalDateTime rdate =tuple.get(1,LocalDateTime.class);
+                    String user = tuple.get(2,String.class);
+                    Integer count = tuple.get(3,Integer.class);
+                    String prodName = tuple.get(4,String.class);
+                    Integer price= tuple.get(5,Integer.class);
+                    Integer delCost= tuple.get(6,Integer.class);
+                    Integer amount = tuple.get(7,Integer.class);
+
+
+                    OrderListDTO orderListDTO = new OrderListDTO();
+
+                    orderListDTO.setOrderNO(orderNo);
+                    orderListDTO.setRdate(rdate);
+                    orderListDTO.setName(user);
+                    orderListDTO.setCount(count);
+                    orderListDTO.setProdname(prodName);
+                    orderListDTO.setPrice(price);
+                    orderListDTO.setDelCost(delCost);
+                    orderListDTO.setAmount(amount);
+                    orderListDTO.setSum(price*count);
+
+                    return orderListDTO;
+                }).toList();
+
+        log.info("AdminService - orderList...4");
+
+        int total = (int)orderList.getTotalElements();
+
+        return OrderListResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(orderListDTOS)
+                .total(total)
+                .build();
     }
 }
 

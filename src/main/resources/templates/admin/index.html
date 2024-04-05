@@ -17,15 +17,15 @@
                 <li>
                     <span>주문관리</span>
                     <ol>
-                        <li><a href="./order/list.html">주문목록</a></li>
-                        <li><a href="./order/delivery.html">배송관리</a></li>
+                        <li><a th:href="@{/admin/order/list}">주문목록</a></li>
+                        <li><a th:href="@{/notfound}">배송관리</a></li>
                     </ol>
                 </li>
                 <li>
                     <span>회원관리</span>
                     <ol>
-                        <li><a href="./user/list.html">회원목록</a></li>
-                        <li><a href="./user/register.html">회원등록</a></li>
+                        <li><a th:href="@{/admin/user/list}">회원목록</a></li>
+                        <li><a th:href="@{/user/register}">회원등록</a></li>
                     </ol>
                 </li>
             </ul>
@@ -69,7 +69,7 @@
             <article>
                 <h3>
                     <a href="#">주문현황</a>
-                    <a href="#" class="more">+ 더보기</a>
+                    <a th:href="@{/admin/order/list}" class="more">+ 더보기</a>
                 </h3>
                 <table border="0">
                     <tr>
@@ -82,35 +82,15 @@
                         <th>주문자</th>
                         <th>주문일</th>
                     </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>4,000원</td>
-                        <td>2개</td>
-                        <td>3,000원</td>
-                        <td>8,000원</td>
-                        <td>홍길동</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>4,000원</td>
-                        <td>2개</td>
-                        <td>3,000원</td>
-                        <td>8,000원</td>
-                        <td>홍길동</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>1011</td>
-                        <td>사과 500g</td>
-                        <td>4,000원</td>
-                        <td>2개</td>
-                        <td>3,000원</td>
-                        <td>8,000원</td>
-                        <td>홍길동</td>
-                        <td>2023-01-01</td>
+                    <tr th:each="order, index :${orderListResponseDTO.dtoList}" th:if="${index.index < 3}">
+                        <td th:text="${order.orderNO}">1011</td>
+                        <td th:text="${order.prodname}">사과 500g</td>
+                        <td th:text="${order.price}">4,000원</td>
+                        <td th:text="${order.count}">2개</td>
+                        <td th:text="${order.delCost}">3,000원</td>
+                        <td th:text="${order.sum}">8,000원</td>
+                        <td th:text="${order.name}">홍길동</td>
+                        <td th:text="${#temporals.format(order.rdate,'yyyy-mm-dd')}">2023-01-01 13:06:14</td>
                     </tr>
                 </table>
             </article>
