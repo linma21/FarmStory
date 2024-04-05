@@ -8,13 +8,12 @@
 <div class="order-container" layout:fragment="content" th:object="${orders}">
 
     <header class="order-header">
-        <h1>팜스토리 마켓</h1>
+        <h1>주문 목록</h1>
     </header>
 
     <nav class="order-nav">
         <ul>
-            <li><a th:href="@{/market}">장보기</a></li>
-            <li><a th:href="@{/orders}">주문 목록</a></li>
+            <li><a th:href="@{/market/list}">장보기</a></li>
             <li><a th:href="@{/account}">계정 관리</a></li>
         </ul>
     </nav>
@@ -33,34 +32,32 @@
         </thead>
         <tbody>
         <tr th:each="orderDetail : ${orderDetails}">
-            <td th:text="${orderDetail.orderNo}"></td>
-            <td th:text="${orderDetail.prodName}"></td>
-            <td th:text="${orderDetail.count}"></td>
-            <td th:text="${orderDetail.status}"></td>
-            <td th:text="${orderDetail.orderDate}"></td>
+            <td th:text="${orderDetail.orderNo}">Order No</td>
+            <td th:text="${orderDetail.prodName}">Product Name</td>
+            <td th:text="${orderDetail.count}">Quantity</td>
+            <td th:text="${orderDetail.price}">Price</td>
+            <td th:text="${orderDetail.discount}">Discount</td>
+            <td th:text="${orderDetail.status}">Status</td>
+            <td th:text="${#dates.format(orderDetail.orderDate, 'yyyy-MM-dd')}">Order Date</td>
         </tr>
         </tbody>
-
-
     </table>
 
-    <h3>상품설명</h3>
-    <div th:each="order : ${orders}" class="order-detail" th:if="${order.contentImg != null}">
-        <img th:src="@{'/imagePath/'+ order.contentImg}" th:alt="${order.prodname}" style="width: 750px;">
-    </div>
+    <div th:each="order : ${orders}">
+        <h3>상품설명</h3>
+        <div th:if="${order.contentImg != null}" class="order-detail">
+            <img th:src="@{'/imagePath/' + ${order.contentImg}}" th:alt="${order.prodName}" />
+        </div>
 
-    <h3>배송정보</h3>
-    <div th:each="order : ${orders}" class="order-delivery" th:if="${order.status == '배송중' || order.status == '배송완료'}">
-        <p th:text="'입금하신 이후 택배송장번호는 SMS(문자서비스)를 통해 고객님께 안내해드립니다. 송장번호: ' + ${order.trackNumber}">입금하신 이후 택배송장번호는 SMS(문자서비스)를 통해 고객님께 안내해드립니다.</p>
-    </div>
+        <h3>배송정보</h3>
+        <div th:if="${order.status == '배송중' || order.status == '배송완료'}" class="order-delivery">
+            <p th:text="'입금하신 이후 택배송장번호는 SMS(문자서비스)를 통해 고객님께 안내해드립니다. 송장번호: ' + ${order.trackNumber}"></p>
+        </div>
 
-    <h3>교환/반품</h3>
-    <div th:each="order : ${orders}" class="order-exchange" th:if="${order.returnPolicy != null}">
-        <table>
-            <tr>
-                <td th:text="${order.returnPolicy}">교환/반품 정보가 여기에 표시됩니다.</td>
-            </tr>
-        </table>
+        <h3>교환/반품</h3>
+        <div th:if="${order.returnPolicy != null}" class="order-exchange">
+            <p th:text="${order.returnPolicy}">교환/반품 정보가 여기에 표시됩니다.</p>
+        </div>
     </div>
 
 </div>
