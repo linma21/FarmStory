@@ -30,6 +30,7 @@ public class CommunityController {
             pageResponseDTO = articleService.selectArticles(pageRequestDTO);
         }else {
             // 검색 글 목록 조회
+            log.info("키워드 검색 Cont" + pageRequestDTO.getKeyword());
             pageResponseDTO = articleService.searchArticles(pageRequestDTO);
         }
         log.info("pageResponseDTO : " + pageResponseDTO);
@@ -120,6 +121,11 @@ public class CommunityController {
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         model.addAttribute("ano", ano);
 
-        return "/community/list";
+        if(pageRequestDTO.getKeyword() == null){
+            // 검색해서 들어온게 아니면
+            return "redirect:/community/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg();
+        }
+        // 검색한 경우
+        return "redirect:/community/list?cate=" + pageRequestDTO.getCate() + "&pg=" + pageRequestDTO.getPg()+ "&type=" + pageRequestDTO.getType()+ "&keyword=" + pageRequestDTO.getKeyword();
     }
 }

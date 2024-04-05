@@ -22,6 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private String resourcePath = "file:///Users/java/Desktop/farmstory/prodImg/";
 
+
     //private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg";
 
     // 배포
