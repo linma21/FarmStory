@@ -1,10 +1,7 @@
 package kr.co.farmstory.service;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.*;
-import kr.co.farmstory.entity.*;
 import kr.co.farmstory.dto.ImagesDTO;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
@@ -12,15 +9,11 @@ import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.entity.Cart_product;
 import kr.co.farmstory.entity.Images;
 import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.entity.QProduct;
 import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.repository.OrderRepository;
-import kr.co.farmstory.repository.custom.MarketRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,7 +28,6 @@ import java.util.stream.Collectors;
 @Service
 public class MarketService {
 
-    private OrderRepository orderRepository;
     private final MarketRepository marketRepository;
     private final ModelMapper modelMapper;
 
@@ -48,7 +40,7 @@ public class MarketService {
         log.info("selectProducts Service 2 pageable : " + pageable.toString());
         log.info("selectProducts Service 2 pageable : " + marketPageRequestDTO.toString());
 
-        // select * from `product` order by no desc limt (0, 10) + 사진
+        // select * from `product` order by no desc limit (0, 10) + 사진
         Page<Product> productList = marketRepository.selectProducts(marketPageRequestDTO, pageable);
 
         log.info("productList : " + productList.toString());
@@ -67,6 +59,7 @@ public class MarketService {
                 .total(total)
                 .build();
     }
+
     // 장보기 글보기 페이지 - 장보기 게시글 출력
     public ProductDTO selectProduct(int prodeno){
         List<Tuple> joinProduct = marketRepository.selectProduct(prodeno);
@@ -92,13 +85,13 @@ public class MarketService {
     public List<OrderDetailProductDTO> getOrderDetailsWithProductByUserId(String userId) {
         List<Tuple> results = marketRepository.findOrderDetailsWithProductNameByUserId(userId);
 
-        List<OrderDetailProductDTO> orderDetailProductDTOList =  results.stream().map(tuple -> {
+        List<OrderDetailProductDTO> orderDetailProductDTOList = results.stream().map(tuple -> {
             // Here, directly use the generated Q classes to access tuple elements in a type-safe manner
-            Integer detailNo = tuple.get(QOrderDetail.orderDetail.detailno);
-            Integer orderNo = tuple.get(QOrderDetail.orderDetail.orderNo);
-            Integer prodNo = tuple.get(QOrderDetail.orderDetail.prodno);
-            Integer count = tuple.get(QOrderDetail.orderDetail.count);
-            String prodName = tuple.get(QProduct.product.prodname);
+            Integer detailNo = tuple.get(0, Integer.class);
+            Integer orderNo = tuple.get(1, Integer.class);
+            Integer prodNo = tuple.get(2, Integer.class);
+            Integer count = tuple.get(3, Integer.class);
+            String prodName = tuple.get(4, String.class);
 
             // Creating and returning the DTO
             OrderDetailProductDTO dto = new OrderDetailProductDTO();
@@ -112,6 +105,7 @@ public class MarketService {
         }).collect(Collectors.toList());
         log.info("orderDetailProductDTOList : " + orderDetailProductDTOList.toString());
         return orderDetailProductDTOList;
+    }
 
     // 장바구니 목록
     public List<ProductDTO> selectCartForMarket(String uid){

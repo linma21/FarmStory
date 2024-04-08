@@ -18,8 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,11 +27,12 @@ public class UserController {
     private final TermsRepository termsRepository;
     private final UserService userService;
 
+    // 로그인 페이지 매핑
     @GetMapping("/user/login")
     public String loginPage() {
         return "/user/login";
     }
-
+    // 로그인 정보 조회 후 승인
     @PostMapping("/user/login")
     public String login(HttpServletRequest request, RedirectAttributes redirectAttributes){
         String uid = request.getParameter("uid");
@@ -50,14 +49,14 @@ public class UserController {
             return "redirect:/user/login";
         }
     }
-
-
-
+    
+    // 아이디 찾기 페이지 매핑
     @GetMapping("/user/findId")
     public String FindIdPage(){
         return "/user/findId";
     }
 
+    // 아이디 찾기
     @PostMapping("/user/findId")
     public String findId(@RequestParam("name") String name, @RequestParam("email") String email,@RequestParam("code") String code, HttpSession session, Model model) {
         String sessionCode = (String) session.getAttribute("code");
@@ -77,20 +76,20 @@ public class UserController {
         }
     }
 
+    // 아이디 찾기 결과
     @PostMapping("/user/findIdResult")
     public String findIdResult(@RequestParam String name, @RequestParam String email, Model model){
         String userId = userService.findUserIdByNameAndEmail(name, email);
         if(userId != null){
             model.addAttribute("userId", userId);
-            return "findIdResult";
+            return "/findIdResult";
         }else {
             model.addAttribute("error", "아이디를 찾을 수 없습니다. 입력 정보를 확인해 주세요.");
             return "/user/findId";
         }
     }
 
-
-
+    // 비밀번호 찾기
     @PostMapping("/user/findPassword")
     public String findPassword(@RequestParam("uid") String uid, @RequestParam("email") String email, Model model) {
         // 사용자 인증 로직 (이메일로 인증 코드 발송 및 확인)
@@ -98,13 +97,13 @@ public class UserController {
         return "redirect:/user/findPasswordChange";
     }
 
+    // 비밀번호 찾기 완료 페이지
     @PostMapping("/user/changePassword")
     public String changePassword(@RequestParam("uid") String uid, @RequestParam("newPassword") String newPassword) {
         // 비밀번호 변경 로직
         userService.updateUserPassword(uid, newPassword);
         return "redirect:/user/login"; // 비밀번호 변경 후 로그인 페이지로 리다이렉트
     }
-
 
     // DB에서 약관정보 조회
     @GetMapping("/user/terms")
@@ -124,6 +123,7 @@ public class UserController {
         return "/user/terms";
     }
 
+    // 회원가입 페이지 매핑
     @GetMapping("/user/register")
     public String register(){
 
@@ -176,7 +176,7 @@ public class UserController {
         }
     }
 
-
+    // 회원가입 진행
     @PostMapping("/user/register")
     public String register(HttpServletRequest req, UserDTO userDTO) {
 

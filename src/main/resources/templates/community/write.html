@@ -13,11 +13,11 @@
                 <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
 
                 <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/list(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/list(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/list(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/list(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/list(cate=faq)}">자주묻는질문</a></li>
+                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/newlist(cate=notice)}">공지사항</a></li>
+                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/newlist(cate=menu)}">오늘의식단</a></li>
+                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/newlist(cate=chef)}">나도요리사</a></li>
+                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/newlist(cate=qna)}">1:1고객문의</a></li>
+                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/newlist(cate=faq)}">자주묻는질문</a></li>
                 </ul>
             </aside>
             <article class="view">
@@ -42,15 +42,9 @@
                             <div class="community_textarea">
                                 <textarea id="contentTextarea" name="content" placeholder="내용을 입력하세요."></textarea>
                             </div>
-                            <div class="community_file">
+                            <div class="fileBox">
                                 <!-- 파일첨부 -->
-                                <ul>
-                                    <li>파일첨부</li>
-                                    <li>
-                                        <label for="formFileMultiple" class="form-label">파일첨부</label>
-                                        <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
-                                    </li>
-                                </ul>
+                                <input class="fileInput" type="file" name="files" id="formFileMultiple" multiple>
                             </div>
                         </form>
                     </article>
@@ -58,7 +52,7 @@
                 <!-- 내용 끝 -->
             </article>
             <section class="community_view">
-                <div class="text-end">
+                <div class="articleBtnBox">
                     <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg})}"
                        class="btn btnCancel">취소</a>
                     <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"

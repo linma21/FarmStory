@@ -1,0 +1,208 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/newUserLayout}">
+
+<div class="container" layout:fragment="content">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>farmPlus</title>
+    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
+    <script>
+        window.onload = function(){
+            //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
+            orderPriceSub();
+
+            const usingPoint = document.getElementById('usingPoint');
+            usingPoint.addEventListener('input', function(event) {
+
+                const havingPoint = document.getElementById('havingPoint').innerText;
+                const inputPoint = event.target.value;
+
+                if (havingPoint >= inputPoint){
+                    //alert("가능");
+                    orderPriceSub()
+                } else {
+                    alert("초과");
+                }
+                console.log(havingPoint); // 변경된 내용을 콘솔에 출력
+                console.log(event.target.value); // 변경된 내용을 콘솔에 출력
+            });
+
+        } //window.onload 끝//
+
+        //// 각 장바구니 품목 가격 합산하는 함수 ////
+        function orderPriceSub() {
+            const totalCount = document.getElementById('totalCount');
+            const totalPrice = document.getElementById('totalPrice');
+            const totalDiscount = document.getElementById('totalDiscount');
+            const totalDelCost = document.getElementById('totalDelCost');
+            const totalPoint = document.getElementById('totalPoint');
+            const totalOrder = document.getElementById('totalOrder');
+
+            const prodCount = document.getElementsByName('prodCount');
+            const prodPrice = document.getElementsByName('prodPrice'); // 할인 전 가격
+            const prodPoint = document.getElementsByName('prodPoint');
+            const prodDisPrice = document.getElementsByName('prodDisPrice');
+
+            const usingPoint = document.getElementById('usingPoint'); // 사용할 포인트
+
+            let totalProdCount = 0;
+            let totalProdPrice = 0;
+            let totalProdDisPrice = 0;
+            let totalProdDelCost = 0;
+            let totalProdPoint = 0;
+            let totalProdTotal = 0;
+
+            // 각 포인트, 가격, 할인, 합계값 더하는 for문
+            for (let i = 0; i < prodPoint.length; i++) {
+                totalProdCount += 1;
+                totalProdPrice += parseInt(prodPrice[i].innerText);
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText));
+                totalProdTotal += parseInt(prodDisPrice[i].innerText);
+                totalProdPoint += (parseInt(prodDisPrice[i].innerText) / 10);
+                if (totalProdTotal >= 30000) {
+                    totalProdDelCost = 0;
+                }else{
+                    totalProdDelCost = 5000;
+                }
+            }
+            // 태그에 값 출력하기
+            totalPrice.innerText = totalProdPrice.toString();
+            totalDiscount.innerText = totalProdDisPrice.toString();
+            totalDelCost.innerText = totalProdDelCost.toString();
+            totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText) - parseInt(usingPoint.value)).toString();
+            totalPoint.innerText = (totalProdPoint - parseInt(usingPoint.value)).toString();
+        }
+    </script>
+
+
+        <main class="articleMain">
+            <div class="sideBox">
+                <img th:src="@{/newimage/farm_market_logo.png}" alt="">
+                <ul>
+                    <li><a class="" href="">장보기</a></li>
+                    <li><a class="" href="">장바구니</a></li>
+                    <li><a class="" href="">배송조회</a></li>
+                </ul>
+            </div>
+
+            <div class="contentBox">
+                <div class="articleHeader">
+                    <h2>주문/결제</h2>
+                    <h5>HOME > 장보기 > <span>주문/결제</span></h5>
+                </div>
+
+                <div class="orderBox">
+                    <h3>구매상품</h3>
+                    <div class="orderProdBox">
+                        <div class="orderProd" th:each="product : ${productDTOs}">
+                            <img th:src="@{'/imagePath/'+${product.thumb}}" alt="">
+                            <div>
+                                <p>
+                                    <b class="prodName">[[${product.prodname}]]</b>
+                                    <b th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></b>
+                                    <b th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></b>
+                                </p>
+                                <p>
+                                    <span><b class="prodDiscount" th:text="${product.discount}" th:name="prodDiscount"></b>%</span>
+                                    <span><s class="prodPrice" th:text="${product.price}*${product.count}" th:name="prodPrice"></s>원</span>
+                                </p>
+                                <p>
+                                    <span><b class="prodCutPrice" th:text="(${product.price}-(${product.price}*${product.discount}/100))*${product.count}" th:name="prodDisPrice">
+                                    </b>원</span>
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    수량<b class="prodQnty" th:name="prodCount" th:text="${product.count}"></b>개
+                                </p>
+                                <span>
+                                    <b class="prodPoint" th:text="((${product.price}-(${product.price}*${product.discount}/100))*10/100)*${product.count}" th:name="prodPoint">
+                                    </b> 팜포인트 적립
+                                </span>
+                            </div>
+                            <div>
+                                <p>
+                                    <b class="prodDelDate">00-00</b> 도착 예정
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="orderbotBox">
+                        <div class="orderInfoBox">
+                            <h3>구매자정보</h3>
+                            <div class="orderConsumerBox">
+                                <table>
+                                    <tr>
+                                        <td>이름</td>
+                                        <td th:text="${userDTO.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>이메일</td>
+                                        <td th:text="${userDTO.email}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>연락처</td>
+                                        <td><input type="text" class="userHp" th:value="${userDTO.hp}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+        
+                            <h3>받는사람정보</h3>
+                            <div class="orderReceiverBox">
+                                <table>
+                                    <tr>
+                                        <td>이름</td>
+                                        <td><input type="text" name="receiverName"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>배송 주소</td>
+                                        <td>
+                                            <input type="text" name="zip" readonly><button id="btnZip">우편번호 검색</button>
+                                            <input type="text" name="addr1" placeholder="기본주소 검색">
+                                            <input type="text" name="addr2" placeholder="상세주소 입력">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>연락처</td>
+                                        <td><input type="text" class="receiverHp"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>메모</td>
+                                        <td><textarea class="receiverMemo"></textarea></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="orderPayBox">
+                            <h3>결제정보</h3>
+                            <div class="orderPay">
+                                <p>주문예상금액</p>
+                                <p>총 상품 가격<span><b id="totalPrice"></b>원</span></p>
+                                <p>총 할인<span>- <b id="totalDiscount"></b>원</span></p>
+                                <p>배송비<span>+ <b id="totalDelCost"></b>원</span></p>
+                                <p>포인트사용
+                                    <span>- <input type="text" class="usePoint" id="usingPoint" value="0"> P</span>
+                                </p>
+                                <p>
+                                    <!--사용포인트가 보유 포인트를 초과했을때 span에 경고 출력-->
+                                    <span>사용가능한 포인트 초과</span>
+                                    <span>보유 <b id="havingPoint" th:text="${userDTO.point}"></b> P</span>
+                                </p>
+
+                                <p>결제 금액<span><b id="totalOrder"></b>원</span></p>
+                                <p>적립 포인트<span><b id="totalPoint"></b> P</span></p>
+                                <button>결제하기</button>
+                            </div>
+                        </div>
+                    </div>
+                                       
+                </div>
+            </div>
+        </main>
+
+
+    </div>
+</html>

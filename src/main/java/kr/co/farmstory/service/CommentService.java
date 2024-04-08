@@ -24,7 +24,7 @@ public class CommentService {
     private final ModelMapper modelMapper;
 
     // 댓글 목록 조회
-    public ResponseEntity<List<CommentDTO>> selectComments(int ano){
+    public List<CommentDTO> selectComments(int ano){
         log.info("selectComments...1" + ano);
         // 조인 결과값 받아오기
         List<Tuple> results = commentRepository.selectComments(ano);
@@ -41,7 +41,7 @@ public class CommentService {
                 })
                 .toList();
 
-        return ResponseEntity.ok().body(dtoList);
+        return dtoList;
     }
     // 댓글 작성
     public ResponseEntity<Comment> insertComment(CommentDTO commentDTO){

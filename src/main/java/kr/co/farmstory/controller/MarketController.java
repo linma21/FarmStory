@@ -1,15 +1,12 @@
 package kr.co.farmstory.controller;
 
-import groovy.lang.Tuple;
 import kr.co.farmstory.dto.*;
-import kr.co.farmstory.entity.Orders;
 import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
 import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
+
+import static kr.co.farmstory.entity.QProduct.product;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,23 +33,24 @@ public class MarketController {
     private final MarketService marketService;
     private final UserService userService;
 
+
     // 장보기 글목록 페이지 매핑 (cate, pg, type, keyword 받음)
-    @GetMapping("/market/list")
+    @GetMapping("/market/newlist")
     public String marketList(Model model, MarketPageRequestDTO marketPageRequestDTO){
 
         MarketPageResponseDTO pageResponseDTO = marketService.selectProducts(marketPageRequestDTO);
         log.info("pageResponseDTO : " + pageResponseDTO.toString());
         model.addAttribute(pageResponseDTO);
-        return "/market/list";
+        return "/market/newlist";
     }
 
     // 장보기 글보기 페이지 매핑 (cate, pg, type, keyword 받음)
-    @GetMapping("/market/view")
+    @GetMapping("/market/newview")
     public String marketView(Model model, MarketPageRequestDTO marketPageRequestDTO, int prodno){
         ProductDTO productDTO = marketService.selectProduct(prodno);
         model.addAttribute(productDTO);
         model.addAttribute(marketPageRequestDTO);
-        return "/market/view";
+        return "/market/newview";
     }
 
 
@@ -72,16 +65,17 @@ public class MarketController {
         model.addAttribute("details", details);
         return "/market/orderList";
     }
-}
 
     // 장바구니 목록 페이지 매핑
-    @GetMapping("/market/cart")
+    @GetMapping("/market/newcart")
     public String marketCart(Model model, String uid){
         log.info("marketCartController1");
+        //marketService.insertProduct(uid, prodno);
+
         List<ProductDTO> productDTO = marketService.selectCartForMarket(uid);
         log.info("marketCartController2 : " + productDTO.toString());
         model.addAttribute("productDTO", productDTO);
-        return "/market/cart";
+        return "/market/newcart";
     }
 
     // 장바구니에서 수량 변경 반영
@@ -102,9 +96,8 @@ public class MarketController {
         return marketService.deleteCart(cart_prodNos);
     }
 
-
     // 주문하기 페이지 매핑
-    @GetMapping("/market/order")
+    @GetMapping("/market/neworder")
     public String marketOrder(HttpSession httpSession,
                               Model model){
         // Post(/market/order)에서 redirectAttributes 로 보낸 데이터 접근
@@ -117,7 +110,7 @@ public class MarketController {
         // View 출력을 위해 데이터 넘겨주기
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("productDTOs", productDTOs);
-        return "/market/order";
+        return "/market/neworder";
     }
 
     // 주문하기 페이지 매핑 - 장바구니에서 주문 정보 받기
@@ -147,6 +140,21 @@ public class MarketController {
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
+
+    @GetMapping("/product/details")
+    public String getProductDetails(Model model) {
+        Product product = new Product(); // 여기서 실제로는 제품 정보를 데이터베이스나 다른 소스에서 가져와야 합니다.
+        product.setPrice((int) 123456.78); // 예시 가격 설정
+
+        // 숫자 포맷팅
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
+        String formattedPrice = numberFormat.format(product.getPrice());
+
+        // 모델에 포맷팅된 가격 추가
+        model.addAttribute("formattedPrice", formattedPrice);
+
+        return "productDetails"; // 뷰 이름 반환
     }
 }
 
