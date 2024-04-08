@@ -1,29 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
-    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
     <script>
         window.onload = function(){
             // 플러스 버튼 클릭 시 수량 증가
-            document.querySelector('.plus-btn').addEventListener('click', function() {
+            document.querySelector('.plus-btn').onclick = function() {
+            //document.querySelector('.plus-btn').addEventListener('click', function() {
                 const quantityInput = document.querySelector('.quantity');
                 let value = parseInt(quantityInput.value);
                 value = isNaN(value) ? 0 : value;
                 quantityInput.value = value + 1;
-            });
+                changePrice();
+            };
 
             // 마이너스 버튼 클릭 시 수량 감소
-            document.querySelector('.minus-btn').addEventListener('click', function() {
+            document.querySelector('.minus-btn').onclick = function() {
+            //document.querySelector('.minus-btn').addEventListener('click', function() {
                 const quantityInput = document.querySelector('.quantity');
                 let value = parseInt(quantityInput.value);
                 value = isNaN(value) ? 0 : value;
                 if (value > 1) {
                     quantityInput.value = value - 1;
                 }
-            });
+                changePrice();
+            };
+
+            // 수량 변경시 합계 가격 변동 코드
+            const count = document.getElementById('count');
+            const totalPrice = document.getElementById('totalPrice');
+            const price = document.getElementById('price');
+            const finalPoint = document.getElementById('finalPoint');
+            const finalPrice = document.getElementById('finalPrice');
+
+            function changePrice() {
+                // 할인 적용 금액
+                let total = count.value * parseInt(price.innerText);
+                totalPrice.innerText = total;
+                // 적립 포인트
+                let totalPoint = total / 10;
+                finalPoint.innerText = totalPoint;
+                // 최종 금액
+                finalPrice.innerText = total;
+            }
         }
     </script>
 </head>
@@ -37,26 +58,26 @@
             </div>
 
             <div class="logoBox">
-                <a href=""><img src="../image/farm_header_logo.png" alt="logoImg"></a>
+                <a href=""><img th:src="@{/newimage/farm_header_logo.png}" alt="logoImg"></a>
                 
                 <form action="">
                     <label for="indexSearch">
                     <input type="text" id="indexSearch" placeholder="검색어를 입력하세요">
-                    <button><img src="../image/farm_header_search.svg" alt="button"></button>
+                    <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                     </label>
                 </form>
 
                 <div class="btnUserBox">
                     <a href="" class="btnUser">
-                        <img class="btnUserImg1" src="../image/farm_header_cart.png" alt="cart">
+                        <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
                     <a href="" class="btnUser">
-                        <img class="btnUserImg2" src="../image/farm_header_user.png" alt="">
+                        <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                         <h5>마이페이지</h5>
                     </a>
                     <a href="" class="btnUser">
-                        <img class="btnUserImg3" src="../image/farm_header_order.png" alt="">
+                        <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
                         <h5>배송조회</h5>
                     </a>
                 </div>
@@ -73,14 +94,14 @@
             </div>
 
             <div class="bgBox">
-                <img src="../image/farm_top_text_market.png" alt="top_bg">
+                <img th:src="@{/newimage/farm_top_text_market.png}" alt="top_bg">
             </div>
 
         </header>
 
         <main class="articleMain">
             <div class="sideBox">
-                <img src="../image/farm_market_logo.png" alt="">
+                <img th:src="@{/newimage/farm_market_logo.png}" alt="">
                 <ul>
                     <li><a class="tabOn" href="">장보기</a></li>
                     <li><a href="">장바구니</a></li>
@@ -98,50 +119,60 @@
                     <h3>기본정보</h3>       
                     <div class="prodInfoBox">
                         <div class="prodImg">
-                            <img src="../image/오렌지240.png" alt="">
+                            <img th:src="@{'/imagePath/'+${productDTO.titleImg}}" th:alt="${productDTO.prodname}" alt="">
                         </div>
 
                         <div class="pordInfo">
-                            <h2><span>맛난다 오렌지</span><span>1.5</span>kg</h2>
+                            <h2>
+                                <span class="prodTitle">[[${productDTO.prodname}]]</span>
+                                <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
+                                <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
+                            </h2>
                             <h4><span>12000</span>건 리뷰></h4>
-                            <h3><span>50</span>%</h3>
-                            <h3><s>19000</s>원</h3>
-                            <h2><span>9900</span>원</h2>
-                            <h5>(100g당 <span>990</span>원)</h5>
-                            <h5>재고 <span>134</span>개</h5>
+                            <h3><span id="discount">[[${productDTO.discount}]]</span>%</h3>
+                            <h3>
+                                <s >[[${productDTO.price}]]</s>원
+                            </h3>
+                            <h2><span id="price" th:text="${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )"></span>원</h2>
+                            <h5>(100g 당 <span th:text="(${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 ))/${productDTO.amount}*100"></span>원)</h5>
+                            <h5>재고 <span>[[${productDTO.stock}]]</span>개</h5>
                             <h4>구매금액의 <span>10</span>% 팜포인트 적립 예정</h4>
-                            <h3><span>04-03</span>도착 예정</h3>
+                            <h3><span th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></span>도착 예정</h3>
                             
                             <div class="totalPriceBox">
                                 <div class="totalPrice">
-                                    <h4><span> 맛난다 오렌지</span><span>1.5</span>kg</h4>
+                                    <h4>
+                                        <span class="prodTitle">[[${productDTO.prodname}]]</span>
+                                        <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
+                                        <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
+                                    </h4>
                                     <div class="quantity-input">
                                         <button class="minus-btn" type="button">-</button>
-                                        <input type="text" class="quantity" value="1">
+                                        <input type="text" class="quantity" name="count" min="1" value="1" id="count">
                                         <button class="plus-btn" type="button">+</button>
                                     </div>
-                                    <h4><span>9900</span>원</h4>
+                                    <h4><span id="totalPrice" th:text="${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )"></span>원</h4>
                                 </div>
                                 <div class="priceFlex">
                                     <h3>적립예정포인트</h3>
-                                    <h2><span>990</span>P</h2>
+                                    <h2><span id="finalPoint" th:text="(${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )) / 10"></span>P</h2>
                                 </div>
                                 <div class="priceFlex">
                                     <h3>구매예정금액</h3>
-                                    <h2><span>9900</span>원</h2>
+                                    <h2><span id="finalPrice" th:text="${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )"></span>원</h2>
                                 </div>
                             </div>
 
                             <div class="prodBtn">
-                                <button>장바구니</button>
-                                <button>바로구매</button>
+                                <button th:href="@{/market/cart}" id="btnCart">장바구니</button>
+                                <button th:href="@{/market/cart}" id="btnOrder">바로구매</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="prodContent">
                         <h3>상품설명</h3>
-                        <img src="../image/오렌지720.png" alt="">
+                        <img th:src="@{'/imagePath/'+${productDTO.contentImg}}" th:alt="${productDTO.prodname}">
                     </div>
 
                     <h3>배송정보</h3>
