@@ -27,7 +27,7 @@ public class MainController {
     private final UserService userService;
 
     // 메인화면
-    @GetMapping(value = {"/", "/index"})
+    @GetMapping(value = {"/", "/newindex"})
     public String index(Model model) {
 
         // 상단 BuildProperties 주입
@@ -60,12 +60,12 @@ public class MainController {
                 model.addAttribute("userDTO", userDTO);
                 return "/test";
             } else {// hp가 null이 아니면 기본 페이지 띄워주기
-                return "/index";
+                return "/newindex";
             }
         }
 
         // 로그인을 하지 않았을 때에 대한 처리
-        return "/index";
+        return "/newindex";
     }
 
 
@@ -83,7 +83,7 @@ public class MainController {
         userService.social(userDTO);
 
 
-        return "/index";
+        return "/newindex";
     }
 
 

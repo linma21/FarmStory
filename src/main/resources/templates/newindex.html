@@ -1,53 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
-    <link rel="stylesheet" href="/css/mainStyle.css">
+    <link rel="stylesheet" th:href="@{/newcss/MainStyle.css}">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="userBox">
-                <a href="">로그인</a>
-                <a href="">회원가입</a>
-                <a href="">고객센터</a>
+                <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
+                <a th:href="@{/user/register}" style="color: #111111">회원가입 </a>
+                <th:block>
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                </th:block>
             </div>
 
             <div class="logoBox">
-                <a href=""><img src="/image/farm_header_logo.png" alt="logoImg"></a>
+                <a th:href="@{/index}" class="logo"><img th:src="@{/newimage/farm_header_logo.png}" alt="logoImg"></a>
                 
                 <form action="">
                     <label for="indexSearch">
                     <input type="text" id="indexSearch" placeholder="검색어를 입력하세요">
-                    <button><img src="/image/farm_header_search.svg" alt="button"></button>
+                    <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                     </label>
                 </form>
 
                 <div class="btnUserBox">
                     <a href="" class="btnUser">
-                        <img class="btnUserImg1" src="/image/farm_header_cart.png" alt="cart">
+                        <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
                     <a href="" class="btnUser">
-                        <img class="btnUserImg2" src="/image/farm_header_user.png" alt="">
+                        <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                         <h5>마이페이지</h5>
                     </a>
                     <a href="" class="btnUser">
-                        <img class="btnUserImg3" src="/image/farm_header_order.png" alt="">
+                        <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
                         <h5>배송조회</h5>
                     </a>
                 </div>
             </div>
-
             <div class="navBox">
-                <ul>
-                    <li><a href="">팜스토리소개</a></li>
-                    <li><a href="">장보기</a></li>
-                    <li><a href="">농작물이야기</a></li>
-                    <li><a href="">이벤트</a></li>
-                    <li><a href="">커뮤니티</a></li>
+                <ul class="gnb">
+                    <li><a th:href="@{/introduction/hello}">팜스토리소개</a></li>
+                    <li><a th:href="@{/market/newlist}"><img th:src="@{/images/head_menu_badge.png}" alt="30%"/>장보기</a></li>
+                    <li><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
+                    <li><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
+                    <li><a th:href="@{/community/newlist(cate=notice)}">커뮤니티</a></li>
                 </ul>
             </div>
         </header>
@@ -55,32 +58,32 @@
         <main>
             <div class="adBox">
                 <div>
-                    <img src="/image/ad/farm_index_ad1.png" alt="">
+                    <img th:src="@{/newimage/ad/farm_index_ad1.png}" alt="">
                 </div>
                 <div>
-                    <img src="/image/ad/farm_index_ad2.png" alt="">
+                    <img th:src="@{/newimage/ad/farm_index_ad2.png}" alt="">
                 </div>
             </div>
 
             <div class="btnArticleBox">
                 <a class="btnArticle" href="">
-                    <img src="/image/farm_header_cart.png" alt="">
+                    <img th:src="@{/newimage/farm_header_cart.png}" alt="">
                     <h5>버튼1</h5>
                 </a>
                 <a class="btnArticle" href="">
-                    <img src="/image/farm_header_cart.png" alt="">
+                    <img th:src="@{/newimage/farm_header_cart.png}" alt="">
                     <h5>버튼2</h5>
                 </a>
                 <a class="btnArticle" href="">
-                    <img src="/image/farm_header_cart.png" alt="">
+                    <img th:src="@{/newimage/farm_header_cart.png}" alt="">
                     <h5>버튼3</h5>
                 </a>
                 <a class="btnArticle" href="">
-                    <img src="/image/farm_header_cart.png" alt="">
+                    <img th:src="@{/newimage/farm_header_cart.png}" alt="">
                     <h5>버튼4</h5>
                 </a>
                 <a class="btnArticle" href="">
-                    <img src="/image/farm_header_cart.png" alt="">
+                    <img th:src="@{/newimage/farm_header_cart.png}" alt="">
                     <h5>버튼5</h5>
                 </a>
             </div>
@@ -109,7 +112,7 @@
 
             <div class="productBox">
                 <a class="product" href="">
-                    <img src="image/오렌지240.png" alt="">
+                    <img th:src="@{/newimage/오렌지240.png}" alt="">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
                         <h4 class="title">맛난이오렌지</h4>
@@ -121,7 +124,7 @@
                 </a>
 
                 <a class="product" href="">
-                    <img src="image/오렌지240.png" alt="">
+                    <img th:src="@{/newimage/오렌지240.png}" alt="">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
                         <h4 class="title">맛난이오렌지</h4>
@@ -133,7 +136,7 @@
                 </a>
                 
                 <a class="product" href="">
-                    <img src="image/오렌지240.png" alt="">
+                    <img th:src="@{/newimage/오렌지240.png}" alt="">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
                         <h4 class="title">맛난이오렌지</h4>
@@ -145,7 +148,7 @@
                 </a>
 
                 <a class="product" href="">
-                    <img src="image/오렌지240.png" alt="">
+                    <img th:src="@{/newimage/오렌지240.png}" alt="">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
                         <h4 class="title">맛난이오렌지</h4>
@@ -157,7 +160,7 @@
                 </a>
 
                 <a class="product" href="">
-                    <img src="image/오렌지240.png" alt="">
+                    <img th:src="@{/newimage/오렌지240.png}" alt="">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
                         <h4 class="title">맛난이오렌지</h4>
@@ -172,8 +175,8 @@
 
         <footer>
             <div class="footerImgBox">
-                <img src="image/farm_footer_logo.png" alt="">
-                <img src="image/farm_footer_wood.png" alt="">
+                <img th:src="@{newimage/farm_footer_logo.png}" alt="">
+                <img th:src="@{newimage/farm_footer_wood.png}" alt="">
             </div>
             <p>
                 (주)팜스토리 / 사업자등록번호 123-45-67890 / 통신판매업신고 제 2013-팜스토리구-123호 / 벤처기업확인 서울지방중소기업청 제 012345678-9-01234호
@@ -182,7 +185,7 @@
                 <br>
                 대표 : 홍길동 / 이메일 : email@mail.mail / 전화 : 01) 234-5678 / 경기도 성남시 잘한다구 신난다동 345
                 <br>
-                <em>Copyright(C)홍길동 All rights reserved. 0.0.4-SNAPSHOT</em>
+                <em>Copyright(C)홍길동 All rights reserved. [[${appInfo.version}]]</em>
             </p>
         </footer>
     </div>
