@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
-    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
     <script>
         window.onload = function(){
             // 플러스 버튼 클릭 시 수량 증가
@@ -37,26 +36,26 @@
             </div>
 
             <div class="logoBox">
-                <a href=""><img src="../image/farm_header_logo.png" alt="logoImg"></a>
-                
+                <a href=""><img th:src="@{/newimage/farm_header_logo.png}" alt="logoImg"></a>
+
                 <form action="">
                     <label for="indexSearch">
-                    <input type="text" id="indexSearch" placeholder="검색어를 입력하세요">
-                    <button><img src="../image/farm_header_search.svg" alt="button"></button>
+                        <input type="text" id="indexSearch" placeholder="검색어를 입력하세요">
+                        <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                     </label>
                 </form>
 
                 <div class="btnUserBox">
                     <a href="" class="btnUser">
-                        <img class="btnUserImg1" src="../image/farm_header_cart.png" alt="cart">
+                        <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
                     <a href="" class="btnUser">
-                        <img class="btnUserImg2" src="../image/farm_header_user.png" alt="">
+                        <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                         <h5>마이페이지</h5>
                     </a>
                     <a href="" class="btnUser">
-                        <img class="btnUserImg3" src="../image/farm_header_order.png" alt="">
+                        <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
                         <h5>배송조회</h5>
                     </a>
                 </div>
@@ -73,7 +72,7 @@
             </div>
 
             <div class="bgBox">
-                <img src="../image/farm_top_text_market.png" alt="top_bg">
+                <img th:src="@{/newimage/farm_top_text_market.png}" alt="top_bg">
             </div>
 
         </header>
