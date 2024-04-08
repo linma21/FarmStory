@@ -83,7 +83,6 @@
                                     [[${num}]]
                                 </a>
                                 <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link pageOn' : 'page-link'" th:href="@{/cropTalk/newlist(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
-                                <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link pageOn' : 'page-link'" th:href="@{/cropTalk/newlist(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                     [[${num}]]
                                 </a>
                             </li>
