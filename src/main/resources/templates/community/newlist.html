@@ -1,8 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/articleLayout}">
-    <script th:inline="javascript" th:src="@{/js/communityList.js}"></script>
         <main class="articleMain" layout:fragment="content">
+            <script th:inline="javascript" th:src="@{/js/communityList.js}"></script>
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
                 <ul class="lnb">
@@ -84,7 +84,6 @@
                                 <a  th:if="${pageResponseDTO.keyword == null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link pageOn' : 'page-link'" th:href="@{/community/newlist(cate=${pageResponseDTO.cate}, pg=${num})}">
                                     [[${num}]]
                                 </a>
-                                <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link pageOn' : 'page-link'" th:href="@{/community/newlist(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                 <a  th:if="${pageResponseDTO.keyword != null}" th:classappend="${pageResponseDTO.pg == num} ? 'page-link pageOn' : 'page-link'" th:href="@{/community/newlist(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                                     [[${num}]]
                                 </a>

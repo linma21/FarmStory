@@ -4,11 +4,11 @@ window.onload = function (){
     <!-- thymeleaf 변수를 js 파일에서 사용하기 위해 input value 가져오기 -->
     const cateData = document.getElementById("cate");
     const cate = cateData.value;
-    const cateLi = document.querySelectorAll(".lnb li");
+    const sideBoxLi = document.querySelectorAll(".lnb li");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리
-    cateLi.forEach(function(item) {
+    sideBoxLi.forEach(function(item) {
 
         const dataCate = item.getAttribute("data-cate");
 

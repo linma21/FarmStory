@@ -21,23 +21,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private String connectPath = "/imagePath/**";
 
 
-    //
-    // private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
-    // private String resourcePath = "file:///Users/java/Desktop/farmstory/prodImg/";
-
-    // private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
-
-    // private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
-
-    // private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg/";
+    // 이진
+    private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
 
     // 태영
     // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
-    // private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg/";
 
-    // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
     // imjae
-    private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+    // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
 
 
 
