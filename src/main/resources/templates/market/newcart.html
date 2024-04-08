@@ -130,7 +130,7 @@
                                 .then(Response => {
                                     console.log(Response);
                                     if(Response.ok) {
-                                        window.location.href = '/farmstory/market/order';
+                                        window.location.href = '/farmstory/market/neworder';
                                     }
                                 })
                                 .catch(err => console.log(err))
@@ -246,6 +246,26 @@
                 })
             })
 
+        //// 전체 선택 ////
+            const totalCheckBox = document.getElementsByClassName('totalCheckBox')[0];
+            let checkedTurn = 0;
+            totalCheckBox.onclick = function (e){
+                alert("g2");
+                if (checkedTurn === 0) {
+                    prodCheckBox.forEach(function(checkbox) {
+                        checkbox.checked = true;
+                    });
+                    checkedTurn = 1;
+                } else {
+                    prodCheckBox.forEach(function(checkbox) {
+                        checkbox.checked = false;
+                    });
+                    checkedTurn = 0;
+                }
+
+            }
+
+
         } //window.onload 끝//
 
     //// 각 장바구니 품목 가격 합산하는 함수 ////
@@ -293,7 +313,7 @@
 
         <main class="articleMain">
             <div class="sideBox">
-                <img src="../image/farm_market_logo.png" alt="">
+                <img th:src="@{/newimage/farm_market_logo.png}" alt="">
                 <ul>
                     <li><a class="" href="">장보기</a></li>
                     <li><a class="tabOn" href="">장바구니</a></li>
@@ -357,7 +377,7 @@
                                                     </b> 팜포인트 적립
                                                 </span>
                                             </p>
-                                            <p><span><b class="prodDelDate">04-03</b>도착 예정</span></p>
+                                            <p><span><b class="prodDelDate">00-00</b>도착 예정</span></p>
                                         </div>
 
                                         <div class="quantity-input">
