@@ -26,6 +26,12 @@ public class ProductDTO {
     private int discount;
     private String etc;
     private LocalDateTime rdate;
+
+    // 포맷팅된 가격 필드 추가
+    // private String formattedPrice; // 포맷팅된 정가
+    // private String formattedDiscountPrice; // 포맷팅된 할인 가격
+    // private String rewardPoints; // 적립 포인트
+
     // 상품 사진 출력을 위한 추가 필드
     private String titleImg;
     private String contentImg;

@@ -6,6 +6,7 @@ import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
+import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
+
+import static kr.co.farmstory.entity.QProduct.product;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class MarketController {
 
     private final MarketService marketService;
     private final UserService userService;
+
 
     // 장보기 글목록 페이지 매핑 (cate, pg, type, keyword 받음)
     @GetMapping("/market/newlist")
@@ -138,6 +140,21 @@ public class MarketController {
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
+
+    @GetMapping("/product/details")
+    public String getProductDetails(Model model) {
+        Product product = new Product(); // 여기서 실제로는 제품 정보를 데이터베이스나 다른 소스에서 가져와야 합니다.
+        product.setPrice((int) 123456.78); // 예시 가격 설정
+
+        // 숫자 포맷팅
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
+        String formattedPrice = numberFormat.format(product.getPrice());
+
+        // 모델에 포맷팅된 가격 추가
+        model.addAttribute("formattedPrice", formattedPrice);
+
+        return "productDetails"; // 뷰 이름 반환
     }
 }
 
