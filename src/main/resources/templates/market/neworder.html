@@ -84,6 +84,7 @@
                     <li><a class="" href="">장보기</a></li>
                     <li><a class="" href="">장바구니</a></li>
                     <li><a class="" href="">배송조회</a></li>
+                    <li><a class="tabOn" href="">주문/결제</a></li>
                 </ul>
             </div>
 
@@ -115,7 +116,7 @@
                             </div>
                             <div>
                                 <p>
-                                    수량<b class="prodQnty" th:name="prodCount" th:text="${product.count}"></b>개
+                                    수량 &nbsp<b class="prodQnty" th:name="prodCount" th:text="${product.count}"></b>개
                                 </p>
                                 <span>
                                     <b class="prodPoint" th:text="((${product.price}-(${product.price}*${product.discount}/100))*10/100)*${product.count}" th:name="prodPoint">
@@ -147,9 +148,18 @@
                                         <td>연락처</td>
                                         <td><input type="text" class="userHp" th:value="${userDTO.hp}"></td>
                                     </tr>
+                                    <tr>
+                                        <td>포인트사용</td>
+                                        <td>
+                                            <p>보유 <b id="havingPoint" th:text="${userDTO.point}"></b> P</p>
+                                            <input type="text" id="usingPoint" th:value="0" style="width: 70px;">
+                                            <button id="btnPoint">사용</button>
+                                            <p>사용가능한 포인트 초과</p>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
-        
+
                             <h3>받는사람정보</h3>
                             <div class="orderReceiverBox">
                                 <table>
@@ -184,14 +194,8 @@
                                 <p>총 할인<span>- <b id="totalDiscount"></b>원</span></p>
                                 <p>배송비<span>+ <b id="totalDelCost"></b>원</span></p>
                                 <p>포인트사용
-                                    <span>- <input type="text" class="usePoint" id="usingPoint" value="0"> P</span>
+                                    <span>- <b id="inputUsingPoint">0</b> P</span>
                                 </p>
-                                <p>
-                                    <!--사용포인트가 보유 포인트를 초과했을때 span에 경고 출력-->
-                                    <span>사용가능한 포인트 초과</span>
-                                    <span>보유 <b id="havingPoint" th:text="${userDTO.point}"></b> P</span>
-                                </p>
-
                                 <p>결제 금액<span><b id="totalOrder"></b>원</span></p>
                                 <p>적립 포인트<span><b id="totalPoint"></b> P</span></p>
                                 <button>결제하기</button>

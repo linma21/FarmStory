@@ -56,6 +56,18 @@
                 // 최종 금액
                 finalPrice.innerText = total.toLocaleString();
             }
+
+            // 리뷰로 스크롤 이동 //
+            const prodReviewBox = document.getElementsByClassName('prodReviewBox')[0];
+            const moveReview = document.getElementsByClassName('moveReview')[0];
+            moveReview.onclick = function (){
+                prodReviewBox.scrollIntoView();
+            }
+            // 최상단 이동 //
+            const topButton = document.getElementsByClassName('topButton')[0];
+            topButton.onclick = function (){
+                window.scrollTo(0, 0);
+            }
         }
     </script>
 
@@ -63,8 +75,8 @@
             <div class="sideBox">
                 <img th:src="@{/newimage/farm_market_logo.png}" alt="">
                 <ul>
-                    <li><a class="tabOn" href="">장보기</a></li>
-                    <li><a href="">장바구니</a></li>
+                    <li><a class="" href="">장보기</a></li>
+                    <li><a class="tabOn" href="">장바구니</a></li>
                     <li><a href="">배송조회</a></li>
                 </ul>
             </div>
@@ -88,7 +100,7 @@
                                 <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
                                 <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
                             </h2>
-                            <h4><span>12000</span>건 리뷰</h4>
+                            <h4 class="moveReview"><span>12000</span>건 리뷰 ></h4>
                             <h3><span id="discount">[[${productDTO.discount}]]</span>%</h3>
                             <!-- 정가 포맷팅 -->
                             <h3>
@@ -198,6 +210,64 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="prodReviewBox">
+                    <div class="prodReviewHeader">
+                        <div>
+                            <h3>상품 리뷰</h3>
+                            <p>상품 리뷰 <span>1,234</span>건</p>
+                        </div>
+                        <div class="reviewStarBox">
+                            <p><span>94</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star5.png}" alt="fiveStar"> 상품상태가 아주 좋아요.</p>
+                            <p><span>2</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star4.png}" alt="fourStar"> 상품상태가 만족스러워요.</p>
+                            <p><span>2</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star3.png}" alt="threeStar"> 상품상태가 보통이에요.</p>
+                            <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star2.png}" alt="twoStar"> 상품상태가 그저그래요.</p>
+                            <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 상품상태가 별로에요.</p>
+                        </div>
+                    </div>
+                    <!--리뷰쓰기는 현재상품을 구매한 사람에게만 나타남-->
+                    <h3>리뷰 쓰기</h3>
+                    <div class="prodWriteReview">
+                        <form action="#" method="post" enctype="multipart/form-data">
+                            <p>
+                                <input type="hidden" name="uid" value="">
+                                <!--이미지로 별점 주는 방법 찾아봐야함-->
+                                <input type="text" name="name" value="홍길동" readonly>
+                                <select name="score">
+                                    <option>★★★★★</option>
+                                    <option>★★★★</option>
+                                    <option>★★★</option>
+                                    <option>★★</option>
+                                    <option>★</option>
+                                </select>
+                                <input type="file" name="file">
+                            </p>
+                            <div>
+                                <textarea name="comment" ></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <h3>리뷰 목록</h3>
+
+                    <div class="prodReview">
+                        <!-- <img th:src="@{'/newimage/farm_review_star' + ${review.score}.png}"> 아마 될듯?-->
+                        <p><b>홍길동</b><img th:src="@{/newimage/farm_review_star5.png}" alt=""><span>24.03.22</span></p>
+                        <div>
+                            <img th:src="@{/newimage/오렌지120.png}" alt="">
+                            <textarea readonly>맛있어요 저렴해요 배송빨라요</textarea>
+                        </div>
+                    </div>
+
+                    <div class="prodReview">
+                        <p><b>홍길동</b><img th:src="@{/newimage/farm_review_star3.png}" alt=""><span>24.03.22</span></p>
+                        <div>
+                            <img th:src="@{/newimage/오렌지120.png}" alt="">
+                            <textarea readonly>맛있어요 저렴해요 배송 느려요</textarea>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
