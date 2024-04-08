@@ -56,25 +56,25 @@
                     let modValue = value - 1;
                     if (value > 1) {
                         quantityInput.value = modValue;
+
+                        // 해당 상품 목록 박스 가격 변동 //
+                        const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
+                        const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
+                        const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
+                        const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
+                        const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
+
+                        let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
+                        let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
+                        let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
+                        let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
+
+                        prodPrice.innerText = modProdPrice;
+                        prodDisPrice.innerText = modProdDisPrice;
+                        prodPoint.innerText = modProdPoint;
+                        // 전체 주문예상금액 가격 변동 //
+                        orderPriceSub();
                     }
-
-                    // 해당 상품 목록 박스 가격 변동 //
-                    const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
-                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
-                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
-                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
-                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
-
-                    let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
-                    let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
-                    let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
-                    let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
-
-                    prodPrice.innerText = modProdPrice;
-                    prodDisPrice.innerText = modProdDisPrice;
-                    prodPoint.innerText = modProdPoint;
-                    // 전체 주문예상금액 가격 변동 //
-                    orderPriceSub();
                 });
             })
 

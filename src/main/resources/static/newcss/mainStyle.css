@@ -14,6 +14,19 @@ a {
 input, textarea {
     outline: none;
 }
+/*topButton*/
+.topButton {
+    position: fixed;
+    bottom: 10px;
+    right: 350px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    color: white;
+    background-color: #666666;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 /*container*/
 .container {
@@ -181,29 +194,38 @@ main {
     display: inline-block;
 }
 .adBox img {
-    width: 450px;
+    width: 100%;
 }
 /*index-btnArticleBox*/
 .btnArticleBox {
     display: flex;
+    justify-content: space-between;
     width: 100%;
-    height: 80px;
-    margin-top: 20px;
+    height: auto;
+    margin-top: 10px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #a0a0a0;
 }
 .btnArticle {
     display: inline-block;
-    width: 196px;
-    height: 80px;
+    width: 200px;
     font-size: 18px;
     text-align: center;
-    border: 1px solid #a8d031;
+    border: 1px solid #a0a0a0;
+    border-radius: 20px;
+}
+.btnArticle > img {
+    width: 70px;
+}
+.btnArticle:hover {
+    background-color: #a8d031;
 }
 /*index-bannerBox*/
 .bannerBox {
     display: flex;
     width: 100%;
     height: 74px;
-    margin-top: 20px;
+    border-top: 1px solid #4e4e4e;
 }
 .bannerBox > a {
     display: inline-block;
@@ -243,6 +265,9 @@ main {
     font-weight: bold;
     color: #666666;
     margin-right: 10px;
+}
+.productCate > a:nth-last-child(1) {
+    margin-left: auto;
 }
 .pordCateBox > .productCate > a:hover {
     background-color: #a8d031;
@@ -354,6 +379,12 @@ main {
     border-right: 1px solid #aeaeae;
 }
 .sideBox > .lnb > .tabOn {
+    color: white;
+    background-color: #a8d031;
+    border-bottom: 2px solid #aeaeae;
+    border-right: 1px solid #aeaeae;
+}
+.sideBox .tabOn {
     color: white;
     background-color: #a8d031;
     border-bottom: 2px solid #aeaeae;
@@ -973,6 +1004,112 @@ main {
 .exchange > table tr > td:nth-child(2) {
     border-right: none;
 }
+/**리뷰 market-review**/
+.prodReviewBox {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 0 20px;
+}
+.prodReviewBox > h3 {
+    margin: 10px 0;
+}
+.prodReviewHeader {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 2px solid #666666;
+    border-bottom: 1px solid #dfe3e8;
+}
+.reviewStarBox {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.reviewStarBox > p {
+    display: flex;
+    font-size: 16px;
+    line-height: 30px;
+}
+.reviewStarBox > p > span {
+    width: 20px;
+    margin-left: 4px;
+    text-align: right;
+}
+.reviewStar {
+    width: 150px;
+    margin-right: 20px;
+    margin-left: 8px;
+}
+.prodWriteReview {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+
+.prodWriteReview  p > input:nth-child(2) {
+    font-size: 16px;
+    width: 60px;
+    border: 0;
+}
+.prodWriteReview textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+
+.prodReview {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+.prodReview {
+    display: flex;
+}
+.prodReview > p {
+    display: flex;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.prodReview > p > img {
+    width: 100px;
+    height: 20px;
+    margin-right: 20px;
+    margin-left: 8px;
+}
+.prodReview > p > b {
+    padding-right: 10px;
+}
+.prodReview > p > span {
+    padding-top: 2px;
+    font-size: 14px;
+}
+.prodReview textarea {
+    width: 600px;
+    height: 120px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding-left: 10px;
+    resize: none;
+    border: 0;
+}
 
 /***market-cart***/
 .cartHeader {
@@ -1161,8 +1298,19 @@ main {
     flex-wrap: wrap;
     margin: 0 20px;
 }
+.orderProd > div:nth-child(2) {
+    width: 400px;
+}
+.orderProd > div:nth-last-child(2) {
+    width: 220px;
+}
+.orderProd > div:nth-last-child(2) > span {
+    font-size: 14px;
+    color: #1ba41b;
+}
 .orderProd > div:nth-last-child(1) {
-    padding-left: 80px;
+    width: 250px;
+    padding-left: 10px;
     font-weight: bold;
     color: #0b3ae2;
 }
@@ -1250,11 +1398,30 @@ main {
 .orderInfoBox > div > table tr:nth-last-child(1) td {
     border-bottom: 0;
 }
+.orderInfoBox > div > table tr p:nth-child(1) {
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: #666666;
+}
+.orderInfoBox > div > table tr p:nth-last-child(1) {
+    padding-top: 4px;
+    font-size: 14px;
+    color: red;
+}
+.orderInfoBox > div > table tr #usingPoint {
+    text-align: right;
+    padding: 0 4px;
+}
+.orderInfoBox > div > table tr #btnPoint {
+    margin: 0;
+    border-radius: 4px;
+    border: 1px solid #dfe3e8;
+}
 .orderPayBox {
     display: flex;
     flex-wrap: wrap;
     width: 250px;
-    height: 350px;
+    height: 325px;
 }
 .orderPayBox > h3 {
     margin: 10px 0;
@@ -1264,7 +1431,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 305px;
+    height: 280px;
     padding: 10px;
     border: 1px solid #dfe3e8;
     border-radius: 10px;
@@ -1286,22 +1453,13 @@ main {
     font-size: 14px;
     text-align: right;
 }
-.orderPay > p:nth-child(6) > span:nth-child(1) {
-    font-size: 12px;
-    font-weight: bold;
-    color: red;
-}
-.orderPay > p:nth-child(6) > span:nth-child(2) {
-    font-size: 12px;
-    color: #666666;
-}
-.orderPay > p:nth-child(7) {
+.orderPay > p:nth-child(6) {
     font-weight: bold;
     border-top: 1px solid #dfe3e8;
     padding-top: 10px;
     margin-top: 10px;
 }
-.orderPay > p:nth-child(8) {
+.orderPay > p:nth-child(7) {
     font-weight: bold;
     color: #1ba41b;
     font-size: 14px;

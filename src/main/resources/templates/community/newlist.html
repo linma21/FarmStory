@@ -51,6 +51,8 @@
                                 <span th:text="${article.nick}"></span>
                             </h5>
                         </div>
+                        <!--작성일 2일 이내 조회수 100이상 어떠신지-->
+                        <img th:if="${article.hit} >= 100" th:src="@{/newimage/fire.gif}" alt="fire" style="width: 30px; height: 30px;">
                     </a>
                         <a class="articleTable"   th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                             <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
