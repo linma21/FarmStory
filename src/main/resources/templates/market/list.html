@@ -11,7 +11,7 @@
                 <img th:src="@{/images/sub_aside_cate2_tit.png}" alt="장보기"/>
 
                 <ul class="lnb">
-                    <li class="on"><a th:href="@{/market/list}">상품목록</a></li>
+                    <li class="on"><a th:href="@{/market/newlist}">상품목록</a></li>
                     <li class="on" th:unless="${#authentication.principal eq 'anonymousUser'}">
                         <a th:href="@{/market/cart(uid=${#authentication.principal.user.uid})}">장바구니</a>
                     </li>
@@ -52,7 +52,6 @@
                             <a th:if="${marketPageResponseDTO.pg}!=null" th:href="@{/market/view(prodno=${product.prodno}, cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.pg}, type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">
                                 <img th:src="@{'/imagePath/'+${product.thumb}}" th:alt="${product.prodname}"></a>
                         </td>
-                        <td class="type">[[${product.cate}]]</td>
                         <td class="title"><a href="#">[[${product.prodname}]]</a></td>
                         <td class="discount">[[${product.discount}]]</td>
                         <td><span th:text="(${product.price}-(${product.price}*${product.discount}/100))*10/100"></span> P</td>
