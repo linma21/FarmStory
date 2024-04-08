@@ -33,13 +33,13 @@ public class MarketController {
     private final UserService userService;
 
     // 장보기 글목록 페이지 매핑 (cate, pg, type, keyword 받음)
-    @GetMapping("/market/list")
+    @GetMapping("/market/newlist")
     public String marketList(Model model, MarketPageRequestDTO marketPageRequestDTO){
 
         MarketPageResponseDTO pageResponseDTO = marketService.selectProducts(marketPageRequestDTO);
         log.info("pageResponseDTO : " + pageResponseDTO.toString());
         model.addAttribute(pageResponseDTO);
-        return "/market/list";
+        return "/market/newlist";
     }
 
     // 장보기 글보기 페이지 매핑 (cate, pg, type, keyword 받음)

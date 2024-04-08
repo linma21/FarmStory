@@ -1,41 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
-    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="userBox">
-                <a href="">로그인</a>
-                <a href="">회원가입</a>
-                <a href="">고객센터</a>
+                <a th:href="@{/user/login}">로그인</a>
+                <a th:href="@{/user/register}">회원가입</a>
+                <a>고객센터</a>
             </div>
 
             <div class="logoBox">
-                <a href=""><img src="../image/farm_header_logo.png" alt="logoImg"></a>
+                <a th:href="@{/newindex}"><img th:src="@{/newimage/farm_header_logo.png}" alt="logoImg"></a>
                 
                 <form action="">
                     <label for="indexSearch">
                     <input type="text" id="indexSearch" placeholder="검색어를 입력하세요">
-                    <button><img src="../image/farm_header_search.svg" alt="button"></button>
+                    <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                     </label>
                 </form>
 
                 <div class="btnUserBox">
-                    <a href="" class="btnUser">
-                        <img class="btnUserImg1" src="../image/farm_header_cart.png" alt="cart">
+                    <a class="btnUser">
+                        <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
-                    <a href="" class="btnUser">
-                        <img class="btnUserImg2" src="../image/farm_header_user.png" alt="">
+                    <a class="btnUser">
+                        <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                         <h5>마이페이지</h5>
                     </a>
-                    <a href="" class="btnUser">
-                        <img class="btnUserImg3" src="../image/farm_header_order.png" alt="">
+                    <a class="btnUser">
+                        <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
                         <h5>배송조회</h5>
                     </a>
                 </div>
@@ -43,27 +42,27 @@
 
             <div class="navBox">
                 <ul>
-                    <li><a href="">팜스토리소개</a></li>
-                    <li><a href="">장보기</a></li>
-                    <li><a href="">농작물이야기</a></li>
-                    <li><a href="">이벤트</a></li>
-                    <li><a href="">커뮤니티</a></li>
+                    <li><a th:href="@{/introduction/hello}">팜스토리소개</a></li>
+                    <li><a th:href="@{/market/newlist}">장보기</a></li>
+                    <li><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
+                    <li><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
+                    <li><a th:href="@{/community/newlist(cate=notice)}">커뮤니티</a></li>
                 </ul>
             </div>
 
             <div class="bgBox">
-                <img src="../image/farm_top_text_market.png" alt="top_bg">
+                <img th:src="@{/newimage/farm_top_text_market.png}" alt="top_bg">
             </div>
 
         </header>
 
         <main class="articleMain">
             <div class="sideBox">
-                <img src="../image/farm_market_logo.png" alt="">
+                <img th:src="@{/newimage/farm_market_logo.png}" alt="">
                 <ul>
-                    <li><a class="tabOn" href="">장보기</a></li>
-                    <li><a href="">장바구니</a></li>
-                    <li><a href="">배송조회</a></li>
+                    <li><a class="tabOn" th:href="@{/market/newlist}">장보기</a></li>
+                    <li><a>장바구니</a></li>
+                    <li><a>배송조회</a></li>
                 </ul>
             </div>
 
@@ -77,99 +76,75 @@
                     <div class="pordCateBox marketInfo">
 
                         <div class="productCate">
-                            <a class="cateOn" href="">전체</a>
-                            <a class="" href="">채소</a>
-                            <a class="" href="">과일</a>
-                            <a class="" href="">곡류</a>
-                            <a class="" href="">기타</a>
+                            <a th:href="@{/market/newlist}" class="cateOn">전체</a>
+                            <a th:href="@{/market/newlist(cate=야채)}" class="">야채</a>
+                            <a th:href="@{/market/newlist(cate=과일)}" class="">과일</a>
+                            <a th:href="@{/market/newlist(cate=곡류)}" class="">곡류</a>
+                            <a th:href="@{/market/newlist(cate=기타)}" class="">기타</a>
 
                             <form class="marketSearch" action="">
                                 <label for="marketSearch">
                                     <input type="text" id="marketSearch">
-                                    <button><img src="../image/farm_header_search.svg" alt="button"></button>
+                                    <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                                 </label>
                             </form>
                         </div>
                         
                         <div class="productArray">
-                            <a class="arrayOn" href="">최신순</a>
-                            <a class="" href="">가격낮은순</a>
-                            <a class="" href="">가격높은순</a>
-                            <a class="" href="">판매량순</a>
+                            <a class="arrayOn">최신순</a>
+                            <a class="">가격낮은순</a>
+                            <a class="">가격높은순</a>
+                            <a class="">판매량순</a>
                         </div>
 
                     </div>
-        
+
                     <div class="productBox">
-                        <a class="product" href="">
-                            <div>
-                                <img src="../image/오렌지240.png" alt="">
-                            </div>
-                            <div>
-                                <div class="disProd"><span>할인상품</span></div>
-                                <h4 class="title">맛난이오렌지</h4>
-                                <h4 class="amount">1.5kg</h4><br>
-                                <h3 class="discount"><span>50</span>% </h3>
-                                <span class="price"><s>19900</s></span><br>
-                                <h3>9900</h3><span>원</span>
-                                <h5 class="point"><span>990</span>포인트 적립</h5>
-                            </div>
-                        </a>
-        
-                        <a class="product" href="">
-                            <div>
-                                <img src="../image/오렌지240.png" alt="">
-                            </div>
-                            <div>
-                                <div class="disProd"><span>할인상품</span></div>
-                                <h4 class="title">맛난이오렌지</h4>
-                                <h4 class="amount">1.5kg</h4><br>
-                                <h3 class="discount"><span>50</span>% </h3>
-                                <span class="price"><s>19900</s></span><br>
-                                <h3>9900</h3><span>원</span>
-                                <h5 class="point"><span>990</span>포인트 적립</h5>
-                            </div>
-                        </a>
-
-                        <a class="product" href="">
-                            <div>
-                                <img src="../image/오렌지240.png" alt="">
-                            </div>
-                            <div>
-                                <div class="disProd"><span>할인상품</span></div>
-                                <h4 class="title">맛난이오렌지</h4>
-                                <h4 class="amount">1.5kg</h4><br>
-                                <h3 class="discount"><span>50</span>% </h3>
-                                <span class="price"><s>19900</s></span><br>
-                                <h3>9900</h3><span>원</span>
-                                <h5 class="point"><span>990</span>포인트 적립</h5>
-                            </div>
-                        </a>
-
-                        <a class="product" href="">
-                            <div>
-                                <img src="../image/오렌지240.png" alt="">
-                            </div>
-                            <div>
-                                <div class="disProd"><span>할인상품</span></div>
-                                <h4 class="title">맛난이오렌지</h4>
-                                <h4 class="amount">1.5kg</h4><br>
-                                <h3 class="discount"><span>50</span>% </h3>
-                                <span class="price"><s>19900</s></span><br>
-                                <h3>9900</h3><span>원</span>
-                                <h5 class="point"><span>990</span>포인트 적립</h5>
-                            </div>
-                        </a>
-                        
+                        <th:block th:each="product : ${marketPageResponseDTO.dtoList}" >
+                            <a th:href="@{/market/newview(prodno=${product.prodno},
+                                cate=${marketPageResponseDTO.cate},
+                                type=${marketPageResponseDTO.type},
+                                keyword=${marketPageResponseDTO.keyword})}"
+                               th:attr="href_append=${marketPageResponseDTO.pg != null ? '&pg=' + marketPageResponseDTO.pg : ''}" class="product">
+                                <div>
+                                    <img th:src="@{'/imagePath/'+${product.thumb}}" th:alt="${product.prodname}">
+                                </div>
+                                <div>
+                                    <div class="disProd"><span>할인상품</span></div>
+                                    <h4 class="title">[[${product.prodname}]]</h4>
+                                    <h4 class="amount">
+                                        <span th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></span>
+                                        <span th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></span></h4><br>
+                                    <h3 class="discount"><span>[[${product.discount}]]</span>% </h3>
+                                    <span class="price"><s>[[${product.price}]]</s></span><br>
+                                    <h3>[[${product.price} - (${product.price} * ${product.discount} / 100)]]</h3><span>원</span>
+                                    <h5 class="point">
+                                        <span th:text="${(product.price - (product.price * product.discount / 100)) * 0.10}"></span>포인트 적립
+                                    </h5>
+                                </div>
+                            </a>
+                        </th:block>
                     </div>
 
                     <div class="PageBox">
                         <ul>
-                            <li><a href=""><</a></li>
-                            <li><a class="pageOn" href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">></a></li>
+                            <li th:if="${marketPageResponseDTO.prev}">
+                                <a th:if="${marketPageResponseDTO.keyword == null}" th:href="@{/market/newlist(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.start - 1})}">이전</a>
+                                <a th:if="${marketPageResponseDTO.keyword != null}" th:href="@{/market/newlist(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.start - 1},
+                                                                                    type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">이전</a>
+                            </li>
+                            <li th:each="n : ${#numbers.sequence(marketPageResponseDTO.start, marketPageResponseDTO.end)}">
+                                <a th:if="${marketPageResponseDTO.keyword == null}" th:href="@{/market/newlist(cate=${marketPageResponseDTO.cate}, pg=${n})}" th:text="${n}"></a>
+                                <a th:if="${marketPageResponseDTO.keyword != null}" th:href="@{/market/newlist(cate=${marketPageResponseDTO.cate}, pg=${n},
+                                                                        type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}" th:text="${n}"></a>
+
+                            </li>
+
+                            <li th:if="${marketPageResponseDTO.next}">
+                                <a th:if="${marketPageResponseDTO.keyword == null}" th:href="@{/market/newlist(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.end + 1})}">다음</a>
+                                <a th:if="${marketPageResponseDTO.keyword != null}" th:href="@{/market/newlist(cate=${marketPageResponseDTO.cate}, pg=${marketPageResponseDTO.end + 1},
+                                                                                        type=${marketPageResponseDTO.type}, keyword=${marketPageResponseDTO.keyword})}">다음</a>
+                            </li>
                         </ul>
                     </div>
                     
@@ -179,8 +154,8 @@
 
         <footer>
             <div class="footerImgBox">
-                <img src="../image/farm_footer_logo.png" alt="">
-                <img src="../image/farm_footer_wood.png" alt="">
+                <img th:src="@{/newimage/farm_footer_logo.png}" alt="">
+                <img th:src="@{/newimage/farm_footer_wood.png}" alt="">
             </div>
             <p>
                 (주)팜스토리 / 사업자등록번호 123-45-67890 / 통신판매업신고 제 2013-팜스토리구-123호 / 벤처기업확인 서울지방중소기업청 제 012345678-9-01234호
