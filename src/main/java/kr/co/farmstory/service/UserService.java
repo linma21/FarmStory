@@ -60,6 +60,15 @@ public class UserService {
         //cart테이블에 회원등록
         userMapper.regiCart(userDTO.getUid());
     }
+
+    //소셜로그인 후 추가정보 업데이트
+    public void social(UserDTO userDTO){
+
+        userMapper.updateSocial(userDTO.getUid(),userDTO.getHp(),userDTO.getZip(),userDTO.getAddr1(),userDTO.getAddr2());
+
+    }
+
+
     
     @Value("${spring.mail.username}")//이메일 보내는 사람 주소
     private String sender;

@@ -16,5 +16,6 @@ public interface UserMapper {
     public UserDTO findById(String uid);
     public void regiAccount(String uid, int level, int point);
     public void regiCart(String uid);
+    public void updateSocial(String uid,String hp,String zip,String addr1,String addr2);
 
 }
