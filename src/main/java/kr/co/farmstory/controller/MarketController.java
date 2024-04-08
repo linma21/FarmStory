@@ -43,12 +43,12 @@ public class MarketController {
     }
 
     // 장보기 글보기 페이지 매핑 (cate, pg, type, keyword 받음)
-    @GetMapping("/market/view")
+    @GetMapping("/market/newview")
     public String marketView(Model model, MarketPageRequestDTO marketPageRequestDTO, int prodno){
         ProductDTO productDTO = marketService.selectProduct(prodno);
         model.addAttribute(productDTO);
         model.addAttribute(marketPageRequestDTO);
-        return "/market/view";
+        return "/market/newview";
     }
 
 
@@ -65,7 +65,7 @@ public class MarketController {
     }
 
     // 장바구니 목록 페이지 매핑
-    @GetMapping("/market/cart")
+    @GetMapping("/market/newcart")
     public String marketCart(Model model, String uid){
         log.info("marketCartController1");
         //marketService.insertProduct(uid, prodno);
@@ -73,7 +73,7 @@ public class MarketController {
         List<ProductDTO> productDTO = marketService.selectCartForMarket(uid);
         log.info("marketCartController2 : " + productDTO.toString());
         model.addAttribute("productDTO", productDTO);
-        return "/market/cart";
+        return "/market/newcart";
     }
 
     // 장바구니에서 수량 변경 반영
