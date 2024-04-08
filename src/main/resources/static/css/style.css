@@ -1121,7 +1121,7 @@ option {
     color: #fff;
     height: 28px;
     border-radius: 0;
-    padding: 3px 12px;
+    padding: 0px 10px;
     text-decoration: none;
     display: inline-block;
     margin-bottom: 0;
@@ -2220,8 +2220,34 @@ textarea[name=content] {
 
 /*구글과 네이버 이미지 줄이기*/
 
-.login img {
-    width: 10%;
+.login .separate>img {
+    width: 100%;
+    height: auto;
+}
+
+.login .social{
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+.login .social a {
+    display: inline-block; /* 인라인 블록 요소로 변경하여 너비 조절 가능하도록 함 */
+    max-width: 140px; /* 최대 너비 지정 */
+    margin-right: 10px;
+}
+
+.login .social .google_img {
+    width: 27px;
+    height: auto;
+}
+
+.login .social .kakao_img {
+    width: 40px;
+    height: auto;
+}
+
+.login .social .naver_img {
+    width: 30px;
     height: auto;
 }
 

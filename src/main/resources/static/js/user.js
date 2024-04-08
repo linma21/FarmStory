@@ -1,7 +1,4 @@
 //////////////////////register////////////////////////////////////////////
-
-
-
 //유효성 검사에 사용할 상태변수
 let isUidOk = false;
 let isPassOk = false;
@@ -400,30 +397,6 @@ window.onload = function () {
                     addr = data.jibunAddress;
                 }
 
-                /*
-                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                if(data.userSelectedType === 'R'){
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                        extraAddr += data.bname;
-                    }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
-                    if(data.buildingName !== '' && data.apartment === 'Y'){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                    if(extraAddr !== ''){
-                        extraAddr = ' (' + extraAddr + ')';
-                    }
-                    // 조합된 참고항목을 해당 필드에 넣는다.
-                    //document.getElementById("sample6_extraAddress").value = extraAddr;
-
-                } else {
-                    //document.getElementById("sample6_extraAddress").value = '';
-                }
-            */
-
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('inputZip').value = data.zonecode;
                 document.getElementById("inputAddr1").value = addr;
@@ -484,19 +457,4 @@ window.onload = function () {
         return true;
     }
 
-
-//////////////////////////////////////terms//////////////////////////////////////////////////
-
-
-/////////////////////////////////////////login////////////////////////////////////////////
-
-    const success = [[${success}]];
-
-    if (success == 100) {
-        showModal('로그인에 실패했습니다.\n다시 한번 아이디, 비밀번호를 확인 하시기 바랍니다. 😢');
-    } else if (success == 200) {
-        showModal('회원 가입 되었습니다. 😊');
-    } else if (success == 300) {
-        showModal('로그아웃 되었습니다. 안녕히 가세요. 😃');
-    }
 }
