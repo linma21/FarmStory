@@ -138,7 +138,29 @@
                             </div>
                         </div>
                     </div>
+                    <!-- 리뷰 목록 -->
+                    <p>댓글목록</p>
 
+                    <!--리뷰 없을 때-->
+                    <th:block>
+                        <div class="comment">
+                            <textarea name="" id="">리뷰 없음 </textarea>
+                        </div>
+                    </th:block>
+                    <!--로그인한 경우에만 조회-->
+                    <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
+                        <!-- 리뷰 -->
+                        <th:block>
+                            <div class="comment" th:if="${#authentication.principal.user.role} == 'ADMIN'">
+                                <p><span>리뷰 작성자</span>&nbsp;&nbsp</p>
+                                <textarea name="" readonly>리뷰 내용 - 리뷰 별점(score)도 추가해야함</textarea>
+                                <div>
+                                    <button id="commentModify" data-mode ='modify'>수정</button>
+                                    <button id="commentRemove" data-mode ='remove'>삭제</button>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
                     <div class="prodContent">
                         <h3>상품설명</h3>
                         <img th:src="@{'/imagePath/'+${productDTO.contentImg}}" th:alt="${productDTO.prodname}">

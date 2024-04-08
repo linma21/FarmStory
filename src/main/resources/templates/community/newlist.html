@@ -45,7 +45,7 @@
                     <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">
                         <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                         <div>
-                            <h4>[[${article.title}]] <span>(1)</span></h4>
+                            <h4>[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></h4>
                             <h5>
                                 <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                 <span th:text="${article.nick}"></span>
