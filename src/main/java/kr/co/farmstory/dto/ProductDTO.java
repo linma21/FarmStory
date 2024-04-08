@@ -21,6 +21,7 @@ public class ProductDTO {
     private String cate;
     private int price;
     private int stock;
+    private int recount;
     private int delCost;
     private int delType;
     private int discount;
