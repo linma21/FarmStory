@@ -97,7 +97,7 @@ public class MarketController {
     }
 
     // 주문하기 페이지 매핑
-    @GetMapping("/market/order")
+    @GetMapping("/market/neworder")
     public String marketOrder(HttpSession httpSession,
                               Model model){
         // Post(/market/order)에서 redirectAttributes 로 보낸 데이터 접근
@@ -110,7 +110,7 @@ public class MarketController {
         // View 출력을 위해 데이터 넘겨주기
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("productDTOs", productDTOs);
-        return "/market/order";
+        return "/market/neworder";
     }
 
     // 주문하기 페이지 매핑 - 장바구니에서 주문 정보 받기
