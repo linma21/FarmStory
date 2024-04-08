@@ -41,13 +41,20 @@
 
             function changePrice() {
                 // 할인 적용 금액
-                let total = count.value * parseInt(price.innerText);
-                totalPrice.innerText = total;
+                let StringPrice = price.innerText;
+                let IntPrice = parseInt(StringPrice.replace(/,/g, ''));
+                let total = count.value * IntPrice;
+                console.log(count.value);
+                console.log(price.innerText);
+
+                totalPrice.innerText = total.toLocaleString();
+                console.log(total);
                 // 적립 포인트
                 let totalPoint = total / 10;
-                finalPoint.innerText = totalPoint;
+                finalPoint.innerText = totalPoint.toLocaleString();
+                console.log(totalPoint);
                 // 최종 금액
-                finalPrice.innerText = total;
+                finalPrice.innerText = total.toLocaleString();
             }
         }
     </script>
@@ -69,29 +76,38 @@
                 </div>
 
                 <div class="articleBox">
-                    <h3>기본정보</h3>       
+                    <h3>기본정보</h3>
                     <div class="prodInfoBox">
                         <div class="prodImg">
                             <img th:src="@{'/imagePath/'+${productDTO.titleImg}}" th:alt="${productDTO.prodname}" alt="">
                         </div>
-
                         <div class="pordInfo">
+                        <!-- 제품 이름과 수량 -->
                             <h2>
                                 <span class="prodTitle">[[${productDTO.prodname}]]</span>
                                 <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
                                 <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
                             </h2>
-                            <h4><span>12000</span>건 리뷰></h4>
+                            <h4><span>12000</span>건 리뷰</h4>
                             <h3><span id="discount">[[${productDTO.discount}]]</span>%</h3>
+                            <!-- 정가 포맷팅 -->
                             <h3>
-                                <s >[[${productDTO.price}]]</s>원
+                                <s th:text="${#numbers.formatInteger(productDTO.price, 1, 'COMMA')}"></s>원
                             </h3>
-                            <h2><span id="price" th:text="${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )"></span>원</h2>
-                            <h5>(100g 당 <span th:text="(${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 ))/${productDTO.amount}*100"></span>원)</h5>
+                            <!-- 할인된 가격 포맷팅 -->
+                            <h2>
+                                <span id="price" th:text="${#numbers.formatInteger((productDTO.price - (productDTO.price * productDTO.discount / 100)), 1, 'COMMA')}"></span>원
+                            </h2>
+                            <!-- 100g 당 가격 포맷팅 -->
+                            <h5>(100g 당
+                                <span th:text="${#numbers.formatInteger(((productDTO.price - (productDTO.price * productDTO.discount / 100)) / productDTO.amount) * 100, 2, 'COMMA')}"></span>원)
+                            </h5>
                             <h5>재고 <span>[[${productDTO.stock}]]</span>개</h5>
                             <h4>구매금액의 <span>10</span>% 팜포인트 적립 예정</h4>
-                            <h3><span th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></span>도착 예정</h3>
-                            
+                            <h3>
+                                <span th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></span>도착 예정
+                            </h3>
+
                             <div class="totalPriceBox">
                                 <div class="totalPrice">
                                     <h4>
@@ -104,15 +120,15 @@
                                         <input type="text" class="quantity" name="count" min="1" value="1" id="count">
                                         <button class="plus-btn" type="button">+</button>
                                     </div>
-                                    <h4><span id="totalPrice" th:text="${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )"></span>원</h4>
+                                    <h4><span id="totalPrice" th:text="${#numbers.formatInteger((productDTO.price - (productDTO.price * productDTO.discount / 100)), 0, 'COMMA')}"></span>원</h4>
                                 </div>
                                 <div class="priceFlex">
                                     <h3>적립예정포인트</h3>
-                                    <h2><span id="finalPoint" th:text="(${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )) / 10"></span>P</h2>
+                                    <h2><span id="finalPoint" th:text="${#numbers.formatInteger(((productDTO.price - (productDTO.price * productDTO.discount / 100)) / 10), 0, 'COMMA')}"></span>P</h2>
                                 </div>
                                 <div class="priceFlex">
                                     <h3>구매예정금액</h3>
-                                    <h2><span id="finalPrice" th:text="${productDTO.price} - (${productDTO.price} * ${productDTO.discount} / 100 )"></span>원</h2>
+                                    <h2><span id="finalPrice" th:text="${#numbers.formatInteger((productDTO.price - (productDTO.price * productDTO.discount / 100)), 0, 'COMMA')}"></span>원</h2>
                                 </div>
                             </div>
 
@@ -159,12 +175,9 @@
                             </tr>
                         </table>
                     </div>
-                                       
                 </div>
             </div>
         </main>
-
-
     </div>
 
 </html>
