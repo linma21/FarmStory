@@ -22,9 +22,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
     //
-    private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
+    //private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
 
-    //private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg/";
+    private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg/";
 
     //private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
 

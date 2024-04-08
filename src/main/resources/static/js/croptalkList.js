@@ -15,19 +15,19 @@ window.onload = function (){
         // 현재 cate와 li의 data-cate 값을 비교하여 일치하는 경우
         if (dataCate === cate) {
             // 해당 요소에 클래스 추가
-            item.classList.add("on");
+            item.classList.add("tabOn");
         }
     });
     // croptalk 상단 Nav 표시하기
     if(cate === 'story'){
         communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit1.png" alt="농작물이야기"/>
-                                                <p> HOME > 농작물이야기 > <em>농작물이야기</em></p>`;
+                                                <h5>HOME > 농작물이야기 > <span>농작물이야기</span></h5>`;
     } else if(cate === 'grow'){
         communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit2.png" alt="귀농학교"/>
-                                                <p> HOME > 농작물이야기 > <em>귀농학교</em></p>`;
+                                                <h5>HOME > 농작물이야기 > <span>귀농학교</span></h5>`;
     } else if(cate === 'chef'){
         communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit3.png" alt="텃밭가꾸기"/>
-                                                <p> HOME > 농작물이야기 > <em>텃밭가꾸기</em></p>`;
+                                                <h5>HOME > 농작물이야기 > <span>텃밭가꾸기</span></h5>`;
     }
 
 }

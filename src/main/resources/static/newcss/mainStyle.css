@@ -85,7 +85,7 @@ header {
     position: relative;
     width: 100%;
     height: 184px;
-    background-image: url(../image/farm_top_bg.jpg);
+    background-image: url(../newimage/farm_top_bg.jpg);
 }
 .bgBox > img {
     position: absolute;
@@ -112,13 +112,13 @@ header {
     color: #a8d031;
 }
 .btnUserBox .btnUser:hover .btnUserImg1 {
-    content: url(/image/farm_header_cart_hover.png);
+    content: url(../newimage/farm_header_cart_hover.png);
 }
 .btnUserBox .btnUser:hover .btnUserImg2 {
-    content: url(/image/farm_header_user_hover.png);
+    content: url(../newimage/farm_header_user_hover.png);
 }
 .btnUserBox .btnUser:hover .btnUserImg3 {
-    content: url(/image/farm_header_order_hover.png);
+    content: url(../newimage/farm_header_order_hover.png);
 }
 
 /*header-navBox*/
@@ -215,8 +215,8 @@ main {
     padding-top: 10px;
     color: #4e4e4e;
 }
-.banner1 {background-image: url(/image/ad/farm_banner1.jpg);}
-.banner2 {background-image: url(/image/ad/farm_banner2.jpg);}
+.banner1 {background-image: url(../newimage/ad/farm_banner1.jpg);}
+.banner2 {background-image: url(../newimage/ad/farm_banner2.jpg);}
 
 /*index-pordCateBox*/
 .pordCateBox {
@@ -353,7 +353,7 @@ main {
     border-bottom: 2px solid #aeaeae;
     border-right: 1px solid #aeaeae;
 }
-.sideBox li > .tabOn {
+.sideBox > .lnb > .tabOn {
     color: white;
     background-color: #a8d031;
     border-bottom: 2px solid #aeaeae;
@@ -436,6 +436,21 @@ main {
     border: 0;
     background-color:transparent;
     cursor: pointer;
+}
+/*article-list-글쓰기 btn*/
+.btnGoWrite {
+    float: right;
+    padding: 6px;
+    margin-right: 8px;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+.btnGoWrite:hover {
+    color: white;
+    border: 1px solid #a8d031;
+    background-color: #a8d031;
 }
 /*article-contentBox-articleBox-articleTable*/
 .articleTable {
@@ -533,6 +548,15 @@ main {
     margin: 20px 0;
     text-align: left;
     font-size: 16px;
+    outline: none;
+    resize: none;
+    border: 0;
+}
+.articleForm .titleInput {
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
     outline: none;
     resize: none;
     border: 0;
