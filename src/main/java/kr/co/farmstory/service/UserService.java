@@ -148,9 +148,12 @@ public class UserService {
     }
 
     // 상세페이지(id로 그 유저의 정보를 가져온다)
-    public UserDTO getUserByUid(String uid){
-        User user = userRepository.findById(uid).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserDTO(user.getUid(), user.getPass(), user.getName(), user.getEmail(), user.getNick(), user.getHp(), user.getRole(), user.getLevel(), user.getZip(), user.getAddr1(), user.getAddr2(), user.getRegip(), user.getRegDate(), user.getLeaveDate(), user.getProvider(),0);
+    public UserDTO getUserByUid(String uid) {
+        UserDTO userDTO = userMapper.findById(uid);
+        if (userDTO == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return userDTO;
     }
 
     // 주문한 사용자와 포인트 조회
