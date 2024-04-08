@@ -16,13 +16,14 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
-
+/*
     // 댓글 목록 조회
     @GetMapping("/comment/{ano}")
     public ResponseEntity<List<CommentDTO>> commentList(@PathVariable("ano") int ano){
         log.info("commentList : "+ano);
         return commentService.selectComments(ano);
     }
+ */
     // 댓글 작성
     @PostMapping("/comment")
     public ResponseEntity<Comment> commentWrite(@RequestBody CommentDTO commentDTO) {
