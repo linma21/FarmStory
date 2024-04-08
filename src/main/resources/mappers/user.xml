@@ -47,4 +47,9 @@
         uid=#{uid}
     </insert>
 
+
+    <update id="updateSocial">
+        update `user` set hp=#{hp}, zip=#{zip},addr1=#{addr1},addr2=#{addr2} where uid=#{uid}
+    </update>
+
 </mapper>
