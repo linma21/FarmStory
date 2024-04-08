@@ -1,9 +1,6 @@
 package kr.co.farmstory.controller;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.UserDTO;
-import kr.co.farmstory.entity.User;
-import kr.co.farmstory.security.MyUserDetails;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +9,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +23,7 @@ public class MainController {
     private final UserService userService;
 
     // 메인화면
-    @GetMapping(value = {"/", "/newindex"})
+    @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
 
         // 상단 BuildProperties 주입
@@ -60,12 +56,12 @@ public class MainController {
                 model.addAttribute("userDTO", userDTO);
                 return "/test";
             } else {// hp가 null이 아니면 기본 페이지 띄워주기
-                return "/newindex";
+                return "/index";
             }
         }
 
         // 로그인을 하지 않았을 때에 대한 처리
-        return "/newindex";
+        return "/index";
     }
 
 
@@ -83,7 +79,7 @@ public class MainController {
         userService.social(userDTO);
 
 
-        return "/newindex";
+        return "/index";
     }
 
 
