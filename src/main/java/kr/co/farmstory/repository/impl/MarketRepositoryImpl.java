@@ -226,4 +226,44 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
             return false;
         }
     }
+
+    // main 페이지에서 띄울 상품 16개
+    @Override
+    public List<Tuple> selectProductsForMain(String cate){
+        // select a.*, b.thumb240 form `product` as a join `images` as b on a.prodno = b.prodno where a.cate = ?? order by desc limit(0, 16);
+
+        BooleanExpression expression = null;//where 조건을 만드는 표현객체
+
+        QueryResults<Tuple> results = null;
+
+        if (cate.isEmpty()) {
+            results = jpaQueryFactory
+                    .select(
+                            qProduct,
+                            qImages.thumb240)
+                    .from(qProduct)
+                    .join(qImages).on(qProduct.prodno.eq(qImages.prodno))
+                    .orderBy(qProduct.prodno.desc())
+                    .limit(16)
+                    .fetchResults();
+        }else {
+            results = jpaQueryFactory
+                    .select(
+                            qProduct,
+                            qImages.thumb240)
+                    .from(qProduct)
+                    .join(qImages).on(qProduct.prodno.eq(qImages.prodno))
+                    .where(qProduct.cate.eq(cate))
+                    .orderBy(qProduct.prodno.desc())
+                    .limit(16)
+                    .fetchResults();
+        }
+
+
+
+            // QUERYRESULT [ LIST [ TUPLE [ qProduct, qImages.thumb240 ] ] ]
+
+            List<Tuple> orderList = results.getResults();
+            return orderList;
+    }
 }

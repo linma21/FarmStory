@@ -378,12 +378,6 @@ main {
     border-bottom: 2px solid #aeaeae;
     border-right: 1px solid #aeaeae;
 }
-.sideBox > .lnb > .tabOn {
-    color: white;
-    background-color: #a8d031;
-    border-bottom: 2px solid #aeaeae;
-    border-right: 1px solid #aeaeae;
-}
 .sideBox .tabOn {
     color: white;
     background-color: #a8d031;
