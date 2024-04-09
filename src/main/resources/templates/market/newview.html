@@ -57,6 +57,93 @@
                 finalPrice.innerText = total.toLocaleString();
             }
 
+            // 바로구매 버튼 클릭시 market/order로 이동 //
+            const btnOrder = document.getElementById('btnOrder');
+            btnOrder.onclick = function (){
+                // 로그인 여부 확인 (난 천재인듯)
+                const loginCheck = document.getElementById('uid');
+
+                if (loginCheck == null){
+                    let result = confirm("로그인 후 사용하실 수 있습니다. \n 로그인페이지로 이동하시겠습니까?");
+                    if (result){
+                        window.location.href = `/farmstory/user/login`;
+                    }
+                }else {
+                    const prodCount = document.getElementsByName('prodCount')[0].value;
+                    const uid = document.getElementById('uid').value;
+                    const prodno = document.getElementById('prodno').value;
+
+                    const jsonData = {
+                        "uid": uid,
+                        "prodno": prodno,
+                        "prodCount": prodCount
+                    };
+                    fetch("/farmstory/market/moveOrder", {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(jsonData)
+                    })
+                        .then(Response => {
+                            console.log(Response);
+                            if (Response.ok) {
+                                window.location.href = '/farmstory/market/neworder';
+                            }
+                        })
+                        .catch(err => console.log(err))
+                }
+            }
+
+            // 장바구니 버튼 클릭시 //
+            const btnCart = document.getElementById('btnCart');
+            btnCart.onclick = function (){
+                // 로그인 여부 확인 (난 천재인듯)
+                const loginCheck = document.getElementById('uid');
+
+                if (loginCheck == null){
+                    let result = confirm("로그인 후 사용하실 수 있습니다. \n 로그인페이지로 이동하시겠습니까?");
+                    if (result){
+                        window.location.href = `/farmstory/user/login`;
+                    }
+                }else{
+                    const prodCount = document.getElementsByName('prodCount')[0].value;
+                    const uid = document.getElementById('uid').value;
+                    const prodno = document.getElementById('prodno').value;
+
+                    const jsonData = {
+                        "uid" : uid,
+                        "prodno" : prodno,
+                        "prodCount" : prodCount
+                    };
+                    fetch("/farmstory/market/addCart", {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(jsonData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('추가에 실패했습니다.');
+
+                            }
+                            return response.json()
+                        })
+                        .then(data => {
+                            console.log("g3");
+                            if (data.data === "추가 성공"){
+                                let result = confirm("장바구니에 상품을 추가했습니다.\n 장바구니로 이동하시겠습니까?");
+                                if (result) {
+                                    window.location.href = `/farmstory/market/newcart?uid=${uid}`;
+                                }
+                            }else if (data.data === "추가 실패"){
+                                let result = confirm("이미 장바구니에 존재하는 상품입니다.\n 장바구니로 이동하시겠습니까?");
+                                if (result) {
+                                    window.location.href = `/farmstory/market/newcart?uid=${uid}`;
+                                }
+                            }
+                        })
+                        .catch(err => console.log(err))
+                }
+            }
+
             // 리뷰로 스크롤 이동 //
             const prodReviewBox = document.getElementsByClassName('prodReviewBox')[0];
             const moveReview = document.getElementsByClassName('moveReview')[0];
@@ -75,9 +162,10 @@
             <div class="sideBox">
                 <img th:src="@{/newimage/farm_market_logo.png}" alt="">
                 <ul>
-                    <li><a class="" href="">장보기</a></li>
-                    <li><a class="tabOn" href="">장바구니</a></li>
-                    <li><a href="">배송조회</a></li>
+                    <li><a class="tabOn" th:href="@{/market/newlist}">장보기</a></li>
+                    <li><a class="" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}">장바구니</a></li>
+                    <li><a class="" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/user/login}">장바구니</a></li>
+                    <li><a class="" href="">배송조회</a></li>
                 </ul>
             </div>
 
@@ -92,6 +180,8 @@
                     <div class="prodInfoBox">
                         <div class="prodImg">
                             <img th:src="@{'/imagePath/'+${productDTO.titleImg}}" th:alt="${productDTO.prodname}" alt="">
+                            <input type="hidden" id="uid" th:if="${#authorization.expression('isAuthenticated()')}" th:value="${#authentication.principal.user.uid}">
+                            <input type="hidden" id="prodno" th:value="${productDTO.prodno}">
                         </div>
                         <div class="pordInfo">
                         <!-- 제품 이름과 수량 -->
@@ -129,7 +219,7 @@
                                     </h4>
                                     <div class="quantity-input">
                                         <button class="minus-btn" type="button">-</button>
-                                        <input type="text" class="quantity" name="count" min="1" value="1" id="count">
+                                        <input type="text" class="quantity" th:name="prodCount" min="1" value="1" id="count">
                                         <button class="plus-btn" type="button">+</button>
                                     </div>
                                     <h4><span id="totalPrice" th:text="${#numbers.formatInteger((productDTO.price - (productDTO.price * productDTO.discount / 100)), 0, 'COMMA')}"></span>원</h4>
@@ -145,8 +235,8 @@
                             </div>
 
                             <div class="prodBtn">
-                                <button th:href="@{/market/cart}" id="btnCart">장바구니</button>
-                                <button th:href="@{/market/cart}" id="btnOrder">바로구매</button>
+                                <button id="btnCart">장바구니</button>
+                                <button id="btnOrder">바로구매</button>
                             </div>
                         </div>
                     </div>

@@ -38,49 +38,77 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
     // 장보기 게시판 목록 출력 (market/list)
     @Override
     public Page<Tuple> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable) {
-        /*
-            3가지로 분기 // 중복 코드 합치기
-            1. 파라미터 하나도 없을 때
-            2. cate만 있을 때
-            3. type keyword 있을 때
-        */
+
         QueryResults<Tuple> productList = null;
         long total = 0;
-        if ((marketPageRequestDTO.getCate() == null || marketPageRequestDTO.getCate().isEmpty()) && marketPageRequestDTO.getType() == null) {
-            // 1. 파라미터 없이 호출했을 경우 (상단 배너로 호출)
-            // select * from `product` order by no desc limt (0, 10)
-            productList = jpaQueryFactory
-                    .select(qProduct, qImages.thumb240)
-                    .from(qProduct)
-                    .join(qImages)
-                    .on(qProduct.prodno.eq(qImages.prodno))
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .orderBy(qProduct.prodno.desc())
-                    .fetchResults();
+        if (marketPageRequestDTO.getKeyword() == null){
+            if ((marketPageRequestDTO.getCate() == null || marketPageRequestDTO.getCate().isEmpty()) && marketPageRequestDTO.getType() == null) {
+                // 1. cate값 없음 + keyword값 없음
+                productList = jpaQueryFactory
+                        .select(qProduct, qImages.thumb240)
+                        .from(qProduct)
+                        .join(qImages)
+                        .on(qProduct.prodno.eq(qImages.prodno))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .orderBy(qProduct.prodno.desc())
+                        .fetchResults();
 
-            total = jpaQueryFactory.selectFrom(qProduct).fetchCount();
-        } else if (marketPageRequestDTO.getCate() != null && marketPageRequestDTO.getType() == null) {
-            // 2. cate만 있는 경우 (상품 분류로 호출)
-            // select * from `product` where `cate`=? order by no desc limt (0, 10)
-            productList = jpaQueryFactory
-                    .select(qProduct, qImages.thumb240)
-                    .from(qProduct)
-                    .join(qImages)
-                    .on(qProduct.prodno.eq(qImages.prodno))
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .orderBy(qProduct.prodno.desc())
-                    .fetchResults();
+                total = jpaQueryFactory.selectFrom(qProduct).fetchCount();
+            } else if (marketPageRequestDTO.getCate() != null && marketPageRequestDTO.getType() == null) {
+                // 2. cate값 있음 + keyword값 없음
+                productList = jpaQueryFactory
+                        .select(qProduct, qImages.thumb240)
+                        .from(qProduct)
+                        .join(qImages)
+                        .on(qProduct.prodno.eq(qImages.prodno))
+                        .where(qProduct.cate.eq(marketPageRequestDTO.getCate()))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .orderBy(qProduct.prodno.desc())
+                        .fetchResults();
 
-            total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.cate.eq(marketPageRequestDTO.getCate())).fetchCount();
+                total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.cate.eq(marketPageRequestDTO.getCate())).fetchCount();
+            }
         } else {
-            // 3. type keyword 있는 경우 (검색으로 호출)
-            // select * from `product` where `type`= keyword order by no desc limt (0, 10)
+            if ((marketPageRequestDTO.getCate() == null || marketPageRequestDTO.getCate().isEmpty())) {
+                // 3. cate값 없음 + keyword값 있음
+                        productList = jpaQueryFactory
+                        .select(qProduct, qImages.thumb240)
+                        .from(qProduct)
+                        .join(qImages)
+                        .on(qProduct.prodno.eq(qImages.prodno))
+                        .where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword()))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .orderBy(qProduct.prodno.desc())
+                        .fetchResults();
+
+
+                total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.cate.eq(marketPageRequestDTO.getCate()))
+                        .where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword())).fetchCount();
+            }else {
+                // 4. cate값 있음 + keyword값 있음
+                productList = jpaQueryFactory
+                        .select(qProduct, qImages.thumb240)
+                        .from(qProduct)
+                        .join(qImages)
+                        .on(qProduct.prodno.eq(qImages.prodno))
+                        .where(qProduct.cate.eq(marketPageRequestDTO.getCate()))
+                        .where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword()))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .orderBy(qProduct.prodno.desc())
+                        .fetchResults();
+
+                total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword())).fetchCount();
+            }
         }
 
         List<Tuple> content = productList.getResults();
-
+        log.info("content : " + content.toString());
+        log.info("pageable : " + pageable);
+        log.info("total : " + total);
         return new PageImpl<>(content, pageable, total);
     }
 
@@ -242,12 +270,13 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
                 .where(qOrders.uid.eq(uid))
                 .fetchOne();
 
-        if(orderNo != null) {
+        if (orderNo != null) {
             return orderNo;
         } else {
             return 0;
         }
-      
+    }
+
     // main 페이지에서 띄울 상품 16개
     @Override
     public List<Tuple> selectProductsForMain(String cate){
@@ -286,5 +315,28 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
 
             List<Tuple> orderList = results.getResults();
             return orderList;
+    }
+
+
+    // market/view에서 장바구니에 품목 추가
+    @Override
+    @Transactional
+    public Integer addProductForCart(String uid, int prodno, int prodCount){
+        Integer cartNo = jpaQueryFactory
+                            .select(qCart.cartNo)
+                            .from(qCart)
+                            .where(qCart.uid.eq(uid))
+                            .fetchOne();
+
+        List<Cart_product> result = jpaQueryFactory
+                                    .selectFrom(qCart_product)
+                                    .where(qCart_product.cartNo.eq(cartNo).and(qCart_product.prodNo.eq(prodno)))
+                                    .fetch();
+
+        if (result.isEmpty()){
+            return cartNo;
+        }else {
+            return -1; // 이미 존재하는 상품
+        }
     }
 }
