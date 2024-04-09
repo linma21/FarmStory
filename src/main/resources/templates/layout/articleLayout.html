@@ -27,9 +27,16 @@
 <div class="container">
     <header>
         <div class="userBox">
+            <!-- 로그인 안했을때 -->
+            <a th:href="@{/user/register}" style="color: #111111">로그인 |</a>
             <a th:href="@{/user/register}" style="color: #111111">회원가입 |</a>
-            <a th:href="@{/admin/index}" style="color: #111111">관리자 |</a>
             <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
+            <!-- 로그인 했을때 -->
+            <a th:href="@{/user/logout}" style="color: #111111">로그아웃 |</a>
+            <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
+
+            <!--role이 admin인 경우-->
+            <a th:href="@{/admin/index}" style="color: #111111">관리자 |</a>
         </div>
 
         <div class="logoBox">
