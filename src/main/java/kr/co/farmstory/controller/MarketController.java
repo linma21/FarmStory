@@ -6,6 +6,8 @@ import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
+import kr.co.farmstory.entity.OrderDetail;
+import kr.co.farmstory.entity.Orders;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.ReviewService;
@@ -16,13 +18,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static kr.co.farmstory.entity.QProduct.product;
 
@@ -34,7 +34,6 @@ public class MarketController {
     private final MarketService marketService;
     private final ReviewService reviewService;
     private final UserService userService;
-
 
     // 장보기 글목록 페이지 매핑 (cate, pg, type, keyword 받음)
     @GetMapping("/market/newlist")
@@ -136,7 +135,7 @@ public class MarketController {
         UserDTO userDTO = userService.selectUserForOrder(uid);
         log.info("주문하기 페이지 Cont 1 : " + userDTO.toString());
 
-        // 상품 정보 가져오기 - 장바구니 목록 불러오기ㅇ와 같음
+        // 상품 정보 가져오기 - 장바구니 목록 불러오기와 같음
         List<ProductDTO> productDTO = marketService.selectCartForMarket(uid);
         log.info("주문하기 페이지 Cont 2 : " + productDTO.toString());
         // session에 데이터 저장
@@ -164,6 +163,84 @@ public class MarketController {
         model.addAttribute("formattedPrice", formattedPrice);
 
         return "productDetails"; // 뷰 이름 반환
+    }
+
+
+    @PostMapping("/market/orders")
+    public ResponseEntity<?> orders(@RequestBody OrderDTO orderDTO){
+
+        log.info("여기까지는 들어오나?");
+
+        log.info("orderDTO : "+ orderDTO);
+
+        marketService.orders(orderDTO);
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("result","1");
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    //결제 후 장바구니에 있는 상품들을 삭제
+    @PostMapping("/market/cartProdDelete")
+    public ResponseEntity<?> cartDelete(@RequestBody List<Map<String, Integer>> productList) {
+        //productList에 담긴 값을 가져와서 int로 변환
+
+        log.info("여기로 들어오는지 확인");
+
+        int[] prodNos = productList.stream()
+                .mapToInt(map -> (map.get("prodNo")))
+                .toArray();
+
+        log.info("controller-cart_prodNos(내 컨트롤러) : " + Arrays.toString(prodNos));
+
+        return marketService.deleteCart(prodNos);
+    }
+
+
+    @GetMapping("/market/orderNo/{uid}")
+    @ResponseBody
+    public int orderNo(@PathVariable("uid")String uid){
+        //orderNo값을 들고왔음!
+
+        int orderNo= marketService.selectOrderNo(uid);
+
+        log.info("orderNo "+orderNo);
+
+        return orderNo;
+
+    }
+
+    @PostMapping("/market/saveOrderDetail")
+    public ResponseEntity<?> orderDetails(@RequestBody List<Map<String, Object>> requestData){
+
+
+        int[] count = requestData.stream()
+                .mapToInt(map -> (int) map.get("count"))
+                .toArray();
+
+        int[] detailNo = requestData.stream()
+                .mapToInt(map -> (int) map.get("detailNos"))
+                .toArray();
+
+        int order = requestData.stream()
+                .mapToInt(map -> (int) map.get("orders"))
+                .findFirst()
+                .orElse(0);
+
+        log.info("여기로 들어오는지 확인");
+        log.info("controller-cart_prodNos(지금 테스트 )1 : " + Arrays.toString(count));
+        log.info("controller-cart_prodNos(지금 테스트 )2 : " + Arrays.toString(detailNo));
+        log.info("controller-cart_prodNos(지금 테스트 )3 : " + order);
+
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("result","1");
+
+        return ResponseEntity.ok().body(response);
+
     }
 }
 
