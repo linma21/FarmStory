@@ -73,6 +73,7 @@ public class ReviewService {
                 .total(total)
                 .build();
     }
+
     // 리뷰 avg, sum, count(*) 조회 + score별 count 조회
     @Transient
     public ReviewRatioDTO selectForRatio(int prodno){
@@ -80,8 +81,19 @@ public class ReviewService {
         // 리뷰 avg, sum, count(*) 조회 : 전체 데이터 기준으로 집계해야해서 group by 사용 불가 (score별 count 조회 따로 해야함)
         Tuple result = reviewRepository.selectForRatio(prodno);
         log.info("리뷰 집계 조회 ...1 : "+result);
+
+        // QueryDsl은 count,sum은 long으로 avg는 double로 반환된다.
+        long count = result.get(0, Long.class);
+        double avg = 0;
+        long sum = 0;
+
+        // 리뷰가 하나도 없으면 에러가 발생하기 때문에 null 체크
+        if(result.get(1, String.class) != null) {
+            avg = result.get(1, Double.class);
+            sum = result.get(2, Long.class);
+        }
+/*
         // 리뷰 score별(GROUP BY score) 조회
-        /*
         List<Tuple> groupResult = reviewRepository.selectScoreCount(prodno);
         groupResult.stream()
                 .map(tuple ->{
@@ -89,17 +101,10 @@ public class ReviewService {
                     String score = tuple.get(0, String.class);
                     Integer scoreCount = tuple.get(1, Integer.class);
 
-
                 })
                 .toList();
-                
-         */
-
-        // Tuple.get -> DTO.set (Tuple -> DTO 변환은 불가)
-        int count = result.get(0, Integer.class);
-        long avg = result.get(1, Long.class);
-        int sum = result.get(2, Integer.class);
-
+                S
+ */
         return ReviewRatioDTO.builder()
                 .count(count)
                 .sum(sum)
@@ -107,6 +112,8 @@ public class ReviewService {
                 .build();
 
     }
+
+
 
     // 리뷰 작성 + 상품 테이블 recount up + file -> Thumbnails
     @Transient

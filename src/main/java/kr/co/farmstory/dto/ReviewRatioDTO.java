@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class ReviewRatioDTO {
-    private int count;
-    private int sum;
-    private long avg;
+    private long count;
+    private long sum;
+    private double avg;
     private int percent1;
     private int percent2;
     private int percent3;
@@ -20,7 +20,7 @@ public class ReviewRatioDTO {
     private int percent5;
 
     @Builder
-    public ReviewRatioDTO(int count, int sum, long avg){
+    public ReviewRatioDTO(long count, long sum, double avg){
         this.count = count;
         this.sum = sum;
         this.avg = avg;

@@ -12,6 +12,7 @@ import kr.co.farmstory.entity.Orders;
 import kr.co.farmstory.entity.OrderDetail;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.repository.MarketRepository;
+import kr.co.farmstory.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

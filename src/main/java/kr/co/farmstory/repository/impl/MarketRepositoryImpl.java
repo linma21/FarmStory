@@ -242,11 +242,12 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
                 .where(qOrders.uid.eq(uid))
                 .fetchOne();
 
-        if(orderNo != null) {
+        if (orderNo != null) {
             return orderNo;
         } else {
             return 0;
         }
+    }
       
     // main 페이지에서 띄울 상품 16개
     @Override

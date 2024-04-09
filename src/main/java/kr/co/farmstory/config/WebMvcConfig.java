@@ -35,10 +35,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     //private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
 
     // 이진
-    private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+    //private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+    @Value("${file.prodImg.path}")
+    private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
 
     // 태영
-    private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
+   // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
 
     // imjae
     // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
@@ -51,8 +53,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     // 배포
     //private String resourcePath = "file:///home/farmStory/prodImg/";
 
-    @Value("${file.prodImg.path}")
-    private String resourcePath;
+
+    //private String resourcePath;
 
 
     @Override
