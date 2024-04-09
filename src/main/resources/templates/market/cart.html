@@ -140,7 +140,7 @@
                                 .then(Response => {
                                     console.log(Response);
                                     if(Response.ok) {
-                                        window.location.href = '/farmstory/market/order';
+                                        window.location.href = '/farmstory/market/neworder';
                                     }
                                 })
                                 .catch(err => console.log(err))
@@ -311,7 +311,7 @@
                 <!-- 내용 시작 -->
                 <p class="sort">
                     <a href="#" class="on">장바구니 전체(10)</a>
-                    <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
+                    <input type="text" id="uid" th:value="${#authentication.principal.user.uid}">
                 </p>
                 <table border="0">
                     <thead>

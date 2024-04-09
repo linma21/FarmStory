@@ -1,10 +1,7 @@
 package kr.co.farmstory.repository.custom;
 
 import com.querydsl.core.Tuple;
-import kr.co.farmstory.dto.MarketPageRequestDTO;
-import kr.co.farmstory.dto.OrderDetailDTO;
-import kr.co.farmstory.dto.OrderListResponseDTO;
-import kr.co.farmstory.dto.PageRequestDTO;
+import kr.co.farmstory.dto.*;
 import kr.co.farmstory.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +25,7 @@ public interface MarketRepositoryCustom {
     public boolean modifyCount(int[] cart_prodNos, int[] counts);
     // market/cart 페이지에서 선택 상품 cart_prodNo 테이블에서 삭제
     public boolean deleteCart(int[] cart_prodNos);
+
+    public int findOrderNo(String uid);
+
 }

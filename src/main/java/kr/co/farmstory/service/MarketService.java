@@ -8,6 +8,7 @@ import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.entity.Cart_product;
 import kr.co.farmstory.entity.Images;
+import kr.co.farmstory.entity.Orders;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.repository.OrderRepository;
@@ -30,6 +31,7 @@ public class MarketService {
 
     private final MarketRepository marketRepository;
     private final ModelMapper modelMapper;
+    private final OrderRepository orderRepository;
 
 
     // 장보기 글목록 페이지 - 장보기 목록 출력
@@ -144,14 +146,37 @@ public class MarketService {
 
     // 장바구니에서 선택 상품 삭제
     public ResponseEntity<?> deleteCart(int[] cart_prodNos){
+        log.info("1" + Arrays.toString(cart_prodNos));
         boolean result = marketRepository.deleteCart(cart_prodNos);
+        log.info("2" + result);
         Map<String, String> response = new HashMap<>();
         if (result){
             response.put("data","삭제 성공");
+            log.info(response.toString());
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }else {
             response.put("data","삭제 실패");
+            log.info(response.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+
+    //받는 사람 정보 + uid 를 orders에 저장
+    public void orders(OrderDTO orderDTO){
+
+        Orders orders = modelMapper.map(orderDTO, Orders.class);
+
+        orderRepository.save(orders);
+    }
+
+    //orderNo를 찾기위한 여정
+    public int selectOrderNo(String uid){
+        int orderNo = marketRepository.findOrderNo(uid);
+
+        log.info("orderNo : "+orderNo);
+
+        return orderNo;
+    }
+
 }

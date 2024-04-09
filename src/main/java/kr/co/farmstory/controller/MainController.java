@@ -58,7 +58,7 @@ public class MainController {
 
                 model.addAttribute("userDTO", userDTO);
 
-                return "addInfo";
+                return "/addInfo";
 
             }else if(userDTO.getRole().equals("delete")){
 
