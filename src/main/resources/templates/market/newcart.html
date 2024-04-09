@@ -4,10 +4,6 @@
 
 <div class="container" layout:fragment="content">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>farmPlus</title>
-    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
     <script>
         window.onload = function(){
             //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
@@ -315,8 +311,9 @@
         <div class="sideBox">
             <img th:src="@{/newimage/farm_market_logo.png}" alt="">
             <ul>
-                <li><a class="" href="">장보기</a></li>
-                <li><a class="tabOn" href="">장바구니</a></li>
+                <li><a class="" th:href="@{/market/newlist}">장보기</a></li>
+                <li><a class="tabOn" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}">장바구니</a></li>
+                <li><a class="tabOn" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/user/login}">장바구니</a></li>
                 <li><a class="" href="">배송조회</a></li>
             </ul>
         </div>
@@ -343,7 +340,6 @@
                                 <input type="checkbox" class="prodCheckBox">
                                 <input type="hidden" name="cart_prodNo" th:value="${product.cart_prodNo}">
                                 <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
-                                <!--나중에 변경해야함 ${#authentication.principal.user.uid} -->
                                 <a class="cartImg" href="">
                                     <img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="">
                                 </a>

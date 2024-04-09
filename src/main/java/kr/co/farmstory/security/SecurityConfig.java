@@ -1,5 +1,6 @@
 package kr.co.farmstory.security;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.oauth2.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -27,7 +28,9 @@ public class SecurityConfig {
                                         .defaultSuccessUrl("/")     // login 성공 주소
                                         .failureUrl("/user/login?success=100")  // login 실패 주소
                                         .usernameParameter("uid")               // login시 사용할 name 파라미터
-                                        .passwordParameter("pass"));            // login시 사용할 password 파라미터
+                                        .passwordParameter("pass")
+                                    );
+
         // 로그아웃 설정
         httpSecurity.logout(logout -> logout
                                 .invalidateHttpSession(true)            // session 무효화 -> logout 후 새로운 session 시작

@@ -36,26 +36,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // 이진
     //private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
-    @Value("${file.prodImg.path}")
-    private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
+    // private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
+
+    // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
 
     // 태영
-   // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
+    // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
 
     // imjae
     // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
-    //private String resourcePath = "file:///Users/devimjae/Desktop/workspace/farmstory/prodImg/";
-
-    //private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
     // private String resourcePath = "file:///Users/devimjae/Desktop/workspace/farmstory/prodImg/";
 
-
     // 배포
-    //private String resourcePath = "file:///home/farmStory/prodImg/";
-
-
-    //private String resourcePath;
-
+    // private String resourcePath = "file:///home/farmStory/prodImg/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -1,7 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/articleLayout}">
-<main class="articleMain" layout:fragment="content">
+      layout:decorate="~{/layout/newUserLayout}">
+
+<div class="container" layout:fragment="content">
+    <main class="articleMain">
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
                 <ul class="lnb">
@@ -115,3 +117,4 @@
                 </div>
             </div>
         </main>
+</div>

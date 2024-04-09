@@ -34,4 +34,7 @@ public interface MarketRepositoryCustom {
 
     // main 페이지에서 띄울 상품 16개
     public List<Tuple> selectProductsForMain(String cate);
+
+    // market/view에서 장바구니에 품목 추가
+    public Integer addProductForCart(String uid, int prodno, int prodCount);
 }

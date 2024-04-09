@@ -66,51 +66,46 @@
             // fetch로 카테고리별 상품 조회해오는 함수
             function selectCate(cate) {
                 fetch(`/farmstory/index/prodCate/${cate}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        console.log(data.productDTOS);
-                        console.log(data.productDTOS[0].prodname);
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data.productDTOS);
+                    console.log(data.productDTOS[0].prodname);
 
-                        for (const product of data.productDTOS) {
+                    for (const product of data.productDTOS) {
 
-                            const formattedPrice = numberWithCommas(product.price);
-                            const discountPrice = product.price - (product.price * product.discount / 100);
-                            const formattedDiscountPrice = numberWithCommas(discountPrice.toFixed(0)); // 소수점 이하를 버림하고 포매팅
-                            const formattedAmount = formatAmount(product.amount);
+                        const formattedPrice = numberWithCommas(product.price);
+                        const discountPrice = product.price - (product.price * product.discount / 100);
+                        const formattedDiscountPrice = numberWithCommas(discountPrice.toFixed(0)); // 소수점 이하를 버림하고 포매팅
+                        const formattedAmount = formatAmount(product.amount);
 
-                            const newProduct = `<a class="product" href="/farmstory/market/newview?prodno=${product.prodno}">
-                                                        <img src="/farmstory/imagePath/${product.titleImg}" alt="${product.prodname}">
-                                                        <div>
-                                                            <div class="disProd"><span>할인상품</span></div>
-                                                            <h4 class="title">${product.prodname}</h4>
-                                                           <h4 class="amount">${formattedAmount}</h4><br>
-                                                            <h3 class="discount"><span>${product.discount}</span>% </h3>
-                                                             <span class="price"><s>${formattedPrice}원</s></span><br>
-                                                            <h3>${formattedDiscountPrice}원</h3>
-                                                         </div>
-                                                    </a>`;
+                        const newProduct = `<a class="product" href="/farmstory/market/newview?prodno=${product.prodno}">
+                                                    <img src="/farmstory/imagePath/${product.titleImg}" alt="${product.prodname}">
+                                                    <div>
+                                                        <div class="disProd"><span>할인상품</span></div>
+                                                        <h4 class="title">${product.prodname}</h4>
+                                                       <h4 class="amount">${formattedAmount}</h4><br>
+                                                        <h3 class="discount"><span>${product.discount}</span>% </h3>
+                                                         <span class="price"><s>${formattedPrice}원</s></span><br>
+                                                        <h3>${formattedDiscountPrice}원</h3>
+                                                     </div>
+                                                </a>`;
 
-                            // 태그 문자열 삽입
-                            productBox.insertAdjacentHTML('beforeend', newProduct);
-                        }
-                    })
-                    .catch(err => console.log(err))
+                        // 태그 문자열 삽입
+                        productBox.insertAdjacentHTML('beforeend', newProduct);
+                    }
+                })
+                .catch(err => console.log(err))
             }
         }
 
-            function redirectToCartOrLogin() {
-            // 서버 사이드에서 인증 상태를 평가합니다.
-            const isAuthenticated = [[${#authentication.isAuthenticated()}]];
-            if (!isAuthenticated) {
-            // 로그인한 사용자인 경우, 장바구니 페이지로 리다이렉트합니다.
-            window.location.href = '/farmstroy/market/newcart';
-        } else {
-            // 로그인하지 않은 사용자인 경우, 로그인 페이지로 리다이렉트합니다.
-            window.location.href = '/farmstory/user/login';
+        function notLogin() {
+            console.log("g2");
+            const confirmed = confirm("로그인 후 사용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
+            if (confirmed) {
+                window.location.href = "/farmstory/user/login";
+            }
         }
-        }
-
     </script>
 </head>
 <body>
@@ -135,16 +130,32 @@
                     </label>
                 </form>
 
-                <div class="btnUserBox">
-                    <a class="btnUser" href="#" onclick="redirectToCartOrLogin()">
+                <!--로그인 안된 경우-->
+                <div class="btnUserBox" th:if="${!#authorization.expression('isAuthenticated()')}">
+                    <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                         <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
-                    <a href="" class="btnUser">
+                    <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                         <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                         <h5>마이페이지</h5>
                     </a>
-                    <a href="" class="btnUser">
+                    <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
+                        <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
+                        <h5>배송조회</h5>
+                    </a>
+                </div>
+                <!--로그인 된 경우-->
+                <div class="btnUserBox" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="btnUser" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}" >
+                        <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
+                        <h5>장바구니</h5>
+                    </a>
+                    <a class="btnUser" href="">
+                        <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
+                        <h5>마이페이지</h5>
+                    </a>
+                    <a class="btnUser" href="">
                         <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
                         <h5>배송조회</h5>
                     </a>
@@ -152,7 +163,7 @@
             </div>
             <div class="navBox">
                 <ul class="gnb">
-                    <li><a th:href="@{/introduction/hello}">팜스토리소개</a></li>
+                    <li><a th:href="@{/introduction/newHello}">팜스토리소개</a></li>
                     <li><a th:href="@{/market/newlist}">장보기</a></li>
                     <li><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
                     <li><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
@@ -211,7 +222,8 @@
             </div>
 
             <div class="productBox">
-                <a class="product" href="" th:each="product : ${productDTOS}">
+                <th:block th:each="product : ${productDTOS}">
+                <a class="product" th:href="@{/market/newview(prodno=${product.prodno})}">
                     <img th:src="@{'/imagePath/'+${product.titleImg}}" th:alt="${product.prodname}">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
@@ -225,6 +237,7 @@
                         <h3 th:text="${#numbers.formatInteger((product.price - product.price * product.discount / 100), 1, 'COMMA')} + '원'"></h3>
                     </div>
                 </a>
+                </th:block>
             </div>
         </main>
 
