@@ -133,7 +133,7 @@ public class UserService {
     public List<UserDTO> getUserList(PageRequestDTO pageRequestDTO) {
         // UserService 내 getUserList 메소드 수정
         Pageable pageable = pageRequestDTO.getPageable("regDate");
-        Page<User> result = userRepository.findAll(pageable);
+        Page<User> result = userRepository.findByRoleNot("delete", pageable);
 
         return result.getContent().stream()
                 .map(user -> modelMapper.map(user, UserDTO.class))
@@ -206,6 +206,10 @@ public class UserService {
 
         return users.stream().map(user -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public void updateRole(String uid, String role){
+        userMapper.updateRole(uid,role);
     }
 
 }

@@ -36,6 +36,7 @@ async function fetchPost(url, jsonData) {
         console.log("fetchData2...5 : ", data);
 
         return data;
+
     } catch (err) {
         console.log(err);
         return null;
