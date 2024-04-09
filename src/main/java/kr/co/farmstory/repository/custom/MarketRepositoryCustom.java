@@ -15,7 +15,7 @@ import java.util.List;
 public interface MarketRepositoryCustom {
 
     // market/list 페이지 products 조회
-    public Page<Product> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable);
+    public Page<Tuple> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable);
     // market/view 페이지 product 조회
     public List<Tuple> selectProduct(int prodno);
 
