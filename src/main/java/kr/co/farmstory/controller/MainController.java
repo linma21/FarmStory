@@ -52,10 +52,22 @@ public class MainController {
             // 아이디값을 가진 사용자의 hp값을 들고오기
             UserDTO userDTO = userService.findById(uid);
 
+            log.info("로그인한 사용자의 신상정보 : "+userDTO);
+
             if (userDTO.getHp() == null || userDTO.getHp().isEmpty()) {// 만약에 hp가 null이면 사용자 정보 수정 페이지로 이동
+
                 model.addAttribute("userDTO", userDTO);
-                return "/test";
-            } else {// hp가 null이 아니면 기본 페이지 띄워주기
+
+                return "addInfo";
+
+            }else if(userDTO.getRole().equals("delete")){
+
+                log.info("탈퇴한 회원");
+
+                return "/user/login";
+
+            }else {//hp가 null이 아니면 기본 페이지 띄워주기
+
                 return "/index";
             }
         }

@@ -119,7 +119,7 @@ public class AdminController {
     @GetMapping("/admin/user/list")
     public String userList(Model model, PageRequestDTO pageRequestDTO) {
         List<UserDTO> userDTOList = userService.getUserList(pageRequestDTO);
-        int total = userService.getTotalCount(pageRequestDTO); // 이 메소드는 전체 사용자 수를 가져오는 구현이 필요합니다.
+        int total = userService.getTotalCount(pageRequestDTO);
 
         UserResponseDTO userResponseDTO = new UserResponseDTO(pageRequestDTO, userDTOList, total);
         model.addAttribute("userResponseDTO", userResponseDTO);
