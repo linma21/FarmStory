@@ -11,20 +11,19 @@ import org.springframework.data.domain.Sort;
 @NoArgsConstructor
 @ToString
 @Builder
-public class MarketPageRequestDTO {
+public class ReviewPageRequestDTO {
+
     @Builder.Default
     private int no = 1;
+
     @Builder.Default
     private int pg = 1;
+
     @Builder.Default
-    private int size = 12;
-
-    private String cate;
-
-    private String type;
-    private String keyword;
+    private int size = 5;
 
     public Pageable getPageable(String sort){
         return PageRequest.of(this.pg - 1, this.size, Sort.by(sort).descending());
     }
+
 }
