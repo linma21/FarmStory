@@ -6,6 +6,21 @@
     <meta charset="UTF-8">
     <title>팜스토리</title>
     <link rel="stylesheet" th:href="@{/css/adminStyle.css}">
+
+    <script th:inline="javascript">
+        function redirectToCartOrLogin() {
+            // 서버 사이드에서 인증 상태를 평가합니다.
+            const isAuthenticated = [[${#authentication.isAuthenticated()}]];
+            if (!isAuthenticated) {
+                // 로그인한 사용자인 경우, 장바구니 페이지로 리다이렉트합니다.
+                window.location.href = '/farmstroy/market/newcart';
+            } else {
+                // 로그인하지 않은 사용자인 경우, 로그인 페이지로 리다이렉트합니다.
+                window.location.href = '/farmstory/user/login';
+            }
+        }
+    </script>
+
 </head>
 <body>
 <div id="container">

@@ -343,7 +343,7 @@
                             <div class="cartItem" th:each="product : ${productDTO}">
                                 <input type="checkbox" class="prodCheckBox">
                                 <input type="hidden" name="cart_prodNo" th:value="${product.cart_prodNo}">
-                                <input type="hidden" id="uid" value="skdlawo5985@gmail.com">
+                                <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
                                 <!--나중에 변경해야함 ${#authentication.principal.user.uid} -->
                                 <a class="cartImg" href="">
                                     <img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="">
@@ -360,12 +360,14 @@
                                     </p>
                                     <p>
                                         <span><b class="prodDiscount" th:text="${product.discount}" th:name="prodDiscount"></b>%</span>
-                                        <span><s class="prodPrice" th:text="${product.price}*${product.count}" th:name="prodPrice"></s>원</span>
+                                        <span>
+                                            <s class="prodPrice" th:text="${#numbers.formatInteger(product.price * product.count, 1, 'COMMA')} + '원'" th:name="prodPrice"></s>
+                                        </span>
                                     </p>
                                     <p>
                                         <span>
-                                            <b class="prodCutPrice" th:text="(${product.price}-(${product.price}*${product.discount}/100))*${product.count}" th:name="prodDisPrice">
-                                            </b>원
+                                           <b class="prodCutPrice" th:text="${#numbers.formatInteger((product.price - (product.price * product.discount / 100)) * product.count, 1, 'COMMA')}">
+                                         </b>원
                                         </span>
                                     </p>
 
@@ -373,7 +375,7 @@
                                         <div>
                                             <p>
                                                 <span>
-                                                    <b class="prodPoint" th:text="((${product.price}-(${product.price}*${product.discount}/100))*10/100)*${product.count}" th:name="prodPoint">
+                                                    <b class="prodPoint" th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count) * 0.10, 0, 'COMMA')}">
                                                     </b> 팜포인트 적립
                                                 </span>
                                             </p>
