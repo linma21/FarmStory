@@ -18,7 +18,7 @@ public interface MarketRepositoryCustom {
     // market/view 페이지 product 조회
     public List<Tuple> selectProduct(int prodno);
 
-    public List<Tuple> findOrderDetailsWithProductNameByUserId(String userId);
+    public Page<Tuple> findOrderListByUid(String userId, PageRequestDTO pageRequestDTO, Pageable pageable);
 
     // admin/order/list 페이지 조회
     public Page<Tuple> orderList(PageRequestDTO pageRequestDTO, Pageable pageable);

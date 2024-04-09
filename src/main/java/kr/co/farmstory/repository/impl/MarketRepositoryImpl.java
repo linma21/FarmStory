@@ -28,12 +28,9 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProduct qProduct = QProduct.product;
     private final QImages qImages = QImages.images;
-    private final QOrders orders = QOrders.orders;
-    private final QOrderDetail orderDetail = QOrderDetail.orderDetail;
-    private final QProduct product = QProduct.product;
-    private final QUser qUser = QUser.user;
     private final QOrders qOrders = QOrders.orders;
     private final QOrderDetail qOrderDetail = QOrderDetail.orderDetail;
+    private final QUser qUser = QUser.user;
     private final QCart qCart = QCart.cart;
     private final QCart_product qCart_product = QCart_product.cart_product;
 
@@ -96,20 +93,29 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
 
     };
 
-
+    // 주문 목록 조회
     @Override
-    public List<Tuple> findOrderDetailsWithProductNameByUserId(String userId) {
-        QueryResults<Tuple> results = jpaQueryFactory
-                .select(orderDetail.detailno, orderDetail.count, product.prodname, product.prodno, orders.orderNo)
-                .from(orderDetail)
-                .join(orders).on(orderDetail.orderNo.eq(orders.orderNo))
-                .join(product).on(orderDetail.prodno.eq(product.prodno))
-                .where(orders.uid.eq(userId))
-                .fetchResults();
-        log.info("results! : " + results.toString());
-        log.info("results!!!!! : " + userId);
+    public Page<Tuple> findOrderListByUid(String uid, PageRequestDTO pageRequestDTO, Pageable pageable) {
+        log.info("findOrderList Impl 1 : " + uid);
 
-        return results.getResults();
+        // select *, product.prodname, qProduct.price , order.rdate form product join ~
+        QueryResults<Tuple> results = jpaQueryFactory
+                .select(qOrderDetail, qProduct.prodname, qProduct.price , qOrders.rdate)
+                .from(qOrderDetail)
+                .join(qOrders).on(qOrderDetail.orderNo.eq(qOrders.orderNo))
+                .join(qProduct).on(qOrderDetail.prodno.eq(qProduct.prodno))
+                .where(qOrders.uid.eq(uid))
+                .orderBy(qOrderDetail.orderNo.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        log.info("findOrderList Impl 2 : " + results.toString());
+        long total = results.getTotal();
+        log.info("findOrderList Impl 3 : " + total);
+        List<Tuple> orderList = results.getResults();
+        // 페이지 처리용 page 객체 리턴
+        return new PageImpl<>(orderList, pageable, total);
     }
 
     //사용자가 주문한 목록을 조회(admin - order - list)

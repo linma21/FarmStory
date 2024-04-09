@@ -8,6 +8,7 @@ import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.entity.Cart_product;
 import kr.co.farmstory.entity.Images;
+import kr.co.farmstory.entity.OrderDetail;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.repository.OrderRepository;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -82,29 +84,51 @@ public class MarketService {
     }
 
     // 주문 목록 조회
-    public List<OrderDetailProductDTO> getOrderDetailsWithProductByUserId(String userId) {
-        List<Tuple> results = marketRepository.findOrderDetailsWithProductNameByUserId(userId);
+    public PageResponseDTO findOrderListByUid(String userId, PageRequestDTO pageRequestDTO) {
 
-        List<OrderDetailProductDTO> orderDetailProductDTOList = results.stream().map(tuple -> {
-            // Here, directly use the generated Q classes to access tuple elements in a type-safe manner
-            Integer detailNo = tuple.get(0, Integer.class);
-            Integer orderNo = tuple.get(1, Integer.class);
-            Integer prodNo = tuple.get(2, Integer.class);
-            Integer count = tuple.get(3, Integer.class);
-            String prodName = tuple.get(4, String.class);
+        log.info("findOrderListByUid Serv ...1");
+        Pageable pageable = pageRequestDTO.getPageable("no");
+        log.info("findOrderListByUid Serv ...2 " + pageable.toString());
+        Page<Tuple> results = marketRepository.findOrderListByUid(userId, pageRequestDTO, pageable);
 
-            // Creating and returning the DTO
-            OrderDetailProductDTO dto = new OrderDetailProductDTO();
-            dto.setDetailNo(detailNo);
-            dto.setOrderNo(orderNo);
-            dto.setProdNo(prodNo);
-            dto.setCount(count);
-            dto.setProdName(prodName);
+        // Page<Tuple>을 List<OrderDetailProductDTO>로 변환
+        List<OrderDetailProductDTO> orderDetailList = results.getContent().stream()
+                .map(tuple -> {
+                // Tuple 에서 Entity GET
+                OrderDetail orderDetail = tuple.get(0, OrderDetail.class);
+                String prodName = tuple.get(1, String.class);
+                Integer price = tuple.get(2, Integer.class);
+                LocalDateTime orderDate = tuple.get(3, LocalDateTime.class);
 
-            return dto;
-        }).collect(Collectors.toList());
-        log.info("orderDetailProductDTOList : " + orderDetailProductDTOList.toString());
-        return orderDetailProductDTOList;
+                // 제품별 주문수량 * 가격
+                int totalPrice = price * (orderDetail.getCount());
+                log.info("findOrderListByUid Serv ...3 : " + totalPrice);
+
+                // Entity -> DTO
+                OrderDetailProductDTO dto = new OrderDetailProductDTO();
+                OrderDetailDTO orderDetailDTO = modelMapper.map(orderDetail, OrderDetailDTO.class);
+
+                // OrderDetailProductDTO에 데이터 입력
+                dto.setOrderDetailDTO(orderDetailDTO);
+                dto.setProdName(prodName);
+                dto.setRdate(orderDate);
+                dto.setPrice(price);
+                dto.setTotalPrice(totalPrice);
+                log.info("findOrderListByUid Serv ...4 : " + dto.toString());
+                return dto;
+            
+        }).toList();
+        log.info("findOrderListByUid Serv ...5 : " + orderDetailList.toString());
+
+        // List<articleDTO>와 page 정보 리턴
+        int total = (int) results.getTotalElements();
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .total(total)
+                .build();
+        pageResponseDTO.setOrderDetailList(orderDetailList);
+        log.info("findOrderListByUid Serv ...6 : " + pageResponseDTO.toString());
+        return pageResponseDTO;
     }
 
     // 장바구니 목록
