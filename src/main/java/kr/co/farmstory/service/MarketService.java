@@ -11,7 +11,9 @@ import kr.co.farmstory.entity.Images;
 import kr.co.farmstory.entity.Orders;
 import kr.co.farmstory.entity.OrderDetail;
 import kr.co.farmstory.entity.Product;
+import kr.co.farmstory.repository.Cart_productRepository;
 import kr.co.farmstory.repository.MarketRepository;
+import kr.co.farmstory.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,6 +35,7 @@ public class MarketService {
     private final MarketRepository marketRepository;
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
+    private final Cart_productRepository cart_productRepository;
 
 
     // 장보기 글목록 페이지 - 장보기 목록 출력
@@ -224,5 +227,29 @@ public class MarketService {
             )
         .toList();
         return productDTOs;
+    }
+
+    // market/view에서 장바구니에 품목 추가
+    public ResponseEntity<?> addProductForCart(String uid, int prodno, int prodCount){
+        Integer result = marketRepository.addProductForCart(uid, prodno, prodCount);
+        Cart_product cartProduct = new Cart_product();
+        Cart_product newCartProduct = new Cart_product();
+        if (result > 0){
+            cartProduct.setCartNo(result);
+            cartProduct.setCount(prodCount);
+            cartProduct.setProdNo(prodno);
+            newCartProduct = cart_productRepository.save(cartProduct);
+        }
+
+        Map<String, String> response = new HashMap<>();
+        if (newCartProduct.getCart_prodNo() != 0){
+            response.put("data","추가 성공");
+            log.info(response.toString());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            response.put("data","추가 실패");
+            log.info(response.toString());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
     }
 }

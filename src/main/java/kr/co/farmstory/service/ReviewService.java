@@ -96,8 +96,14 @@ public class ReviewService {
          */
 
         // Tuple.get -> DTO.set (Tuple -> DTO 변환은 불가)
-        int count = result.get(0, Integer.class);
-        long avg = result.get(1, Long.class);
+        /*
+            count, avg, sum 타입 변환 에러 떠서 일단 임시방편으로 바꿨습니다.
+                int count = result.get(0, Integer.class)
+                long avg = result.get(1, Long.class)
+                int sum = result.get(2, Integer.class);
+         */
+        int count = result.get(0, Long.class).intValue();
+        long avg = result.get(1, double.class).longValue();
         int sum = result.get(2, Integer.class);
 
         return ReviewRatioDTO.builder()
