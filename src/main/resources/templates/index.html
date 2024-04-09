@@ -6,17 +6,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
     <link rel="stylesheet" th:href="@{/newcss/MainStyle.css}">
+    <script th:inline="javascript">
+        window.onload = function () {
+            const btnProdV = document.getElementById('btnProdV'); // 야채만 조회 버튼
+            const btnProdF = document.getElementById('btnProdF'); // 과일만 조회 버튼
+            const btnProdG = document.getElementById('btnProdG'); // 곡류만 조회 버튼
+            const btnProdE = document.getElementById('btnProdE'); // 기타만 조회 버튼
+            const productBox = document.getElementsByClassName('productBox')[0]; // 개별 상품 최상위 div 태그
+            const aTageProduct = document.getElementsByClassName('product'); // 개별 상품 a 태그
+
+            // 콤마
+            function numberWithCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // 수량
+            function formatAmount(amount) {
+                return amount >= 1000 ? `${numberWithCommas((amount / 1000).toFixed(1))}kg` : `${amount}g`;
+            }
+
+            // 야채 버튼 클릭
+            btnProdV.onclick = function (e) {
+                e.preventDefault();
+                Array.from(aTageProduct).forEach(function (product) {
+                    product.remove();
+                })
+                const cate = "야채";
+                selectCate(cate);
+            };
+            // 과일 버튼 클릭
+            btnProdF.onclick = function (e) {
+                e.preventDefault();
+                Array.from(aTageProduct).forEach(function (product) {
+                    product.remove();
+                })
+                const cate = "과일";
+                selectCate(cate);
+            };
+            // 곡류 버튼 클릭
+            btnProdG.onclick = function (e) {
+                e.preventDefault();
+                Array.from(aTageProduct).forEach(function (product) {
+                    product.remove();
+                })
+                const cate = "곡류";
+                selectCate(cate);
+            };
+            // 기타 버튼 클릭
+            btnProdE.onclick = function (e) {
+                e.preventDefault();
+                Array.from(aTageProduct).forEach(function (product) {
+                    product.remove();
+                })
+                const cate = "기타";
+                selectCate(cate);
+            };
+
+
+            // fetch로 카테고리별 상품 조회해오는 함수
+            function selectCate(cate) {
+                fetch(`/farmstory/index/prodCate/${cate}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        console.log(data.productDTOS);
+                        console.log(data.productDTOS[0].prodname);
+
+                        for (const product of data.productDTOS) {
+
+                            const formattedPrice = numberWithCommas(product.price);
+                            const discountPrice = product.price - (product.price * product.discount / 100);
+                            const formattedDiscountPrice = numberWithCommas(discountPrice.toFixed(0)); // 소수점 이하를 버림하고 포매팅
+                            const formattedAmount = formatAmount(product.amount);
+
+                            const newProduct = `<a class="product" href="/farmstory/market/newview?prodno=${product.prodno}">
+                                                        <img src="/farmstory/imagePath/${product.titleImg}" alt="${product.prodname}">
+                                                        <div>
+                                                            <div class="disProd"><span>할인상품</span></div>
+                                                            <h4 class="title">${product.prodname}</h4>
+                                                           <h4 class="amount">${formattedAmount}</h4><br>
+                                                            <h3 class="discount"><span>${product.discount}</span>% </h3>
+                                                             <span class="price"><s>${formattedPrice}원</s></span><br>
+                                                            <h3>${formattedDiscountPrice}원</h3>
+                                                         </div>
+                                                    </a>`;
+
+                            // 태그 문자열 삽입
+                            productBox.insertAdjacentHTML('beforeend', newProduct);
+                        }
+                    })
+                    .catch(err => console.log(err))
+            }
+        }
+
+            function redirectToCartOrLogin() {
+            // 서버 사이드에서 인증 상태를 평가합니다.
+            const isAuthenticated = [[${#authentication.isAuthenticated()}]];
+            if (!isAuthenticated) {
+            // 로그인한 사용자인 경우, 장바구니 페이지로 리다이렉트합니다.
+            window.location.href = '/farmstroy/market/newcart';
+        } else {
+            // 로그인하지 않은 사용자인 경우, 로그인 페이지로 리다이렉트합니다.
+            window.location.href = '/farmstory/user/login';
+        }
+        }
+
+    </script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="userBox">
-                <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
-                <a th:href="@{/user/register}" style="color: #111111">회원가입 </a>
-                <th:block>
-                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-                </th:block>
+<div class="container">
+    <header>
+        <div class="userBox">
+            <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
+            <a th:href="@{/user/register}" style="color: #111111">회원가입 </a>
+            <th:block>
+                <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+            </th:block>
             </div>
 
             <div class="logoBox">
@@ -30,7 +136,7 @@
                 </form>
 
                 <div class="btnUserBox">
-                    <a href="" class="btnUser">
+                    <a class="btnUser" href="#" onclick="redirectToCartOrLogin()">
                         <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
@@ -96,72 +202,27 @@
                 <h2>최신 상품</h2>
                 <div class="productCate">
                     <a class="cateOn" href="">전체</a>
-                    <a class="" href="">채소</a>
-                    <a class="" href="">과일</a>
-                    <a class="" href="">곡류</a>
-                    <a class="" href="">기타</a>
-                    <a href="#">더보기</a>
+                    <a class="" id="btnProdV" href="">야채</a>
+                    <a class="" id="btnProdF" href="">과일</a>
+                    <a class="" id="btnProdG" href="">곡류</a>
+                    <a class="" id="btnProdE" href="">기타</a>
+                    <a href="market/newlist">더보기</a>
                 </div>
             </div>
 
             <div class="productBox">
-                <a class="product" href="">
-                    <img th:src="@{/newimage/오렌지240.png}" alt="">
+                <a class="product" href="" th:each="product : ${productDTOS}">
+                    <img th:src="@{'/imagePath/'+${product.titleImg}}" th:alt="${product.prodname}">
                     <div>
                         <div class="disProd"><span>할인상품</span></div>
-                        <h4 class="title">맛난이오렌지</h4>
-                        <h4 class="amount">1.5kg</h4><br>
-                        <h3 class="discount"><span>50</span>% </h3>
-                        <span class="price"><s>19900</s></span><br>
-                        <h3>9900</h3><span>원</span>
-                    </div>
-                </a>
-
-                <a class="product" href="">
-                    <img th:src="@{/newimage/오렌지240.png}" alt="">
-                    <div>
-                        <div class="disProd"><span>할인상품</span></div>
-                        <h4 class="title">맛난이오렌지</h4>
-                        <h4 class="amount">1.5kg</h4><br>
-                        <h3 class="discount"><span>50</span>% </h3>
-                        <span class="price"><s>19900</s></span><br>
-                        <h3>9900</h3><span>원</span>
-                    </div>
-                </a>
-                
-                <a class="product" href="">
-                    <img th:src="@{/newimage/오렌지240.png}" alt="">
-                    <div>
-                        <div class="disProd"><span>할인상품</span></div>
-                        <h4 class="title">맛난이오렌지</h4>
-                        <h4 class="amount">1.5kg</h4><br>
-                        <h3 class="discount"><span>50</span>% </h3>
-                        <span class="price"><s>19900</s></span><br>
-                        <h3>9900</h3><span>원</span>
-                    </div>
-                </a>
-
-                <a class="product" href="">
-                    <img th:src="@{/newimage/오렌지240.png}" alt="">
-                    <div>
-                        <div class="disProd"><span>할인상품</span></div>
-                        <h4 class="title">맛난이오렌지</h4>
-                        <h4 class="amount">1.5kg</h4><br>
-                        <h3 class="discount"><span>50</span>% </h3>
-                        <span class="price"><s>19900</s></span><br>
-                        <h3>9900</h3><span>원</span>
-                    </div>
-                </a>
-
-                <a class="product" href="">
-                    <img th:src="@{/newimage/오렌지240.png}" alt="">
-                    <div>
-                        <div class="disProd"><span>할인상품</span></div>
-                        <h4 class="title">맛난이오렌지</h4>
-                        <h4 class="amount">1.5kg</h4><br>
-                        <h3 class="discount"><span>50</span>% </h3>
-                        <span class="price"><s>19900</s></span><br>
-                        <h3>9900</h3><span>원</span>
+                        <h4 class="title">[[${product.prodname}]]</h4>
+                        <h4 class="amount">
+                            <span th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></span>
+                            <span th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></span>
+                        </h4><br>
+                        <h3 class="discount"><span>[[${product.discount}]]</span>% </h3>
+                        <span class="price"><s data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></s></span><br>
+                        <h3 th:text="${#numbers.formatInteger((product.price - product.price * product.discount / 100), 1, 'COMMA')} + '원'"></h3>
                     </div>
                 </a>
             </div>

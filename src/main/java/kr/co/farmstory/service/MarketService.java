@@ -154,4 +154,21 @@ public class MarketService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+    // 메인 페이지에서 띄울 상품들
+    public List<ProductDTO> selectProductsForMain(String cate){
+        List<Tuple> qProduct =  marketRepository.selectProductsForMain(cate);
+        List<ProductDTO> productDTOs = qProduct.stream()
+                .map(tuple -> {
+                    Product product = tuple.get(0, Product.class);
+                    String thumb240 = tuple.get(1, String.class);
+
+                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+                    productDTO.setTitleImg(thumb240);
+                    return productDTO;
+                }
+            )
+        .toList();
+        return productDTOs;
+    }
 }

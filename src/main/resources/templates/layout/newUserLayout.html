@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
     <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
+
+    <script th:inline="javascript">
+        function redirectToCartOrLogin() {
+            // 서버 사이드에서 인증 상태를 평가합니다.
+            const isAuthenticated = [[${#authentication.isAuthenticated()}]];
+            if (!isAuthenticated) {
+                // 로그인한 사용자인 경우, 장바구니 페이지로 리다이렉트합니다.
+                window.location.href = '/farmstroy/market/newcart';
+            } else {
+                // 로그인하지 않은 사용자인 경우, 로그인 페이지로 리다이렉트합니다.
+                window.location.href = '/farmstory/user/login';
+            }
+        }
+    </script>
+
+
+
 </head>
 <body>
 <div class="container">
@@ -27,10 +44,12 @@
             </form>
 
             <div class="btnUserBox">
-                <a class="btnUser">
+                <a class="btnUser" href="#" onclick="redirectToCartOrLogin()">
                     <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                     <h5>장바구니</h5>
                 </a>
+
+
                 <a class="btnUser">
                     <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                     <h5>마이페이지</h5>
