@@ -22,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
     // 이진
-    private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+    // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
 
     // 태영
     // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
@@ -33,7 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
     // 배포
-    //private String resourcePath = "file:///home/farmStory/prodImg/";
+    private String resourcePath = "file:///home/farmStory/prodImg/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
