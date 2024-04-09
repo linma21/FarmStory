@@ -2,6 +2,8 @@ package kr.co.farmstory.repository.impl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.PageRequestDTO;
@@ -36,36 +38,41 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
 
     // 장보기 게시판 목록 출력 (market/list)
     @Override
-    public Page<Product> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable) {
+    public Page<Tuple> selectProducts(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable) {
         /*
             3가지로 분기 // 중복 코드 합치기
             1. 파라미터 하나도 없을 때
             2. cate만 있을 때
             3. type keyword 있을 때
         */
-        List<Product> productList = new ArrayList<>();
+        QueryResults<Tuple> productList = null;
         long total = 0;
         if ((marketPageRequestDTO.getCate()==null || marketPageRequestDTO.getCate().isEmpty()) && marketPageRequestDTO.getType()==null){
             // 1. 파라미터 없이 호출했을 경우 (상단 배너로 호출)
             // select * from `product` order by no desc limt (0, 10)
             productList = jpaQueryFactory
-                    .selectFrom(qProduct)
+                    .select(qProduct, qImages.thumb240)
+                    .from(qProduct)
+                    .join(qImages)
+                    .on(qProduct.prodno.eq(qImages.prodno))
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .orderBy(qProduct.prodno.desc())
-                    .fetch();
+                    .fetchResults();
 
             total = jpaQueryFactory.selectFrom(qProduct).fetchCount();
         }else if (marketPageRequestDTO.getCate()!=null && marketPageRequestDTO.getType()==null){
             // 2. cate만 있는 경우 (상품 분류로 호출)
             // select * from `product` where `cate`=? order by no desc limt (0, 10)
             productList = jpaQueryFactory
-                    .selectFrom(qProduct)
-                    .where(qProduct.cate.eq(marketPageRequestDTO.getCate()))
+                    .select(qProduct, qImages.thumb240)
+                    .from(qProduct)
+                    .join(qImages)
+                    .on(qProduct.prodno.eq(qImages.prodno))
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .orderBy(qProduct.prodno.desc())
-                    .fetch();
+                    .fetchResults();
 
             total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.cate.eq(marketPageRequestDTO.getCate())).fetchCount();
         }else {
@@ -73,8 +80,11 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
             // select * from `product` where `type`= keyword order by no desc limt (0, 10)
         }
 
-        return new PageImpl<>(productList, pageable, total);
+        List<Tuple> content = productList.getResults();
+
+        return new PageImpl<>(content, pageable, total);
     }
+
 
     // 장보기 게시판 게시글 출력 (market/view)
     @Override
@@ -221,5 +231,45 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
         }catch (Exception e){
             return false;
         }
+    }
+
+    // main 페이지에서 띄울 상품 16개
+    @Override
+    public List<Tuple> selectProductsForMain(String cate){
+        // select a.*, b.thumb240 form `product` as a join `images` as b on a.prodno = b.prodno where a.cate = ?? order by desc limit(0, 16);
+
+        BooleanExpression expression = null;//where 조건을 만드는 표현객체
+
+        QueryResults<Tuple> results = null;
+
+        if (cate.isEmpty()) {
+            results = jpaQueryFactory
+                    .select(
+                            qProduct,
+                            qImages.thumb240)
+                    .from(qProduct)
+                    .join(qImages).on(qProduct.prodno.eq(qImages.prodno))
+                    .orderBy(qProduct.prodno.desc())
+                    .limit(16)
+                    .fetchResults();
+        }else {
+            results = jpaQueryFactory
+                    .select(
+                            qProduct,
+                            qImages.thumb240)
+                    .from(qProduct)
+                    .join(qImages).on(qProduct.prodno.eq(qImages.prodno))
+                    .where(qProduct.cate.eq(cate))
+                    .orderBy(qProduct.prodno.desc())
+                    .limit(16)
+                    .fetchResults();
+        }
+
+
+
+            // QUERYRESULT [ LIST [ TUPLE [ qProduct, qImages.thumb240 ] ] ]
+
+            List<Tuple> orderList = results.getResults();
+            return orderList;
     }
 }

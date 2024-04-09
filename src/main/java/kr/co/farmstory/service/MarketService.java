@@ -11,7 +11,6 @@ import kr.co.farmstory.entity.Images;
 import kr.co.farmstory.entity.OrderDetail;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.repository.MarketRepository;
-import kr.co.farmstory.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -43,21 +42,29 @@ public class MarketService {
         log.info("selectProducts Service 2 pageable : " + marketPageRequestDTO.toString());
 
         // select * from `product` order by no desc limit (0, 10) + 사진
-        Page<Product> productList = marketRepository.selectProducts(marketPageRequestDTO, pageable);
+        Page<Tuple> productList = marketRepository.selectProducts(marketPageRequestDTO, pageable);
 
         log.info("productList : " + productList.toString());
 
-        List<ProductDTO> productDTO = productList.getContent().stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
-                .toList();
+            List<ProductDTO> productDTOs = productList.getContent().stream()
+                    .map(tuple -> {
+                                Product product = tuple.get(0, Product.class);
+                                String thumb240 = tuple.get(1, String.class);
 
-        log.info("productDTO : " + productDTO.toString());
+                                ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+                                productDTO.setTitleImg(thumb240);
+                                return productDTO;
+                            }
+                    )
+                    .toList();
+
+        log.info("productDTO : " + productDTOs.toString());
 
         int total = (int) productList.getTotalElements();
 
         return MarketPageResponseDTO.builder()
                 .pageRequestDTO(marketPageRequestDTO)
-                .dtoList(productDTO)
+                .dtoList(productDTOs)
                 .total(total)
                 .build();
     }
@@ -177,5 +184,22 @@ public class MarketService {
             response.put("data","삭제 실패");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
+
+    // 메인 페이지에서 띄울 상품들
+    public List<ProductDTO> selectProductsForMain(String cate){
+        List<Tuple> qProduct =  marketRepository.selectProductsForMain(cate);
+        List<ProductDTO> productDTOs = qProduct.stream()
+                .map(tuple -> {
+                    Product product = tuple.get(0, Product.class);
+                    String thumb240 = tuple.get(1, String.class);
+
+                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+                    productDTO.setTitleImg(thumb240);
+                    return productDTO;
+                }
+            )
+        .toList();
+        return productDTOs;
     }
 }

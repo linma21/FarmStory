@@ -1,18 +1,24 @@
 package kr.co.farmstory.controller;
 
+import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
+import kr.co.farmstory.service.MarketService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +27,7 @@ public class MainController {
 
     private final BuildProperties buildProperties;
     private final UserService userService;
+    private final MarketService marketService;
 
     // 메인화면
     @GetMapping(value = {"/", "/index"})
@@ -33,6 +40,17 @@ public class MainController {
 
         log.info(appVersion);
         log.info("사용자가 로그인을 했는지 안했는지 띄워주기(MainController) : " + authentication);
+
+        ////
+        // product 테이블의 상품들 최신순으로 16개
+
+        // marketService.selectProductsForMain();
+        String cate = "";
+        List<ProductDTO> productDTOS = marketService.selectProductsForMain(cate);
+        model.addAttribute("productDTOS", productDTOS);
+
+
+        /////
 
         model.addAttribute("appVersion", appVersion);
 
@@ -52,10 +70,22 @@ public class MainController {
             // 아이디값을 가진 사용자의 hp값을 들고오기
             UserDTO userDTO = userService.findById(uid);
 
+            log.info("로그인한 사용자의 신상정보 : "+userDTO);
+
             if (userDTO.getHp() == null || userDTO.getHp().isEmpty()) {// 만약에 hp가 null이면 사용자 정보 수정 페이지로 이동
+
                 model.addAttribute("userDTO", userDTO);
-                return "/test";
-            } else {// hp가 null이 아니면 기본 페이지 띄워주기
+
+                return "addInfo";
+
+            }else if(userDTO.getRole().equals("delete")){
+
+                log.info("탈퇴한 회원");
+
+                return "/user/login";
+
+            }else {// hp가 null이 아니면 기본 페이지 띄워주기
+
                 return "/index";
             }
         }
@@ -91,18 +121,27 @@ public class MainController {
     }
 
     // 팜스토리 소개
-    @GetMapping("/introduction/hello")
+    @GetMapping("/introduction/newhello")
     public String hello() {
 
-        return "/introduction/hello";
-
+        return "/introduction/newhello";
     }
 
     // 찾아오는 길
-    @GetMapping("/introduction/direction")
+    @GetMapping("/introduction/newdirection")
     public String direction() {
 
-        return "/introduction/direction";
+        return "/introduction/newdirection";
+    }
+
+    // 메인페이지 카테고리별 상품 조회 (16개씩)
+    @GetMapping("/index/prodCate/{cate}")
+    public ResponseEntity<?> selectProdForCate(@PathVariable("cate") String cate){
+        List<ProductDTO> productDTOS = marketService.selectProductsForMain(cate);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("productDTOS", productDTOS);
+        return ResponseEntity.ok().body(resultMap);
     }
 
 }
