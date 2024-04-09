@@ -1003,6 +1003,168 @@ main {
     color: rgb(102, 102, 102);
     vertical-align: -1px;
 }
+/* NEW 리뷰 별 */
+.prodWriteReview fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+.prodWriteReview fieldset legend{
+    text-align: right;
+}
+.prodWriteReview input[type=radio]{
+    display: none;
+}
+.prodWriteReview label{
+    font-size: 3em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+.prodWriteReview label:hover{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.prodWriteReview label:hover ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.prodWriteReview input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+#reviewContents {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid 1.5px #D3D3D3;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+}
+/* 주문 목록 - 컨테이너 */
+.order-container {
+    max-width: 980px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+/* 주문 목록 - 섹션 헤딩 */
+.order-container h3 {
+    font-size: 18px;
+    margin-top: 30px;
+    color: #333;
+}
+
+/* 주문 목록 - 이미지 섹션 스타일링 */
+.order-detail img {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+/* 주문 목록 - 네비게이션 바 스타일링 */
+.order-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.order-nav ul li {
+    float: left;
+}
+
+.order-nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.order-nav ul li a:hover {
+    background-color: #111;
+}
+/* 주문 목록 - 테이블 스타일링 */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-table thead th {
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 10px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.order-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.order-table tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+/*  주문 목록 - Review Modal */
+.prodWriteReview {
+    display: none;
+    position: absolute;
+    top: 0;
+    width:100%;
+    height:100%;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.prodWriteReview > .reviewForm {
+    position:absolute;
+    top:50%;
+    left: 50px;
+    width:737px;
+    height:215px;
+    padding:40px;
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border: 3px solid #a8d031;
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform:translateY(-50%);
+}
+.prodWriteReview  p > input:nth-child(2) {
+    font-size: 16px;
+    width: 60px;
+    border: 0;
+}
+.prodWriteReview textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+/* 주문 목록 - Review btn */
+.btnReview {
+    float: right;
+    padding: 6px;
+    margin-right: 8px;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+.btnReview:hover {
+    color: white;
+    border: 1px solid #a8d031;
+    background-color: #a8d031;
+}
 /* 리뷰 - 이미지 **/
 .thumbList {
     width: 400px;
@@ -1099,6 +1261,7 @@ main {
 .exchange > table tr > td:nth-child(2) {
     border-right: none;
 }
+
 /**리뷰 market-review**/
 .prodReviewBox {
     display: flex;
@@ -1140,14 +1303,6 @@ main {
     width: 150px;
     margin-right: 20px;
     margin-left: 8px;
-}
-.prodWriteReview {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #dfe3e8;
-    border-radius: 10px;
 }
 
 .prodWriteReview  p > input:nth-child(2) {

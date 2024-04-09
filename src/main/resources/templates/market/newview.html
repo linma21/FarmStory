@@ -150,29 +150,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 리뷰 목록 -->
-                    <p>댓글목록</p>
 
-                    <!--리뷰 없을 때-->
-                    <th:block>
-                        <div class="comment">
-                            <textarea name="" id="">리뷰 없음 </textarea>
-                        </div>
-                    </th:block>
-                    <!--로그인한 경우에만 조회-->
-                    <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
-                        <!-- 리뷰 -->
-                        <th:block>
-                            <div class="comment" th:if="${#authentication.principal.user.role} == 'ADMIN'">
-                                <p><span>리뷰 작성자</span>&nbsp;&nbsp</p>
-                                <textarea name="" readonly>리뷰 내용 - 리뷰 별점(score)도 추가해야함</textarea>
-                                <div>
-                                    <button id="commentModify" data-mode ='modify'>수정</button>
-                                    <button id="commentRemove" data-mode ='remove'>삭제</button>
-                                </div>
-                            </div>
-                        </th:block>
-                    </th:block>
                     <div class="prodContent">
                         <h3>상품설명</h3>
                         <img th:src="@{'/imagePath/'+${productDTO.contentImg}}" th:alt="${productDTO.prodname}">
@@ -225,49 +203,24 @@
                             <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 상품상태가 별로에요.</p>
                         </div>
                     </div>
-                    <!--리뷰쓰기는 현재상품을 구매한 사람에게만 나타남-->
-                    <h3>리뷰 쓰기</h3>
-                    <div class="prodWriteReview">
-                        <form action="#" method="post" enctype="multipart/form-data">
-                            <p>
-                                <input type="hidden" name="uid" value="">
-                                <!--이미지로 별점 주는 방법 찾아봐야함-->
-                                <input type="text" name="name" value="홍길동" readonly>
-                                <select name="score">
-                                    <option>★★★★★</option>
-                                    <option>★★★★</option>
-                                    <option>★★★</option>
-                                    <option>★★</option>
-                                    <option>★</option>
-                                </select>
-                                <input type="file" name="file">
-                            </p>
-                            <div>
-                                <textarea name="comment" ></textarea>
-                            </div>
-                        </form>
-                    </div>
-
                     <h3>리뷰 목록</h3>
-
+                    <th:block th:each="review, loop:${reviewPage.dtoList}">
                     <div class="prodReview">
-                        <!-- <img th:src="@{'/newimage/farm_review_star' + ${review.score}.png}"> 아마 될듯?-->
-                        <p><b>홍길동</b><img th:src="@{/newimage/farm_review_star5.png}" alt=""><span>24.03.22</span></p>
+                        <!-- <img th:src="@{'/newimage/farm_review_star' + ${review.score}.png}"> 아마 될듯? 안되네요...ㅜ-->
+                        <p><b>[[${review.nick}]]</b>
+                            <img th:if="${review.score} == 1 " th:src="@{/newimage/farm_review_star1.png}" alt="oneStar">
+                            <img th:if="${review.score} == 2 " th:src="@{/newimage/farm_review_star2.png}" alt="oneStar">
+                            <img th:if="${review.score} == 3 " th:src="@{/newimage/farm_review_star3.png}" alt="oneStar">
+                            <img th:if="${review.score} == 4 " th:src="@{/newimage/farm_review_star4.png}" alt="oneStar">
+                            <img th:if="${review.score} == 5 " th:src="@{/newimage/farm_review_star5.png}" alt="oneStar">
+                            <span  th:text="${#temporals.format(review.rdate,'yyyy-MM-dd')}">24.03.22</span></p>
                         <div>
-                            <img th:src="@{/newimage/오렌지120.png}" alt="">
-                            <textarea readonly>맛있어요 저렴해요 배송빨라요</textarea>
+                            <img th:src="@{'/imagePath/'+${review.thumbnail}}" th:alt="${review.rno}">
+                            <textarea readonly>[[${review.comment}]]</textarea>
                         </div>
                     </div>
-
-                    <div class="prodReview">
-                        <p><b>홍길동</b><img th:src="@{/newimage/farm_review_star3.png}" alt=""><span>24.03.22</span></p>
-                        <div>
-                            <img th:src="@{/newimage/오렌지120.png}" alt="">
-                            <textarea readonly>맛있어요 저렴해요 배송 느려요</textarea>
-                        </div>
-                    </div>
+                    </th:block>
                 </div>
-
             </div>
         </main>
     </div>

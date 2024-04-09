@@ -8,6 +8,7 @@ import kr.co.farmstory.dto.ProductDTO;
 import kr.co.farmstory.dto.UserDTO;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.service.MarketService;
+import kr.co.farmstory.service.ReviewService;
 import kr.co.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ import static kr.co.farmstory.entity.QProduct.product;
 public class MarketController {
 
     private final MarketService marketService;
+    private final ReviewService reviewService;
     private final UserService userService;
 
 
@@ -47,22 +49,26 @@ public class MarketController {
     // 장보기 글보기 페이지 매핑 (cate, pg, type, keyword 받음)
     @GetMapping("/market/newview")
     public String marketView(Model model, MarketPageRequestDTO marketPageRequestDTO, int prodno){
+        // 상품 조회
         ProductDTO productDTO = marketService.selectProduct(prodno);
+        // 리뷰 조회
+        ReviewPageResponseDTO reviewPage = reviewService.selectReviews(prodno);
+        log.info("장보기 글보기 Cont "+ reviewPage.toString());
         model.addAttribute(productDTO);
         model.addAttribute(marketPageRequestDTO);
+        model.addAttribute("reviewPage", reviewPage);
         return "/market/newview";
     }
 
 
-    // 주문목록
+    // 주문목록 페이지 매핑
     @GetMapping("/market/orderList")
-    public String getOrderDetails(Model model, @RequestParam(required = false) String userId) {
-        if (userId == null) {
-            userId = "devUser"; // 개발 단계의 임시 사용자 ID
-        }
-        List<OrderDetailProductDTO> details = marketService.getOrderDetailsWithProductByUserId(userId);
-        log.info("details!! : " + details);
-        model.addAttribute("details", details);
+    public String getOrderDetails(Model model, String uid, PageRequestDTO pageRequestDTO) {
+
+        PageResponseDTO pageResponseDTO = marketService.findOrderListByUid(uid, pageRequestDTO);
+        log.info("getOrderDetails Cont : " + pageResponseDTO);
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+
         return "/market/orderList";
     }
 
