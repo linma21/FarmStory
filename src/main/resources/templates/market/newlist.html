@@ -53,7 +53,7 @@
                         <form class="marketSearch" th:action="@{/market/newlist}">
                             <input type="hidden" class="marketListCate" name="cate" th:value="${marketPageResponseDTO.cate}">
                             <label for="marketSearch">
-                                <input type="text" name="keyword" id="marketSearch">
+                                <input type="text" name="keyword" id="marketSearch" placeholder="상품명 검색">
                                 <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                             </label>
                         </form>

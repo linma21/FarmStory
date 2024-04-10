@@ -189,12 +189,51 @@ main {
 .adBox {
     width: 100%;
     margin: 0 auto;
+    overflow: hidden;
 }
 .adBox > div {
+    position: relative;
     display: inline-block;
+    width: 1960px;
 }
 .adBox img {
     width: 100%;
+    height: auto;
+    display: block;
+}
+.btnMoveLeftImg {
+    font-size: 12px;
+    position: absolute;
+    left: 735px;
+    top: 140px;
+    width: 15px;
+    height: 40px;
+    border: 1px solid blue;
+    background-color:transparent;
+    cursor: pointer;
+    z-index: 9999;
+}
+.btnMoveRightImg {
+    display: none;
+    font-size: 12px;
+    position: absolute;
+    left: 230px;
+    top: 140px;
+    width: 15px;
+    height: 40px;
+    border: 1px solid blue;
+    background-color:transparent;
+    cursor: pointer;
+    z-index: 9999;
+}
+.indexMoveBox {
+    position: absolute;
+    top: 0;
+    left: 750px;
+    width: 230px;
+    height: 312px;
+    background-image: url("../newimage/farm_index_moveBg2.jpg");
+    z-index: 9999;
 }
 /*index-btnArticleBox*/
 .btnArticleBox {
@@ -229,7 +268,7 @@ main {
     display: flex;
     width: 100%;
     height: 74px;
-    border-top: 1px solid #4e4e4e;
+    margin: 10px 0;
 }
 .bannerBox > a {
     display: inline-block;
@@ -246,7 +285,6 @@ main {
 
 /*index-pordCateBox*/
 .pordCateBox {
-    border-top: 1px solid #666666;
     padding-top: 10px;
     margin-top: 20px;
     padding-left: 14px;
@@ -258,7 +296,8 @@ main {
 .pordCateBox > .productCate {
     display: flex;
     height: 36px;
-    margin: 20px 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 .pordCateBox > .productCate > a {
     display: inline-block;
@@ -296,9 +335,19 @@ main {
     text-align: center;
     margin-bottom: 30px;
 }
-.product > img {
+.product > div:nth-child(1) {
+    width: 220px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.product > div:nth-child(1) > img {
     width: 220px;
     border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+.productBox .product:hover img {
+    transform: scale(1.2);
 }
 .product > div {
     width: 220px;
