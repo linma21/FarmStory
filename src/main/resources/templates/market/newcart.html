@@ -4,16 +4,12 @@
 
 <div class="container" layout:fragment="content">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>farmPlus</title>
-    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
     <script>
         window.onload = function(){
-        //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
+            //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
             orderPriceSub();
 
-        //// 수량 조절시 실시간 가격 조정 ////
+            //// 수량 조절시 실시간 가격 조정 ////
             const plusBtns = document.getElementsByClassName('plus-btn');
             const minusBtns = document.getElementsByClassName('minus-btn');
 
@@ -56,29 +52,29 @@
                     let modValue = value - 1;
                     if (value > 1) {
                         quantityInput.value = modValue;
+
+                        // 해당 상품 목록 박스 가격 변동 //
+                        const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
+                        const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
+                        const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
+                        const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
+                        const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
+
+                        let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
+                        let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
+                        let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
+                        let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
+
+                        prodPrice.innerText = modProdPrice;
+                        prodDisPrice.innerText = modProdDisPrice;
+                        prodPoint.innerText = modProdPoint;
+                        // 전체 주문예상금액 가격 변동 //
+                        orderPriceSub();
                     }
-
-                    // 해당 상품 목록 박스 가격 변동 //
-                    const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
-                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
-                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
-                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
-                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
-
-                    let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
-                    let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
-                    let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
-                    let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
-
-                    prodPrice.innerText = modProdPrice;
-                    prodDisPrice.innerText = modProdDisPrice;
-                    prodPoint.innerText = modProdPoint;
-                    // 전체 주문예상금액 가격 변동 //
-                    orderPriceSub();
                 });
             })
 
-        //// 주문하기 버튼 클릭시 DB에서 수량조절 후 order로 전달 ////
+            //// 주문하기 버튼 클릭시 DB에서 수량조절 후 order로 전달 ////
             const btnOrder = document.getElementsByClassName('btnOrder')[0];
             btnOrder.onclick = function () {
                 const cart_prodNo = document.getElementsByName('cart_prodNo');
@@ -201,7 +197,7 @@
                 }
             }
 
-        //// 개별 상품 삭제 ////
+            //// 개별 상품 삭제 ////
             const btnDeleteProd = document.getElementsByClassName('btnDeleteProd');
             Array.from(btnDeleteProd).forEach(function (delProd) {
                 delProd.addEventListener('click', function(e) {
@@ -246,7 +242,7 @@
                 })
             })
 
-        //// 전체 선택 ////
+            //// 전체 선택 ////
             const totalCheckBox = document.getElementsByClassName('totalCheckBox')[0];
             let checkedTurn = 0;
             totalCheckBox.onclick = function (e){
@@ -268,7 +264,7 @@
 
         } //window.onload 끝//
 
-    //// 각 장바구니 품목 가격 합산하는 함수 ////
+        //// 각 장바구니 품목 가격 합산하는 함수 ////
         function orderPriceSub() {
             const totalCount = document.getElementById('totalCount');
             const totalPrice = document.getElementById('totalPrice');
@@ -311,30 +307,30 @@
         }
     </script>
 
-        <main class="articleMain">
-            <div class="sideBox">
-                <img th:src="@{/newimage/farm_market_logo.png}" alt="">
-                <ul>
-                    <li><a class="" href="">장보기</a></li>
-                    <li><a class="tabOn" href="">장바구니</a></li>
-                    <li><a class="" href="">배송조회</a></li>
-                </ul>
+    <main class="articleMain">
+        <div class="sideBox">
+            <img th:src="@{/newimage/farm_market_logo.png}" alt="">
+            <ul>
+                <li><a class="" th:href="@{/market/newlist}">장보기</a></li>
+                <li><a class="tabOn" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}">장바구니</a></li>
+                <li><a class="tabOn" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/user/login}">장바구니</a></li>
+                <li><a class="" href="">배송조회</a></li>
+            </ul>
+        </div>
+
+        <div class="contentBox">
+            <div class="articleHeader">
+                <h2>장바구니</h2>
+                <h5>HOME > 장보기 > <span>장바구니</span></h5>
             </div>
 
-            <div class="contentBox">
-                <div class="articleHeader">
-                    <h2>장바구니</h2>
-                    <h5>HOME > 장보기 > <span>장바구니</span></h5>
+            <div class="articleBox">
+
+                <div class="cartHeader">
+                    <input type="checkbox" class="totalCheckBox">
+                    <h4>전체선택</h4>
+                    <a id="btnDeleteProds" style="cursor: pointer">선택삭제</a>
                 </div>
-
-                <div class="articleBox">
-
-                    <div class="cartHeader">
-                        <input type="checkbox" class="totalCheckBox">
-                        <h4>전체선택</h4>
-                        <a id="btnDeleteProds" style="cursor: pointer">선택삭제</a>
-                    </div>
-
                     <div class="prodInfoBox">
 
                         <div class="cartBox">
@@ -343,8 +339,7 @@
                             <div class="cartItem" th:each="product : ${productDTO}">
                                 <input type="checkbox" class="prodCheckBox">
                                 <input type="hidden" name="cart_prodNo" th:value="${product.cart_prodNo}">
-                                <input type="hidden" id="uid" value="skdlawo5985@gmail.com">
-                                <!--나중에 변경해야함 ${#authentication.principal.user.uid} -->
+                                <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
                                 <a class="cartImg" href="">
                                     <img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="">
                                 </a>
@@ -360,50 +355,52 @@
                                     </p>
                                     <p>
                                         <span><b class="prodDiscount" th:text="${product.discount}" th:name="prodDiscount"></b>%</span>
-                                        <span><s class="prodPrice" th:text="${product.price}*${product.count}" th:name="prodPrice"></s>원</span>
+                                        <span>
+                                            <s class="prodPrice" th:text="${#numbers.formatInteger(product.price * product.count, 1, 'COMMA')} + '원'" th:name="prodPrice"></s>
+                                        </span>
                                     </p>
                                     <p>
                                         <span>
-                                            <b class="prodCutPrice" th:text="(${product.price}-(${product.price}*${product.discount}/100))*${product.count}" th:name="prodDisPrice">
-                                            </b>원
+                                           <b class="prodCutPrice" th:text="${#numbers.formatInteger((product.price - (product.price * product.discount / 100)) * product.count, 1, 'COMMA')}">
+                                         </b>원
                                         </span>
-                                    </p>
+                                </p>
 
-                                    <div class="cartInfoBot">
-                                        <div>
-                                            <p>
+                                <div class="cartInfoBot">
+                                    <div>
+                                        <p>
                                                 <span>
-                                                    <b class="prodPoint" th:text="((${product.price}-(${product.price}*${product.discount}/100))*10/100)*${product.count}" th:name="prodPoint">
+                                                    <b class="prodPoint" th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count) * 0.10, 0, 'COMMA')}">
                                                     </b> 팜포인트 적립
                                                 </span>
-                                            </p>
-                                            <p><span><b class="prodDelDate">00-00</b>도착 예정</span></p>
-                                        </div>
+                                        </p>
+                                        <p><span><b class="prodDelDate">00-00</b>도착 예정</span></p>
+                                    </div>
 
-                                        <div class="quantity-input">
-                                            <button class="minus-btn" type="button">-</button>
-                                            <input type="text" class="quantity prodQnty" th:name="prodCount" th:value="${product.count}">
-                                            <button class="plus-btn" type="button">+</button>
-                                        </div>
+                                    <div class="quantity-input">
+                                        <button class="minus-btn" type="button">-</button>
+                                        <input type="text" class="quantity prodQnty" th:name="prodCount" th:value="${product.count}">
+                                        <button class="plus-btn" type="button">+</button>
                                     </div>
                                 </div>
                             </div>
-                            <!--장바구니 품목 끝-->
                         </div>
+                        <!--장바구니 품목 끝-->
+                    </div>
 
-                        <div class="cartTotal">
-                            <p>주문예상금액</p>
-                            <p>총 상품 가격<span><b id="totalPrice"></b>원</span></p>
-                            <p>총 할인<span>- <b id="totalDiscount"></b>원</span></p>
-                            <p>배송비<span>+ <b id="totalDelCost"></b>원</span></p>
-                            <p>결제 금액<span><b id="totalOrder"></b>원</span></p>
-                            <p>적립 포인트<span><b id="totalPoint"></b> P</span></p>
-                            <button class="btnOrder">주문하기</button>
-                        </div>
+                    <div class="cartTotal">
+                        <p>주문예상금액</p>
+                        <p>총 상품 가격<span><b id="totalPrice"></b>원</span></p>
+                        <p>총 할인<span>- <b id="totalDiscount"></b>원</span></p>
+                        <p>배송비<span>+ <b id="totalDelCost"></b>원</span></p>
+                        <p>결제 금액<span><b id="totalOrder"></b>원</span></p>
+                        <p>적립 포인트<span><b id="totalPoint"></b> P</span></p>
+                        <button class="btnOrder">주문하기</button>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-    </div>
+</div>
 </html>

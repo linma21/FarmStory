@@ -38,10 +38,10 @@
 
         <ul class="gnb">
             <li><a th:href="@{/introduction/hello}">팜스토리소개</a></li>
-            <li><a th:href="@{/market/list}"><img th:src="@{/images/head_menu_badge.png}" alt="30%"/>장보기</a></li>
-            <li><a th:href="@{/cropTalk/list(cate=story)}">농작물이야기</a></li>
-            <li><a th:href="@{/event/list(cate=event)}">이벤트</a></li>
-            <li><a th:href="@{/community/list(cate=notice)}">커뮤니티</a></li>
+            <li><a th:href="@{/market/newlist}"><img th:src="@{/images/head_menu_badge.png}" alt="30%"/>장보기</a></li>
+            <li><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
+            <li><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
+            <li><a th:href="@{/community/newlist(cate=notice)}">커뮤니티</a></li>
 
         </ul>
     </header>
@@ -58,7 +58,6 @@
             <em>Copyright(C)홍길동 All rights reserved. [[${appInfo.version}]]</em>
 
         </p>
-
     </footer>
 </div>
 </body>

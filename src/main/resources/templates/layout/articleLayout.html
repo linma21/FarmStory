@@ -7,14 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
     <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
+
+    <script th:inline="javascript">
+        function redirectToCartOrLogin() {
+            // 서버 사이드에서 인증 상태를 평가합니다.
+            const isAuthenticated = [[${#authentication.isAuthenticated()}]];
+            if (!isAuthenticated) {
+                // 로그인한 사용자인 경우, 장바구니 페이지로 리다이렉트합니다.
+                window.location.href = '/farmstroy/market/newcart';
+            } else {
+                // 로그인하지 않은 사용자인 경우, 로그인 페이지로 리다이렉트합니다.
+                window.location.href = '/farmstory/user/login';
+            }
+        }
+    </script>
+
 </head>
 <body>
 <div class="container">
     <header>
         <div class="userBox">
-            <a href="">로그인</a>
-            <a href="">회원가입</a>
-            <a href="">고객센터</a>
+            <!-- 로그인 안했을때 -->
+            <a th:href="@{/user/register}" style="color: #111111">로그인 |</a>
+            <a th:href="@{/user/register}" style="color: #111111">회원가입 |</a>
+            <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
+            <!-- 로그인 했을때 -->
+            <a th:href="@{/user/logout}" style="color: #111111">로그아웃 |</a>
+            <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
+
+            <!--role이 admin인 경우-->
+            <a th:href="@{/admin/index}" style="color: #111111">관리자 |</a>
         </div>
 
         <div class="logoBox">

@@ -1,7 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/articleLayout}">
-        <main class="articleMain" layout:fragment="content">
+      layout:decorate="~{/layout/newUserLayout}">
+
+<div class="container" layout:fragment="content">
+        <main class="articleMain">
             <script th:inline="javascript" th:src="@{/js/communityList.js}"></script>
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
@@ -45,12 +47,14 @@
                     <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">
                         <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                         <div>
-                            <h4>[[${article.title}]] <span>(1)</span></h4>
+                            <h4>[[${article.title}]] <span th:if="${article.hit > 5 }"> ❤ </span></h4>
                             <h5>
                                 <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                 <span th:text="${article.nick}"></span>
                             </h5>
                         </div>
+                        <!--작성일 2일 이내 조회수 100이상 어떠신지-->
+                        <img th:if="${article.hit} >= 100" th:src="@{/newimage/fire.gif}" alt="fire" style="width: 30px; height: 30px;">
                     </a>
                         <a class="articleTable"   th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                             <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
@@ -120,3 +124,4 @@
                 </div>
             </div>
         </main>
+</div>

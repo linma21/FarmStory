@@ -21,6 +21,7 @@ public class ProductDTO {
     private String cate;
     private int price;
     private int stock;
+    private int recount;
     private int delCost;
     private int delType;
     private int discount;
@@ -33,8 +34,8 @@ public class ProductDTO {
     // private String rewardPoints; // 적립 포인트
 
     // 상품 사진 출력을 위한 추가 필드
-    private String titleImg;
-    private String contentImg;
+    private String titleImg; // thumb240
+    private String contentImg; // thumb750
     private int cart_prodNo;
     private int count;
 }
