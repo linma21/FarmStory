@@ -18,7 +18,7 @@ window.onload = function (){
         // 현재 cate와 li의 data-cate 값을 비교하여 일치하는 경우
         if (dataCate === cate) {
             // 해당 요소에 클래스 추가
-            item.classList.add("tabOn");
+            item.children[0].classList.add("tabOn");
         }
     });
     // croptalk 상단 Nav 표시하기
