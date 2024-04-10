@@ -63,7 +63,7 @@
                     <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                     <h5>장바구니</h5>
                 </a>
-                <a class="btnUser" href="">
+                <a class="btnUser" href=""  th:href="@{/market/orderList(uid=${#authentication.principal.user.uid}, pg=1)}" >
                     <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                     <h5>마이페이지</h5>
                 </a>

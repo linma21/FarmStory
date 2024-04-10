@@ -1295,8 +1295,10 @@ main {
     line-height: 30px;
 }
 .reviewStarBox > p > span {
-    width: 20px;
+    width: 30px;
     margin-left: 4px;
+    margin-right: 2px;
+    font-size: 18px;
     text-align: right;
 }
 .reviewStar {

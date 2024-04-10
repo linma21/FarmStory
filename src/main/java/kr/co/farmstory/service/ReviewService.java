@@ -82,33 +82,61 @@ public class ReviewService {
         Tuple result = reviewRepository.selectForRatio(prodno);
         log.info("리뷰 집계 조회 ...1 : "+result);
 
-        // QueryDsl은 count,sum은 long으로 avg는 double로 반환된다.
+        // QueryDsl은 count,sum은 long,int 로 avg는 double로 반환된다.
         long count = result.get(0, Long.class);
         double avg = 0;
-        long sum = 0;
+        Integer sum = 0;
 
         // 리뷰가 하나도 없으면 에러가 발생하기 때문에 null 체크
-        if(result.get(1, String.class) != null) {
+        if(count > 0) {
             avg = result.get(1, Double.class);
-            sum = result.get(2, Long.class);
+            sum = result.get(2, Integer.class);
         }
-/*
+        // 해당 점수를 한 번도 받지않으면 조회되지 않기 때문에 따로 선언
+        int oneScore = 0;
+        int twoScore = 0;
+        int threeScore = 0;
+        int fourScore = 0;
+        int fiveScore = 0;
+
         // 리뷰 score별(GROUP BY score) 조회
         List<Tuple> groupResult = reviewRepository.selectScoreCount(prodno);
-        groupResult.stream()
-                .map(tuple ->{
-                    log.info("리뷰 집계 조회 ...2 : "+tuple);
-                    String score = tuple.get(0, String.class);
-                    Integer scoreCount = tuple.get(1, Integer.class);
+        for (Tuple tuple : groupResult) {
+            log.info("리뷰 집계 조회 ...2 : " + tuple);
+            int score = tuple.get(0, Integer.class);
+            long scoreCountLong = tuple.get(1, Long.class);
+            int scoreCount = (int) scoreCountLong;
 
-                })
-                .toList();
-                S
- */
+            // 각 케이스에서 해당하는 변수에 값을 더해줌
+            switch (score) {
+                case 1:
+                    oneScore += scoreCount;
+                    break;
+                case 2:
+                    twoScore += scoreCount;
+                    break;
+                case 3:
+                    threeScore += scoreCount;
+                    break;
+                case 4:
+                    fourScore += scoreCount;
+                    break;
+                case 5:
+                    fiveScore += scoreCount;
+                    break;
+            }
+        }
+
+        // Select 한 값 빌더로 입력
         return ReviewRatioDTO.builder()
                 .count(count)
                 .sum(sum)
                 .avg(avg)
+                .oneScore(oneScore)
+                .twoScore(twoScore)
+                .threeScore(threeScore)
+                .fourScore(fourScore)
+                .fiveScore(fiveScore)
                 .build();
 
     }

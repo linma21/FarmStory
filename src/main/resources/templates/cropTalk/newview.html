@@ -5,14 +5,14 @@
 <div class="container" layout:fragment="content">
 <main class="articleMain">
     <script th:inline="javascript" th:src="@{/js/cropTalkView.js}"></script>
-            <div class="sideBox">
-                <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
-                <ul class="lnb">
-                    <li data-cate="story"><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
-                    <li data-cate="grow"><a th:href="@{/cropTalk/newlist(cate=grow)}">텃밭가꾸기</a></li>
-                    <li data-cate="school"><a th:href="@{/cropTalk/newlist(cate=school)}">귀농학교</a></li>
-                </ul>
-            </div>
+    <div class="sideBox">
+        <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
+        <ul class="lnb">
+            <li><a data-cate="story" th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
+            <li><a data-cate="grow" th:href="@{/cropTalk/newlist(cate=grow)}">텃밭가꾸기</a></li>
+            <li><a data-cate="school" th:href="@{/cropTalk/newlist(cate=school)}">귀농학교</a></li>
+        </ul>
+    </div>
 
             <div class="contentBox">
                 <div class="articleHeader" id="communityNav">
