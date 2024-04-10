@@ -6,10 +6,6 @@ window.onload = function (){
     const cate = cateData.value;
     const btnWrite = document.getElementById('btnWrite');
     const communityForm = document.getElementById('communityForm');
-    // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
-    const communityNav = document.getElementById('communityNav');
-
     // 글쓰기 /////////////////////////////////////////////////////////
     btnWrite.onclick = function (e){
         e.preventDefault();

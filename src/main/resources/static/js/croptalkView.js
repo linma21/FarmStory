@@ -9,23 +9,16 @@ window.onload = function (){
     const userData = document.getElementById("user");
     const user = userData.value;
 
-    const commentList = document.getElementById('commentList');
     const commentForm = document.getElementById('commentForm');
     const commentRemove = document.getElementById('commentRemove');
     const commentModify = document.getElementById('commentModify');
-    const contentTextarea = document.getElementById('contentTextarea');
-    const btnComment = document.getElementById('btnComment');
-    const btnCancel = document.getElementById('btnCancel');
-    const btnArtRemove = document.getElementById('btnArtRemove');
-    const btnArtModify = document.getElementById('btnArtModify');
-    const fileLinks = document.getElementsByClassName('fileLink');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
+    const sideBoxLi = document.querySelectorAll(".lnb > li > a");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리
-    cateLi.forEach(function(item) {
+    sideBoxLi.forEach(function(item) {
 
         const dataCate = item.getAttribute("data-cate");
 
@@ -37,13 +30,13 @@ window.onload = function (){
     });
     // croptalk 상단 Nav 표시하기
     if(cate === 'story'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit1.png" alt="농작물이야기"/>
+        communityNav.innerHTML = `<h2>농작물이야기</h2>
                                                 <h5>HOME > 농작물이야기 > <span>농작물이야기</span></h5>`;
     } else if(cate === 'grow'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit2.png" alt="귀농학교"/>
+        communityNav.innerHTML = `<h2>귀농학교</h2>
                                                 <h5>HOME > 농작물이야기 > <span>귀농학교</span></h5>`;
     } else if(cate === 'chef'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate3_tit3.png" alt="텃밭가꾸기"/>
+        communityNav.innerHTML = `<h2>텃밭가꾸기</h2>
                                                 <h5>HOME > 농작물이야기 > <span>텃밭가꾸기</span></h5>`;
     }
     // 페이지 로드시 textarea 자동 높이 조절

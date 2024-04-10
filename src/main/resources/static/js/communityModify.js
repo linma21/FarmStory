@@ -12,11 +12,11 @@ window.onload = function (){
     const fileValue = communityForm.file.value;
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
+    const sideBoxLi = document.querySelectorAll(".lnb > li > a");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리
-    cateLi.forEach(function(item) {
+    sideBoxLi.forEach(function(item) {
 
         const dataCate = item.getAttribute("data-cate");
 
@@ -28,20 +28,20 @@ window.onload = function (){
     });
     // community 상단 Nav 표시하기
     if(cate === 'notice'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit1.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>공지사항</em></p>`;
+        communityNav.innerHTML = `<h2>공지사항</h2>
+                                    <h5>HOME > 커뮤니티 > <span>공지사항</span></h5>`;
     } else if(cate === 'menu'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit2.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>오늘의식단</em></p>`;
+        communityNav.innerHTML = `<h2>오늘의식단</h2>
+                                                <h5>HOME > 커뮤니티 > <span>오늘의식단</span></h5>`;
     } else if(cate === 'chef'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit3.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>나도요리사</em></p>`;
+        communityNav.innerHTML = `<h2>나도요리사</h2>
+                                                <h5>HOME > 커뮤니티 > <span>나도요리사</span></h5>`;
     } else if(cate === 'qna'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit4.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>1:1고객문의</em></p>`;
+        communityNav.innerHTML = `<h2>1:1고객문의</h2>
+                                                <h5>HOME > 커뮤니티 > <span>1:1고객문의</span></h5>`;
     } else if(cate === 'faq'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
-                                                <p> HOME > 커뮤니티 > <em>자주묻는질문</em></p>`;
+        communityNav.innerHTML = `<h2>자주묻는질문</h2>
+                                                <h5>HOME > 커뮤니티 > <span>자주묻는질문</span></h5>`;
     }
     // 페이지 로드시 textarea 자동 높이 조절
     const textareas = document.querySelectorAll('textarea');
