@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // 이진
     //private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
-    private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
+    // private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
 
     // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
 
