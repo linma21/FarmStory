@@ -156,13 +156,14 @@
 <div class="container">
     <header>
         <div class="userBox">
-            <a th:href="@{/notfound}" style="color: #111111">고객센터</a>
-            <a th:href="@{/user/register}" style="color: #111111">회원가입 </a>
+            <a th:href="@{/notfound}">고객센터</a>
+            <a th:href="@{/user/register}">회원가입 </a>
             <th:block>
                 <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
                 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
             </th:block>
-            </div>
+            <a class="nav-link" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/admin/index}">관리자</a>
+        </div>
 
             <div class="logoBox">
                 <a th:href="@{/index}" class="logo"><img th:src="@{/newimage/farm_header_logo.png}" alt="logoImg"></a>

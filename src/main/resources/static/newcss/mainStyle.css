@@ -16,9 +16,9 @@ input, textarea {
 }
 /*topButton*/
 .topButton {
-    position: fixed;
+    position: sticky;
+    margin-left: 990px;
     bottom: 10px;
-    right: 350px;
     width: 30px;
     height: 30px;
     text-align: center;
