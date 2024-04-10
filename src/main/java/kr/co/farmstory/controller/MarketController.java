@@ -1,5 +1,6 @@
 package kr.co.farmstory.controller;
 
+import com.nimbusds.jose.shaded.gson.Gson;
 import kr.co.farmstory.dto.*;
 import jakarta.servlet.http.HttpSession;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
@@ -66,7 +67,7 @@ public class MarketController {
 
     // 주문목록 페이지 매핑
     @GetMapping("/market/orderList")
-    public String getOrderDetails(Model model, String uid, PageRequestDTO pageRequestDTO) {
+    public String getOrderDetails(Model model, @RequestParam("uid") String uid, PageRequestDTO pageRequestDTO) {
 
         PageResponseDTO pageResponseDTO = marketService.findOrderListByUid(uid, pageRequestDTO);
         log.info("getOrderDetails Cont : " + pageResponseDTO);
@@ -199,6 +200,23 @@ public class MarketController {
         return marketService.deleteCart(prodNos);
     }
 
+    //포인트 차감
+    @GetMapping("/market/point/{uid}/{usingPoint}")
+    public ResponseEntity<?> point(@PathVariable("uid")String uid,@PathVariable("usingPoint")int usingPoint){
+
+        log.info("point 들어는 오는가?");
+
+        marketService.point(uid,usingPoint);
+
+        log.info("처리는 끝났는가?");
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("result","1");
+
+        return ResponseEntity.ok().body(response);
+
+    }
 
     @GetMapping("/market/orderNo/{uid}")
     @ResponseBody
@@ -214,34 +232,23 @@ public class MarketController {
     }
 
     @PostMapping("/market/saveOrderDetail")
-    public ResponseEntity<?> orderDetails(@RequestBody List<Map<String, Object>> requestData){
+    public ResponseEntity<?> orderDetails(@RequestBody Map<String, Object> requestData) {
+        String countsJson = (String) requestData.get("counts");
+        String detailNosJson = (String) requestData.get("detailNos");
+        String orderNoJson = (String) requestData.get("orderNo");
+
+        List<String> counts = Arrays.asList(new Gson().fromJson(countsJson, String[].class));
+        List<String> detailNos = Arrays.asList(new Gson().fromJson(detailNosJson, String[].class));
+        String orderNo = new Gson().fromJson(orderNoJson, String.class);
 
 
-        int[] count = requestData.stream()
-                .mapToInt(map -> (int) map.get("count"))
-                .toArray();
-
-        int[] detailNo = requestData.stream()
-                .mapToInt(map -> (int) map.get("detailNos"))
-                .toArray();
-
-        int order = requestData.stream()
-                .mapToInt(map -> (int) map.get("orders"))
-                .findFirst()
-                .orElse(0);
-
-        log.info("여기로 들어오는지 확인");
-        log.info("controller-cart_prodNos(지금 테스트 )1 : " + Arrays.toString(count));
-        log.info("controller-cart_prodNos(지금 테스트 )2 : " + Arrays.toString(detailNo));
-        log.info("controller-cart_prodNos(지금 테스트 )3 : " + order);
-
+        marketService.saveOrderDetails(counts, detailNos, orderNo);
 
         Map<String, String> response = new HashMap<>();
 
         response.put("result","1");
 
         return ResponseEntity.ok().body(response);
-
     }
 
     // market/view에서 market/order로 바로 넘어가는 controller
@@ -287,5 +294,6 @@ public class MarketController {
 
         return marketService.addProductForCart(uid, prodno, prodCount);
     }
+
 }
 
