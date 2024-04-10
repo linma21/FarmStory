@@ -82,7 +82,7 @@ public class ReviewService {
         Tuple result = reviewRepository.selectForRatio(prodno);
         log.info("리뷰 집계 조회 ...1 : "+result);
 
-        // QueryDsl은 count,sum은 long,int 로 avg는 double로 반환된다.
+        // JPA는 count는 long, sum은 int or long, avg는 double로 반환된다.
         long count = result.get(0, Long.class);
         double avg = 0;
         Integer sum = 0;

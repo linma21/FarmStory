@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/newUserLayout}">
-
 <div class="container" layout:fragment="content">
     <main class="articleMain">
-    <script th:inline="javascript" th:src="@{/js/eventWrite.js}"></script>
+        <script th:inline="javascript" th:src="@{/js/eventWrite.js}"></script>
         <div class="sideBox">
             <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
             <ul class="lnb">
@@ -35,7 +34,7 @@
                         <ul>
                             <li>
                                 <label for="formFileMultiple" class="form-label">■ 첨부 파일 선택</label>
-                                <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
+                                <input class="form-control" type="file" name="eventImg" id="formFileMultiple" onchange="chkImg(this)"/>
                             </li>
                         </ul>
                         <div class="articleBtnBox">
@@ -43,7 +42,7 @@
                                class="btn btnCancel">취소</a>
                             <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/event/newlist(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                                class="btn btnCancel">취소</a>
-                            <a th:href="@{/event/newmodify}" id="btnSubmit" class="btn btnSubmit">등록</a>
+                            <a th:href="@{/event/newwrite}" id="btnSubmit" class="btn btnSubmit">등록</a>
                         </div>
                     </form>
                 </div>

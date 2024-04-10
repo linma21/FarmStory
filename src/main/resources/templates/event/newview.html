@@ -34,18 +34,11 @@
                             <p>작성자 : <span>[[${article.nick}]]</span></p>
                             <p>조회수 : <span>[[${article.hit}]]</span>&nbsp;&nbsp;<span th:text="${#temporals.format(article.rdate,'yyyy-MM-dd')}"></span></p>
                         </div>
-
+                        <div class="fileBox">
+                            <img th:src="@{'/imagePath/'+${article.thumbnail}}" th:alt="${article.thumbnail}" alt="">
+                        </div>
                         <div class="contentsBox">
                             <textarea id="contentTextarea" readonly>[[${article.content}]]</textarea>
-
-                        </div>
-
-                        <div class="fileBox">
-                            <p>첨부파일</p>
-                            <th:block  th:each="file:${article.fileList}">
-                                <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink"
-                                   th:data-fno="${file.fno}">[[${file.oName}]]</a>
-                            </th:block>
                         </div>
                         <!-- 수정 / 삭제 / 목록 버튼 -->
                         <div class="articleBtnBox">

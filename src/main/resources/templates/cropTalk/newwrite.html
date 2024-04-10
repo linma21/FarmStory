@@ -46,7 +46,7 @@
                                class="btn btnCancel">취소</a>
                             <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/cropTalk/newlist(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                                class="btn btnCancel">취소</a>
-                            <a th:href="@{/cropTalk/newmodify}" id="btnSubmit" class="btn btnSubmit">등록</a>
+                            <a th:href="@{/cropTalk/newwrite}" id="btnSubmit" class="btn btnSubmit">등록</a>
                         </div>
                     </form>
                 </div>
