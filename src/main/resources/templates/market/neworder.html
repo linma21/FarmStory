@@ -323,7 +323,7 @@
                         </div>
                         <div>
                             <p>
-                                <b class="prodDelDate">00-00</b> 도착 예정
+                                <b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b> 도착 예정
                             </p>
                         </div>
                     </div>

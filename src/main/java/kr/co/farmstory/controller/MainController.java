@@ -117,7 +117,7 @@ public class MainController {
     @GetMapping("/notfound")
     public String notFound() {
         // "notfound.html" 템플릿으로 리다이렉트
-        return "notfound";
+        return "/notfound";
     }
 
     // 팜스토리 소개

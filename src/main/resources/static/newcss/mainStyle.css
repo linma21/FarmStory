@@ -147,6 +147,11 @@ header {
     width: 196px;
     text-align: center;
 }
+.navBox li > a{
+    font-size: 18px;
+    font-weight: bold;
+    color: #666666;
+}
 .navBox li > a:hover {
     color: #a8d031;
     font-weight: bold;
@@ -705,6 +710,7 @@ main {
 .commentBox > form > div {
     display: flex;
     justify-content: end;
+    margin-top: 10px;
 }
 .commentBox > form > div > button {
     padding: 6px;
@@ -720,7 +726,7 @@ main {
     background-color: #a8d031;
 }
 .commentBox > .comment {
-    padding: 5px 0;
+    padding: 5px 10px;
     margin-top: 10px;
     border-radius: 10px;
     border: 1px solid #d6d6d6;
@@ -745,6 +751,7 @@ main {
 .commentBox > .comment > div {
     display: flex;
     justify-content: end;
+    margin-top: 4px;
 }
 .commentBox > .comment > div > button {
     padding: 6px;

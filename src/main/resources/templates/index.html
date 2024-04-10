@@ -157,11 +157,9 @@
     <header>
         <div class="userBox">
             <a th:href="@{/notfound}">고객센터</a>
-            <a th:href="@{/user/register}">회원가입 </a>
-            <th:block>
-                <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-            </th:block>
+            <a sec:authorize="isAnonymous()" th:href="@{/user/register}">회원가입 </a>
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
             <a class="nav-link" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/admin/index}">관리자</a>
         </div>
 
