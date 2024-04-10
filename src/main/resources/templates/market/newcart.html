@@ -269,7 +269,6 @@
 
             }
 
-
         } //window.onload 끝//
 
         //// 각 장바구니 품목 가격 합산하는 함수 ////
@@ -388,7 +387,7 @@
                                                     </b> 팜포인트 적립
                                                 </span>
                                         </p>
-                                        <p><span><b class="prodDelDate">00-00</b>도착 예정</span></p>
+                                        <p><span><b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b>도착 예정</span></p>
                                     </div>
 
                                     <div class="quantity-input">
