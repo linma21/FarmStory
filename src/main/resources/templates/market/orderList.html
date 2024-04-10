@@ -108,6 +108,7 @@
         // Modal style : display :flex -> display: none
         prodWriteReview.style.display="none";
     }
+    // 이미지 파일만 올릴 수 있게 Check
     function chkImg(obj) {
         const file_kind = obj.value.lastIndexOf('.');
         const file_name = obj.value.substring(file_kind+1,obj.length);

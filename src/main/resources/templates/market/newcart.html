@@ -23,20 +23,27 @@
                     quantityInput.value = modValue;
 
                     // 해당 상품 목록 박스 가격 변동 //
-                    const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
-                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
-                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
-                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
-                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
+                    const cartInfo = e.target.parentNode.parentNode.parentNode;            // 버튼의 부모의 부모의 부모태그
+                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]');        // 원래 가격 x 수량
+                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]');  // 상품 할인율
+                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]');  // 할인된 가격 x 수량
+                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]');        // 할인된 가격 x 수량 x 10%
 
-                    let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
+                    let intPrice = parseInt(prodPrice.innerText.replace(/,/g, '')); // 콤마 붙어 있는 가격 (String -> int)
+                    console.log(intPrice);
+                    let oneProdPrice = intPrice / value; // 상품 1개 가격, 콤마 제거
+                    console.log(oneProdPrice);
                     let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
+                    console.log(modProdPrice);
                     let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
+                    console.log(modProdDisPrice);
                     let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
+                    console.log(modProdPoint);
 
-                    prodPrice.innerText = modProdPrice;
-                    prodDisPrice.innerText = modProdDisPrice;
-                    prodPoint.innerText = modProdPoint;
+
+                    prodPrice.innerText = modProdPrice.toLocaleString();
+                    prodDisPrice.innerText = modProdDisPrice.toLocaleString();
+                    prodPoint.innerText = modProdPoint.toLocaleString();
                     // 전체 주문예상금액 가격 변동 //
                     orderPriceSub();
                 });
@@ -60,14 +67,15 @@
                         const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
                         const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
 
-                        let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
+                        let intPrice = parseInt(prodPrice.innerText.replace(/,/g, ''));
+                        let oneProdPrice = intPrice / value; // 상품 1개 가격
                         let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
                         let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
                         let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
 
-                        prodPrice.innerText = modProdPrice;
-                        prodDisPrice.innerText = modProdDisPrice;
-                        prodPoint.innerText = modProdPoint;
+                        prodPrice.innerText = modProdPrice.toLocaleString();
+                        prodDisPrice.innerText = modProdDisPrice.toLocaleString();
+                        prodPoint.innerText = modProdPoint.toLocaleString();
                         // 전체 주문예상금액 가격 변동 //
                         orderPriceSub();
                     }
@@ -261,7 +269,6 @@
 
             }
 
-
         } //window.onload 끝//
 
         //// 각 장바구니 품목 가격 합산하는 함수 ////
@@ -286,12 +293,18 @@
             let totalProdTotal = 0;
 
             // 각 포인트, 가격, 할인, 합계값 더하는 for문
-            for (let i = 0; i < prodPoint.length; i++) {
+            for (let i = 0; i < prodPrice.length; i++) {
+                console.log("g2");
                 totalProdCount += 1;
-                totalProdPrice += parseInt(prodPrice[i].innerText);
-                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText));
-                totalProdTotal += parseInt(prodDisPrice[i].innerText);
-                totalProdPoint += (parseInt(prodDisPrice[i].innerText) / 10);
+                totalProdPrice += parseInt(prodPrice[i].innerText.replace(/,/g, ''));
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText.replace(/,/g, '')) - parseInt(prodDisPrice[i].innerText.replace(/,/g, '')));
+                totalProdTotal += parseInt(prodDisPrice[i].innerText.replace(/,/g, ''));
+                totalProdPoint += (parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10);
+                console.log("상품 가격 + " + totalProdPrice);
+                console.log("총 할인 + " + totalProdDisPrice);
+                console.log("결제 금액 + " + totalProdTotal);
+                console.log("적립포인트 + " + totalProdPoint);
+
                 if (totalProdTotal >= 30000) {
                     totalProdDelCost = 0;
                 }else{
@@ -299,11 +312,11 @@
                 }
             }
             // 태그에 값 출력하기
-            totalPrice.innerText = totalProdPrice.toString();
-            totalDiscount.innerText = totalProdDisPrice.toString();
-            totalDelCost.innerText = totalProdDelCost.toString();
-            totalOrder.innerText = (totalProdTotal+parseInt(totalDelCost.innerText)).toString();
-            totalPoint.innerText = totalProdPoint.toString();
+            totalPrice.innerText = totalProdPrice.toLocaleString();
+            totalDiscount.innerText = totalProdDisPrice.toLocaleString();
+            totalDelCost.innerText = totalProdDelCost.toLocaleString();
+            totalOrder.innerText = (totalProdTotal+parseInt(totalDelCost.innerText.replace(/,/g, ''))).toLocaleString();
+            totalPoint.innerText = totalProdPoint.toLocaleString();
         }
     </script>
 
@@ -361,7 +374,7 @@
                                     </p>
                                     <p>
                                         <span>
-                                           <b class="prodCutPrice" th:text="${#numbers.formatInteger((product.price - (product.price * product.discount / 100)) * product.count, 1, 'COMMA')}">
+                                           <b class="prodCutPrice" name="prodDisPrice" th:text="${#numbers.formatInteger((product.price - (product.price * product.discount / 100)) * product.count, 1, 'COMMA')}">
                                          </b>원
                                         </span>
                                 </p>
@@ -370,11 +383,11 @@
                                     <div>
                                         <p>
                                                 <span>
-                                                    <b class="prodPoint" th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count) * 0.10, 0, 'COMMA')}">
+                                                    <b class="prodPoint" name="prodPoint" th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count) * 0.10, 0, 'COMMA')}">
                                                     </b> 팜포인트 적립
                                                 </span>
                                         </p>
-                                        <p><span><b class="prodDelDate">00-00</b>도착 예정</span></p>
+                                        <p><span><b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b>도착 예정</span></p>
                                     </div>
 
                                     <div class="quantity-input">

@@ -8,9 +8,9 @@
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate3_tit.png}" alt="농작물이야기"/>
                 <ul class="lnb">
-                    <li data-cate="story"><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
-                    <li data-cate="grow"><a th:href="@{/cropTalk/newlist(cate=grow)}">텃밭가꾸기</a></li>
-                    <li data-cate="school"><a th:href="@{/cropTalk/newlist(cate=school)}">귀농학교</a></li>
+                    <li><a data-cate="story" th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
+                    <li><a data-cate="grow" th:href="@{/cropTalk/newlist(cate=grow)}">텃밭가꾸기</a></li>
+                    <li><a data-cate="school" th:href="@{/cropTalk/newlist(cate=school)}">귀농학교</a></li>
                 </ul>
             </div>
 
@@ -46,7 +46,7 @@
                                class="btn btnCancel">취소</a>
                             <a th:if="${pageResponseDTO.keyword != null}" th:href="@{/cropTalk/newlist(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}"
                                class="btn btnCancel">취소</a>
-                            <a th:href="@{/cropTalk/newmodify}" id="btnSubmit" class="btn btnSubmit">등록</a>
+                            <a th:href="@{/cropTalk/newwrite}" id="btnSubmit" class="btn btnSubmit">등록</a>
                         </div>
                     </form>
                 </div>

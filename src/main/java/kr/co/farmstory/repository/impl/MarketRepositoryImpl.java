@@ -85,7 +85,7 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
                         .fetchResults();
 
 
-                total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.cate.eq(marketPageRequestDTO.getCate()))
+                total = jpaQueryFactory.selectFrom(qProduct)
                         .where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword())).fetchCount();
             }else {
                 // 4. cate값 있음 + keyword값 있음
@@ -101,7 +101,8 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
                         .orderBy(qProduct.prodno.desc())
                         .fetchResults();
 
-                total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword())).fetchCount();
+                total = jpaQueryFactory.selectFrom(qProduct).where(qProduct.cate.eq(marketPageRequestDTO.getCate()))
+                        .where(qProduct.prodname.contains(marketPageRequestDTO.getKeyword())).fetchCount();
             }
         }
 

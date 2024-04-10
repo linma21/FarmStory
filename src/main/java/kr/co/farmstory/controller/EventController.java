@@ -78,9 +78,11 @@ public class EventController {
     }
     // 글 쓴거 보내기
     @PostMapping("/event/newwrite")
-    public String write(ArticleDTO articleDTO){
+    public String write(ArticleDTO articleDTO,
+                        @RequestParam("eventImg") MultipartFile eventImg){
+        log.info("이벤트 글쓰기 Cont 1 : " +eventImg);
 
-        articleService.insertArticle(articleDTO);
+        articleService.registerEvent(articleDTO, eventImg);
         return "redirect:/event/newlist?cate="+articleDTO.getCate();
     }
     // 글 수정 - 글 상세 정보

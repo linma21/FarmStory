@@ -60,7 +60,7 @@
             // 바로구매 버튼 클릭시 market/order로 이동 //
             const btnOrder = document.getElementById('btnOrder');
             btnOrder.onclick = function (){
-                // 로그인 여부 확인 (난 천재인듯)
+                // 로그인 여부 확인 (난 천재인듯)?
                 const loginCheck = document.getElementById('uid');
 
                 if (loginCheck == null){
@@ -149,11 +149,6 @@
             const moveReview = document.getElementsByClassName('moveReview')[0];
             moveReview.onclick = function (){
                 prodReviewBox.scrollIntoView();
-            }
-            // 최상단 이동 //
-            const topButton = document.getElementsByClassName('topButton')[0];
-            topButton.onclick = function (){
-                window.scrollTo(0, 0);
             }
         }
     </script>
@@ -284,13 +279,16 @@
                         <div>
                             <h3>상품 리뷰</h3>
                             <p>상품 리뷰 <span th:text="${reviewPage.dtoList.size()}"></span>건</p>
+                            <br>
+                            <h3>평균</h3>
+                            <h1>[[${reviewRatioDTO.avg}]] 점</h1>
                         </div>
                         <div class="reviewStarBox">
-                            <p><span>94</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star5.png}" alt="fiveStar"> 상품상태가 아주 좋아요.</p>
-                            <p><span>2</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star4.png}" alt="fourStar"> 상품상태가 만족스러워요.</p>
-                            <p><span>2</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star3.png}" alt="threeStar"> 상품상태가 보통이에요.</p>
-                            <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star2.png}" alt="twoStar"> 상품상태가 그저그래요.</p>
-                            <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 상품상태가 별로에요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent5}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star5.png}" alt="fiveStar"> 아주 좋아요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent4}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star4.png}" alt="fourStar"> 만족스러워요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent3}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star3.png}" alt="threeStar"> 보통이에요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent2}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star2.png}" alt="twoStar"> 그저그래요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent1}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 별로에요.</p>
                         </div>
                     </div>
                     <h3>리뷰 목록</h3>

@@ -56,11 +56,12 @@ public class MarketController {
         log.info("장보기 글보기 Cont 1 : "+ reviewPage.toString());
         // 리뷰 별점 - 평균, 비율 구하기
         ReviewRatioDTO reviewRatioDTO = reviewService.selectForRatio(prodno);
-
         log.info("장보기 글보기 Cont 2 : "+reviewRatioDTO);
+
         model.addAttribute(productDTO);
         model.addAttribute(marketPageRequestDTO);
         model.addAttribute("reviewPage", reviewPage);
+        model.addAttribute(reviewRatioDTO);
         return "/market/newview";
     }
 

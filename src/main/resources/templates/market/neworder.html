@@ -19,7 +19,6 @@
             //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
             orderPriceSub();
 
-
             //포인트 사용 시작
             usingPoint.addEventListener('blur', function (event) {//입력필드를 벗어나기 전까지 아무런 액션이 없음(blur)
 
@@ -41,6 +40,33 @@
                 }
 
             });
+/*
+            // 포인트 사용 //
+            const pointTd = document.getElementById('pointTd');
+            const havingPoint = document.getElementById('havingPoint');
+            const usingPoint = document.getElementById('usingPoint');
+            const btnPoint = document.getElementById('btnPoint');
+            const inputUsingPoint = document.getElementById('inputUsingPoint');
+            const overPointMsg = document.getElementById('overPointMsg');
+
+            btnPoint.onclick = function () {
+                let have = parseInt(havingPoint.innerText);     // 보유 포인트
+                let use = parseInt(usingPoint.value);           // 사용하고자 입력한 포인트
+
+                if (have >= use) {
+                    let result = confirm(`${use} 포인트를 사용하시겠습니까?`);
+                    if (result) {
+                        inputUsingPoint.innerText = use.toLocaleString();
+                        overPointMsg.innerText = "";
+                        orderPriceSub();
+                    }
+                }else {
+                    overPointMsg.innerText = "사용가능한 포인트 초과";
+                    usingPoint.value = 0;
+                }
+
+            }
+*/
 
             const btnPoint = document.getElementById('btnPoint');
 
@@ -221,17 +247,10 @@
             // 각 포인트, 가격, 할인, 합계값 더하는 for문
             for (let i = 0; i < prodPoint.length; i++) {
                 totalProdCount += 1;
-                totalProdPrice += parseInt(prodPrice[i].innerText);
-                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText));
-                console.log("totalProdDisPrice" + totalProdDisPrice);
-
-                totalProdTotal += parseInt(prodDisPrice[i].innerText);
-                console.log("totalProdTotal" + totalProdTotal);
-
-                totalProdPoint += (parseInt(prodDisPrice[i].innerText) / 10);
-                console.log("totalProdPoint" + totalProdPoint);
-
-                //배송이 무료인지 5000원인지 계산식
+                totalProdPrice += parseInt(prodPrice[i].innerText.replace(/,/g, ''));
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText.replace(/,/g, '')) - parseInt(prodDisPrice[i].innerText.replace(/,/g, '')));
+                totalProdTotal += parseInt(prodDisPrice[i].innerText.replace(/,/g, ''));
+                totalProdPoint += (parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10);
                 if (totalProdTotal >= 30000) {
                     totalProdDelCost = 0;
                 } else {
@@ -239,13 +258,11 @@
                 }
             }
             // 태그에 값 출력하기
-            totalPrice.innerText = totalProdPrice.toString();
-            totalDiscount.innerText = totalProdDisPrice.toString();
-            totalDelCost.innerText = totalProdDelCost.toString();
-            totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText) - usingPoint).toString();
-            totalPoint.innerText = (totalProdPoint - usingPoint).toString();
-            inputUsingPoint.innerText = usingPoint.toString();
-
+            totalPrice.innerText = totalProdPrice.toLocaleString();
+            totalDiscount.innerText = totalProdDisPrice.toLocaleString();
+            totalDelCost.innerText = totalProdDelCost.toLocaleString();
+            totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText.replace(/,/g, '')) - parseInt(usingPoint.value)).toLocaleString();
+            totalPoint.innerText = (totalProdPoint - parseInt(usingPoint.value)).toLocaleString();
         }
 
         //우편번호 검색을 위한 함수
@@ -312,14 +329,14 @@
                             </p>
                             <p>
                                 <span><b class="prodDiscount" th:text="${product.discount}" th:name="prodDiscount"></b>%</span>
-                                <span><s class="prodPrice" th:text="${product.price}*${product.count}"
-                                         th:name="prodPrice"></s>원</span>
+                                <span><s class="prodPrice" th:text="${#numbers.formatInteger((product.price * product.count), 1, 'COMMA')} + '원'"
+                                         th:name="prodPrice"></s></span>
                             </p>
                             <p>
                                     <span><b class="prodCutPrice"
-                                             th:text="(${product.price}-(${product.price}*${product.discount}/100))*${product.count}"
+                                             th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count), 1, 'COMMA')} + '원'"
                                              th:name="prodDisPrice">
-                                    </b>원</span>
+                                    </b></span>
                             </p>
                         </div>
                         <div>
@@ -331,15 +348,14 @@
                             </p>
                             <span>
                                     <b class="prodPoint"
-                                       th:text="((${product.price}-(${product.price}*${product.discount}/100))*10/100)*${product.count}"
+                                       th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100))*10/100) * product.count, 1, 'COMMA')} + ''"
                                        th:name="prodPoint">
                                     </b> 팜포인트 적립
                                 </span>
                         </div>
                         <div>
                             <p>
-                                <span th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></span>도착
-                                예정
+                                <b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b> 도착 예정
                             </p>
                         </div>
                     </div>
@@ -364,11 +380,16 @@
                                 </tr>
                                 <tr>
                                     <td>포인트사용</td>
-                                    <td>
+                                    <td id="pointTd">
                                         <p>보유 <b id="havingPoint" th:text="${userDTO.point}"></b> P</p>
                                         <input type="text" id="usingPoint" th:value="0" style="width: 70px;">
+
                                         <button type="button" id="btnPoint">사용</button>
                                         <p id="resultPoint"></p>
+                                  <!--
+                                        <button id="btnPoint">사용</button>
+                                        <p id="overPointMsg"></p>
+                                    -->
                                     </td>
                                 </tr>
                             </table>

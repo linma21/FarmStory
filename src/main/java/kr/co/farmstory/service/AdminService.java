@@ -8,6 +8,7 @@ import kr.co.farmstory.repository.MarketRepository;
 import kr.co.farmstory.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -51,6 +52,13 @@ public class AdminService {
 
         String path = file.getAbsolutePath();
 
+        String orgPath = path + "/orgImage";
+        // 원본 파일 폴더 자동 생성
+        java.io.File orgFile = new java.io.File(orgPath);
+        if(!orgFile.exists()){
+            orgFile.mkdir();
+        }
+
         // 저장
         Product savedProduct = new Product();
 
@@ -63,10 +71,14 @@ public class AdminService {
             log.info("파일 업로드 service6 sName : " + sName);
 
             try {
-                // 파일 저장
-                thumb120.transferTo(new File(path, sName));
+                // 원본 파일 저장
+                thumb120.transferTo(new File(orgFile, sName));
                 // 파일 이름 DTO에 저장
                 productDTO.setThumb(sName);
+
+                Thumbnails.of(new File(orgPath, sName)) // 원본 파일 (경로, 이름)
+                        .size(120,120) // 원하는 사이즈
+                        .toFile(new File(path, sName)); // 원본 파일 (경로, 이름)
 
                 // 상품 정보 DB 저장
                 Product product = modelMapper.map(productDTO, Product.class);
@@ -94,15 +106,23 @@ public class AdminService {
             log.info("파일 업로드 service9 thumb750sName : " + thumb750sName);
 
             try {
-                // 이미지 저장
-                thumb240.transferTo(new File(path, thumb240sName));
-                thumb750.transferTo(new File(path, thumb750sName));
+                // 원본 파일 저장
+                thumb240.transferTo(new File(orgFile, thumb240sName));
+                thumb750.transferTo(new File(orgFile, thumb750sName));
                 // 이미지 이름 DTO에 저장
                 ImagesDTO imagesDTO = ImagesDTO.builder()
                         .prodno(savedProduct.getProdno())
                         .thumb240(thumb240sName)
                         .thumb750(thumb750sName)
                         .build();
+
+                Thumbnails.of(new File(orgPath, thumb240sName)) // 원본 파일 (경로, 이름)
+                        .size(240,240) // 원하는 사이즈
+                        .toFile(new File(path, thumb240sName)); // 원본 파일 (경로, 이름)
+
+                Thumbnails.of(new File(orgPath, thumb750sName)) // 원본 파일 (경로, 이름)
+                        .width(750) // 원하는 사이즈
+                        .toFile(new File(path, thumb750sName)); // 원본 파일 (경로, 이름)
 
                 // 이미지 정보 DB 저장
                 Images image = modelMapper.map(imagesDTO, Images.class);

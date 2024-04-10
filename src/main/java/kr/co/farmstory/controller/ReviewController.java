@@ -18,7 +18,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    // review insert - Form 데이터 받아서 처리
+    // 리뷰 쓰기 - Form 데이터 받아서 처리
     @PostMapping("/review")
     public String reviewWrite(@RequestParam("thumb") MultipartFile thumb, ReviewDTO reviewDTO) throws IOException {
         log.info("reviewWrite Cont 1 : " + reviewDTO.getUid());
