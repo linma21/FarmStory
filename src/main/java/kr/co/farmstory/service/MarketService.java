@@ -6,14 +6,8 @@ import kr.co.farmstory.dto.ImagesDTO;
 import kr.co.farmstory.dto.MarketPageRequestDTO;
 import kr.co.farmstory.dto.MarketPageResponseDTO;
 import kr.co.farmstory.dto.ProductDTO;
-import kr.co.farmstory.entity.Cart_product;
-import kr.co.farmstory.entity.Images;
-import kr.co.farmstory.entity.Orders;
-import kr.co.farmstory.entity.OrderDetail;
-import kr.co.farmstory.entity.Product;
-import kr.co.farmstory.repository.Cart_productRepository;
-import kr.co.farmstory.repository.MarketRepository;
-import kr.co.farmstory.repository.OrderRepository;
+import kr.co.farmstory.entity.*;
+import kr.co.farmstory.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -36,6 +30,8 @@ public class MarketService {
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
     private final Cart_productRepository cart_productRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final AccountRepository accountRepository;
 
 
     // 장보기 글목록 페이지 - 장보기 목록 출력
@@ -203,6 +199,29 @@ public class MarketService {
         orderRepository.save(orders);
     }
 
+    //포인트 차감
+    public void point(String uid, int usingPoint){
+
+        Account account = accountRepository.findById(uid).orElse(null);
+
+        log.info("원래 포인트 : "+account.getPoint());
+        log.info("사용하는 포인트 : " + usingPoint);
+
+        if (account != null) {
+            // 계정의 포인트를 업데이트
+            account.setPoint(account.getPoint() - usingPoint);
+
+            log.info("account.getPoint()"+account.getPoint());
+
+            // 업데이트된 정보를 저장
+            accountRepository.save(account);
+        } else {
+            // 사용자를 찾을 수 없는 경우 예외 처리
+            throw new RuntimeException("사용자를 찾을 수 없습니다.");
+        }
+
+    }
+
     //orderNo를 찾기위한 여정
     public int selectOrderNo(String uid){
         int orderNo = marketRepository.findOrderNo(uid);
@@ -210,6 +229,26 @@ public class MarketService {
         log.info("orderNo : "+orderNo);
 
         return orderNo;
+    }
+
+    //결제한 상품 목록 orderDetail에 저장
+    public void saveOrderDetails(List<String> counts, List<String> detailNos, String orderNo) {
+
+        if (counts.size() != detailNos.size()) {
+            throw new IllegalArgumentException("Counts and detailNos lists must have the same size.");
+        }
+
+
+        for (int i = 0; i < counts.size(); i++) {
+            OrderDetailDTO orderDetail = new OrderDetailDTO();
+            orderDetail.setCount(Integer.parseInt(counts.get(i)));
+            orderDetail.setProdno(Integer.parseInt(detailNos.get(i)));
+            orderDetail.setOrderNo(Integer.parseInt(orderNo));
+
+            // 데이터베이스에 저장
+            OrderDetail orderDetails = modelMapper.map(orderDetail, OrderDetail.class);
+            orderDetailRepository.save(orderDetails);
+        }
     }
 
     // 메인 페이지에서 띄울 상품들
