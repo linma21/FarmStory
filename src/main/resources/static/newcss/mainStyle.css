@@ -1575,6 +1575,7 @@ main {
     font-size: 14px;
 }
 .orderProd > div:nth-child(2) > p:nth-child(2) > span:nth-child(2) {
+    padding-left: 4px;
     color : #666666;
     font-size: 14px;
 }
