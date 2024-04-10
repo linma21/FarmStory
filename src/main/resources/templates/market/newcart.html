@@ -98,8 +98,6 @@
                     modCart_prodNo.push(currentProdNo);
                     modCount.push(currentCount)
                 }
-                console.log(modCart_prodNo);
-                console.log(modCount);
 
                 const jsonData = {
                     "cart_prodNo" : modCart_prodNo,
@@ -143,6 +141,7 @@
                     .catch(err => console.log(err))
             }
 
+            // 선택을 통한 다중 삭제 //
             const prodCheckBox = document.querySelectorAll('.prodCheckBox');
             const btnDeleteProds = document.getElementById('btnDeleteProds');
 
@@ -159,7 +158,6 @@
                         cart_prodNo.push(div.querySelector('[name="cart_prodNo"]').value);
                     }
                 })
-                alert(cart_prodNo);
                 // 삭제
                 let result = false;
                 if (cart_prodNo.length != 0){
@@ -183,8 +181,6 @@
                             return response.json()
                         })
                         .then(data => {
-                            console.log("g3");
-
                             if (data.data === "삭제 성공"){
                                 for (let i = 0; i < cart_prodNo.length; i++) {
                                     console.log(cart_prodNo[i]);
@@ -195,6 +191,25 @@
                                 deleteDiv.length = 0;
                                 // 전체 주문예상금액 가격 변동 //
                                 orderPriceSub();
+
+                                // 장바구니의 상품이 0개일때
+                                const cartItem = document.getElementsByClassName('cartItem');
+                                if (cartItem.length === 0) {
+                                    const cartBox = document.getElementsByClassName('cartBox')[0];
+                                    const notProd = `<div class="cartItem">
+                                                        <div class="cartInfoBot">
+                                                            <div>
+                                                                <p style="padding: 30px 0;">
+                                                                    <span style="height: 200px; font-size: 20px;">
+                                                                        장바구니에 상품이 없습니다.
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>`
+                                    cartBox.insertAdjacentHTML('beforeend', notProd);
+                                }
+                                ///
                             }
                         })
                         .catch(err => console.log(err))
@@ -231,13 +246,30 @@
                                 return response.json()
                             })
                             .then(data => {
-                                console.log("g3");
-
                                 if (data.data === "삭제 성공"){
                                     cartInfo.remove();
                                     cart_prodNo.length = 0;
                                     // 전체 주문예상금액 가격 변동 //
                                     orderPriceSub();
+
+                                    // 장바구니의 상품이 0개일때
+                                    const cartItem = document.getElementsByClassName('cartItem');
+                                    if (cartItem.length === 0) {
+                                        const cartBox = document.getElementsByClassName('cartBox')[0];
+                                        const notProd = `<div class="cartItem">
+                                                        <div class="cartInfoBot">
+                                                            <div>
+                                                                <p style="padding: 30px 0;">
+                                                                    <span style="height: 200px; font-size: 20px;">
+                                                                        장바구니에 상품이 없습니다.
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>`
+                                        cartBox.insertAdjacentHTML('beforeend', notProd);
+                                    }
+                                    ///
                                 }
                             })
                             .catch(err => console.log(err))
@@ -254,7 +286,6 @@
             const totalCheckBox = document.getElementsByClassName('totalCheckBox')[0];
             let checkedTurn = 0;
             totalCheckBox.onclick = function (e){
-                alert("g2");
                 if (checkedTurn === 0) {
                     prodCheckBox.forEach(function(checkbox) {
                         checkbox.checked = true;
@@ -294,16 +325,11 @@
 
             // 각 포인트, 가격, 할인, 합계값 더하는 for문
             for (let i = 0; i < prodPrice.length; i++) {
-                console.log("g2");
                 totalProdCount += 1;
                 totalProdPrice += parseInt(prodPrice[i].innerText.replace(/,/g, ''));
                 totalProdDisPrice += (parseInt(prodPrice[i].innerText.replace(/,/g, '')) - parseInt(prodDisPrice[i].innerText.replace(/,/g, '')));
                 totalProdTotal += parseInt(prodDisPrice[i].innerText.replace(/,/g, ''));
                 totalProdPoint += (parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10);
-                console.log("상품 가격 + " + totalProdPrice);
-                console.log("총 할인 + " + totalProdDisPrice);
-                console.log("결제 금액 + " + totalProdTotal);
-                console.log("적립포인트 + " + totalProdPoint);
 
                 if (totalProdTotal >= 30000) {
                     totalProdDelCost = 0;
@@ -347,9 +373,8 @@
                     <div class="prodInfoBox">
 
                         <div class="cartBox">
-
                             <!--장바구니 품목 시작-->
-                            <div class="cartItem" th:each="product : ${productDTO}">
+                            <div class="cartItem" th:if="${!productDTO.isEmpty()}" th:each="product : ${productDTO}">
                                 <input type="checkbox" class="prodCheckBox">
                                 <input type="hidden" name="cart_prodNo" th:value="${product.cart_prodNo}">
                                 <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
@@ -377,29 +402,41 @@
                                            <b class="prodCutPrice" name="prodDisPrice" th:text="${#numbers.formatInteger((product.price - (product.price * product.discount / 100)) * product.count, 1, 'COMMA')}">
                                          </b>원
                                         </span>
-                                </p>
+                                    </p>
 
-                                <div class="cartInfoBot">
-                                    <div>
-                                        <p>
+                                    <div class="cartInfoBot">
+                                        <div>
+                                            <p>
                                                 <span>
                                                     <b class="prodPoint" name="prodPoint" th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count) * 0.10, 0, 'COMMA')}">
                                                     </b> 팜포인트 적립
                                                 </span>
-                                        </p>
-                                        <p><span><b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b>도착 예정</span></p>
-                                    </div>
+                                            </p>
+                                            <p><span><b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b>도착 예정</span></p>
+                                        </div>
 
-                                    <div class="quantity-input">
-                                        <button class="minus-btn" type="button">-</button>
-                                        <input type="text" class="quantity prodQnty" th:name="prodCount" th:value="${product.count}">
-                                        <button class="plus-btn" type="button">+</button>
+                                        <div class="quantity-input">
+                                            <button class="minus-btn" type="button">-</button>
+                                            <input type="text" class="quantity prodQnty" th:name="prodCount" th:value="${product.count}">
+                                            <button class="plus-btn" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--장바구니에 상품이 없을때-->
+                            <div class="cartItem" th:if="${productDTO.isEmpty()}">
+                                <div class="cartInfoBot">
+                                    <div>
+                                        <p style="padding: 30px 0;">
+                                            <span style="height: 200px; font-size: 20px;">
+                                                장바구니에 상품이 없습니다.
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!--장바구니 품목 끝-->
-                    </div>
 
                     <div class="cartTotal">
                         <p>주문예상금액</p>

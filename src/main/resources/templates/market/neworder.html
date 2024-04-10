@@ -20,6 +20,7 @@
             orderPriceSub();
 
             //포인트 사용 시작
+
             usingPoint.addEventListener('blur', function (event) {//입력필드를 벗어나기 전까지 아무런 액션이 없음(blur)
 
                 const resultPoint = document.getElementById('resultPoint');
@@ -27,61 +28,41 @@
 
                 if (!isNaN(havingPoint) && !isNaN(inputPoint)) {//포인트 사용시
                     if (havingPoint >= inputPoint) {
-                        resultPoint.innerText = "사용가능";
+                        resultPoint.innerText = "사용 가능합니다.";
+                        resultPoint.style.color = '#1ba41b';
                         isPointOk = true;
 
                     } else {
-                        resultPoint.innerText = "포인트 부족!";
+                        resultPoint.innerText = "포인트가 부족합니다.";
+                        resultPoint.style.color = 'red';
+
                         isPointOk = false;
                     }
                 } else {
                     resultPoint.innerText = "숫자만 입력!";
+                    resultPoint.style.color = 'red';
+                    usingPoint.value = "0";
                     isPointOk = false;
                 }
 
             });
-/*
-            // 포인트 사용 //
-            const pointTd = document.getElementById('pointTd');
-            const havingPoint = document.getElementById('havingPoint');
-            const usingPoint = document.getElementById('usingPoint');
-            const btnPoint = document.getElementById('btnPoint');
+
             const inputUsingPoint = document.getElementById('inputUsingPoint');
-            const overPointMsg = document.getElementById('overPointMsg');
-
-            btnPoint.onclick = function () {
-                let have = parseInt(havingPoint.innerText);     // 보유 포인트
-                let use = parseInt(usingPoint.value);           // 사용하고자 입력한 포인트
-
-                if (have >= use) {
-                    let result = confirm(`${use} 포인트를 사용하시겠습니까?`);
-                    if (result) {
-                        inputUsingPoint.innerText = use.toLocaleString();
-                        overPointMsg.innerText = "";
-                        orderPriceSub();
-                    }
-                }else {
-                    overPointMsg.innerText = "사용가능한 포인트 초과";
-                    usingPoint.value = 0;
-                }
-
-            }
-*/
-
             const btnPoint = document.getElementById('btnPoint');
 
             //포인트 사용버튼을 눌렀을때 이벤트
             btnPoint.onclick = function (e) {
-
                 e.preventDefault();
 
                 // 사용자가 입력한 포인트 값을 가져옴
                 const inputPoint = parseInt(usingPoint.value, 10);
 
-                console.log("inputPoint:" + inputPoint);
+                if (havingPoint >= inputPoint){
+                    inputUsingPoint.innerText = inputPoint.toLocaleString();
+                    console.log("inputPoint:" + inputPoint);
 
-                // 사용자가 입력한 포인트 값을 함수에 넣고 다시 계산
-                orderPriceSub(inputPoint);
+                    orderPriceSub();
+                }
             }//포인트 사용끝!
 
 
@@ -251,6 +232,7 @@
                 totalProdDisPrice += (parseInt(prodPrice[i].innerText.replace(/,/g, '')) - parseInt(prodDisPrice[i].innerText.replace(/,/g, '')));
                 totalProdTotal += parseInt(prodDisPrice[i].innerText.replace(/,/g, ''));
                 totalProdPoint += (parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10);
+
                 if (totalProdTotal >= 30000) {
                     totalProdDelCost = 0;
                 } else {
@@ -261,8 +243,8 @@
             totalPrice.innerText = totalProdPrice.toLocaleString();
             totalDiscount.innerText = totalProdDisPrice.toLocaleString();
             totalDelCost.innerText = totalProdDelCost.toLocaleString();
-            totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText.replace(/,/g, '')) - parseInt(usingPoint.value)).toLocaleString();
-            totalPoint.innerText = (totalProdPoint - parseInt(usingPoint.value)).toLocaleString();
+            totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText.replace(/,/g, '')) - inputUsingPoint.innerText.replace(/,/g, '')).toLocaleString();
+            totalPoint.innerText = ((parseInt(totalOrder.innerText.replace(/,/g, '')) - totalProdDelCost) / 10 ).toLocaleString();
         }
 
         //우편번호 검색을 위한 함수

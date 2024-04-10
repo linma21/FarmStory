@@ -262,7 +262,7 @@ public class MarketRepositoryImpl implements MarketRepositoryCustom {
             return false;
         }
     }
-
+// 여기 //
     public int findOrderNo(String uid) {
 
         Integer orderNo = jpaQueryFactory
