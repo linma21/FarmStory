@@ -22,28 +22,37 @@
             //포인트 사용 시작
 
             usingPoint.addEventListener('blur', function (event) {//입력필드를 벗어나기 전까지 아무런 액션이 없음(blur)
-
+                const totalOrder = document.getElementById('totalOrder').innerText.replace(/,/g, '');
                 const resultPoint = document.getElementById('resultPoint');
+                const inputUsingPoint = document.getElementById('inputUsingPoint').innerText.replace(/,/g, '');
                 const inputPoint = parseInt(event.target.value, 10);
 
-                if (!isNaN(havingPoint) && !isNaN(inputPoint)) {//포인트 사용시
-                    if (havingPoint >= inputPoint) {
-                        resultPoint.innerText = "사용 가능합니다.";
-                        resultPoint.style.color = '#1ba41b';
-                        isPointOk = true;
+                if ((parseInt(totalOrder)+parseInt(inputUsingPoint)) >= inputPoint){
+                    if (!isNaN(havingPoint) && !isNaN(inputPoint)) {//포인트 사용시
+                        if (havingPoint >= inputPoint) {
+                            resultPoint.innerText = "사용 가능합니다.";
+                            resultPoint.style.color = '#1ba41b';
+                            isPointOk = true;
 
+                        } else {
+                            resultPoint.innerText = "포인트가 부족합니다.";
+                            resultPoint.style.color = 'red';
+
+                            isPointOk = false;
+                        }
                     } else {
-                        resultPoint.innerText = "포인트가 부족합니다.";
+                        resultPoint.innerText = "숫자만 입력!";
                         resultPoint.style.color = 'red';
-
+                        usingPoint.value = "0";
                         isPointOk = false;
                     }
-                } else {
-                    resultPoint.innerText = "숫자만 입력!";
+                }else{
+                    resultPoint.innerText = "결제금액을 초과할 수 없음";
                     resultPoint.style.color = 'red';
                     usingPoint.value = "0";
                     isPointOk = false;
                 }
+
 
             });
 
@@ -266,7 +275,14 @@
             totalDiscount.innerText = totalProdDisPrice.toLocaleString();
             totalDelCost.innerText = totalProdDelCost.toLocaleString();
             totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText.replace(/,/g, '')) - inputUsingPoint.innerText.replace(/,/g, '')).toLocaleString();
-            totalPoint.innerText = (parseInt((parseInt(totalOrder.innerText.replace(/,/g, '')) - totalProdDelCost) / 10)).toLocaleString();//소수점때문에 살짝 수정
+
+            let pointCheck = (parseInt((parseInt(totalOrder.innerText.replace(/,/g, '')) - totalProdDelCost) / 10));//소수점때문에 살짝 수정
+            if (pointCheck < 0) {
+                totalPoint.innerText = "0";
+            }else {
+                totalPoint.innerText = pointCheck.toLocaleString();
+            }
+
 
         }
 

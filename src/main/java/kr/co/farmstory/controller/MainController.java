@@ -109,7 +109,7 @@ public class MainController {
         userService.social(userDTO);
 
 
-        return "/index";
+        return "redirect:/index";
     }
 
 
