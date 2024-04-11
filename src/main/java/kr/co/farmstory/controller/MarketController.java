@@ -204,12 +204,12 @@ public class MarketController {
     }
 
     //포인트 차감
-    @GetMapping("/market/point/{uid}/{usingPoint}")
-    public ResponseEntity<?> point(@PathVariable("uid")String uid,@PathVariable("usingPoint")int usingPoint){
+    @GetMapping("/market/point/{uid}/{point}")
+    public ResponseEntity<?> addPoint(@PathVariable("uid")String uid,@PathVariable("point")int point){
 
         log.info("point 들어는 오는가?");
 
-        marketService.point(uid,usingPoint);
+        marketService.point(uid,point);
 
         log.info("처리는 끝났는가?");
 
