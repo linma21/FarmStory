@@ -4,12 +4,15 @@ import com.querydsl.core.Tuple;
 import kr.co.farmstory.dto.ReviewDTO;
 import kr.co.farmstory.dto.ReviewPageRequestDTO;
 import kr.co.farmstory.dto.ReviewPageResponseDTO;
+import kr.co.farmstory.dto.ReviewRatioDTO;
 import kr.co.farmstory.entity.Product;
 import kr.co.farmstory.entity.Review;
 import kr.co.farmstory.repository.ProductRepository;
 import kr.co.farmstory.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
@@ -18,9 +21,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -67,38 +73,121 @@ public class ReviewService {
                 .total(total)
                 .build();
     }
-    // 리뷰 작성 + 상품 테이블 recount ++
+
+    // 리뷰 avg, sum, count(*) 조회 + score별 count 조회
+    @Transient
+    public ReviewRatioDTO selectForRatio(int prodno){
+
+        // 리뷰 avg, sum, count(*) 조회 : 전체 데이터 기준으로 집계해야해서 group by 사용 불가 (score별 count 조회 따로 해야함)
+        Tuple result = reviewRepository.selectForRatio(prodno);
+        log.info("리뷰 집계 조회 ...1 : "+result);
+
+        // JPA는 count는 long, sum은 int or long, avg는 double로 반환된다.
+        long count = result.get(0, Long.class);
+        double avg = 0;
+        Integer sum = 0;
+
+        // 리뷰가 하나도 없으면 에러가 발생하기 때문에 null 체크
+        if(count > 0) {
+            avg = result.get(1, Double.class);
+            sum = result.get(2, Integer.class);
+        }
+        // 해당 점수를 한 번도 받지않으면 조회되지 않기 때문에 따로 선언
+        int oneScore = 0;
+        int twoScore = 0;
+        int threeScore = 0;
+        int fourScore = 0;
+        int fiveScore = 0;
+
+        // 리뷰 score별(GROUP BY score) 조회
+        List<Tuple> groupResult = reviewRepository.selectScoreCount(prodno);
+        for (Tuple tuple : groupResult) {
+            log.info("리뷰 집계 조회 ...2 : " + tuple);
+            int score = tuple.get(0, Integer.class);
+            long scoreCountLong = tuple.get(1, Long.class);
+            int scoreCount = (int) scoreCountLong;
+
+            // 각 케이스에서 해당하는 변수에 값을 더해줌
+            switch (score) {
+                case 1:
+                    oneScore += scoreCount;
+                    break;
+                case 2:
+                    twoScore += scoreCount;
+                    break;
+                case 3:
+                    threeScore += scoreCount;
+                    break;
+                case 4:
+                    fourScore += scoreCount;
+                    break;
+                case 5:
+                    fiveScore += scoreCount;
+                    break;
+            }
+        }
+
+        // Select 한 값 빌더로 입력
+        return ReviewRatioDTO.builder()
+                .count(count)
+                .sum(sum)
+                .avg(avg)
+                .oneScore(oneScore)
+                .twoScore(twoScore)
+                .threeScore(threeScore)
+                .fourScore(fourScore)
+                .fiveScore(fiveScore)
+                .build();
+
+    }
+
+
+
+    // 리뷰 작성 + 상품 테이블 recount up + file -> Thumbnails
     @Transient
     public String insertReview(ReviewDTO reviewDTO, MultipartFile thumb){
 
         log.info("리뷰 업로드 insertReview1 reviewDTO : " + reviewDTO.toString());
         log.info("리뷰 업로드 insertReview2 이미지 : " + thumb);
 
-        // thumbnail 저장
-        java.io.File file = new java.io.File(fileUploadPath);
-        if(!file.exists()){
-            file.mkdir();
-        }
-        String path = file.getAbsolutePath();
-
-        if (!thumb.isEmpty()) {
+        String path = new java.io.File(fileUploadPath).getAbsolutePath();
+        String sName = null;
+        // 이미지 리사이즈 120 * 120
+        if(thumb != null) {
             // oName, sName 구하기
             String oName = thumb.getOriginalFilename();
             String ext = oName.substring(oName.lastIndexOf("."));
-            String sName = UUID.randomUUID().toString() + ext;
+            sName = UUID.randomUUID().toString() + ext;
             log.info("insertReview oName : " + oName);
             log.info("insertReview sName : " + sName);
 
             try {
-                // 파일 저장
-                thumb.transferTo(new File(path, sName));
-                // thumb 이름 DTO에 입력
-                reviewDTO.setThumbnail(sName);
+                String orgPath = path + "/orgImage";
+                // 원본 파일 폴더 자동 생성
+                java.io.File orgFile = new java.io.File(orgPath);
+                if(!orgFile.exists()){
+                    orgFile.mkdir();
+                }
+
+                // 원본 파일 저장
+                thumb.transferTo(new File(orgPath, sName));
+                // 썸네일 생성 후 저장
+                Thumbnails.of(new File(orgPath, sName)) // 원본 파일 (경로, 이름)
+                        .size(120,120) // 원하는 사이즈
+                        .toFile(new File(path, sName)); // 생성한 이미지 저장
+                /*
+                // 썸네일 생성 후 저장
+                Thumbnails.of(new File(orgPath, sName)) // 원본 파일 (경로, 이름)
+                        .width(120) // 원하는 사이즈
+                        .toFile(new File(path, sName)); // 원본 파일 (경로, 이름)
+                 */
             } catch (IOException e) {
-                log.error(e.getMessage());
+                throw new RuntimeException(e);
             }
+
         }
         // DTO -> Entity
+        reviewDTO.setThumbnail(sName);
         Review review = modelMapper.map(reviewDTO, Review.class);
 
         // review insert
@@ -112,4 +201,5 @@ public class ReviewService {
         productRepository.save(product);
         return null;
     }
+
 }

@@ -1,17 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/articleLayout}">
-<main class="articleMain" layout:fragment="content">
+      layout:decorate="~{/layout/newUserLayout}">
+
+<div class="container" layout:fragment="content">
+    <main class="articleMain">
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
                 <ul class="lnb">
-                    <li class="tabOn"><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
+                    <li><a class="tabOn" th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
                 </ul>
             </div>
 
             <div class="contentBox">
                 <div class="articleHeader" id="communityNav">
-                    <img th:src="@{/images/sub_nav_tit_cate4_tit1.png}" alt="이벤트"/>
+                    <h2>이벤트</h2>
                     <h5>HOME > 이벤트 > <span>이벤트</span></h5>
                 </div>
 
@@ -40,7 +42,7 @@
                     <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/event/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">
                         <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                         <div>
-                            <h4>[[${article.title}]] <span>(1)</span></h4>
+                            <h4>[[${article.title}]] <span></span></h4>
                             <h5>
                                 <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                 <span th:text="${article.nick}"></span>
@@ -115,3 +117,4 @@
                 </div>
             </div>
         </main>
+</div>

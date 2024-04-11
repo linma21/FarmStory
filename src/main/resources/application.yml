@@ -135,7 +135,7 @@ file:
 
     # 개발용
     prodImg:
-        path: file:prodImg/
+        path: prodImg/
 
     # 배포용
     #prodImg:

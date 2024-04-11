@@ -20,7 +20,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     private String connectPath = "/imagePath/**";
 
-
     //
     //private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
   
@@ -36,6 +35,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // 이진
     //private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+<<<<<<< HEAD
 
     // 태영
     //private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
@@ -51,6 +51,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
     // 배포
     //private String resourcePath = "file:///home/farmStory/prodImg/";
 
+=======
+    // private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
+
+    // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+
+    // 태영
+    // private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
+
+    // imjae
+    // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
+    private String resourcePath = "file:///Users/devimjae/Desktop/workspace/farmstory/prodImg/";
+
+    // 배포
+    // private String resourcePath = "file:///home/farmStory/prodImg/";
+>>>>>>> cb21654dde63d60df9c2a23a02a13146bb633c0d
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

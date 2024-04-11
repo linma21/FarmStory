@@ -16,9 +16,9 @@ input, textarea {
 }
 /*topButton*/
 .topButton {
-    position: fixed;
+    position: sticky;
+    margin-left: 990px;
     bottom: 10px;
-    right: 350px;
     width: 30px;
     height: 30px;
     text-align: center;
@@ -147,6 +147,11 @@ header {
     width: 196px;
     text-align: center;
 }
+.navBox li > a{
+    font-size: 18px;
+    font-weight: bold;
+    color: #666666;
+}
 .navBox li > a:hover {
     color: #a8d031;
     font-weight: bold;
@@ -189,12 +194,51 @@ main {
 .adBox {
     width: 100%;
     margin: 0 auto;
+    overflow: hidden;
 }
 .adBox > div {
+    position: relative;
     display: inline-block;
+    width: 1960px;
 }
 .adBox img {
     width: 100%;
+    height: auto;
+    display: block;
+}
+.btnMoveLeftImg {
+    font-size: 12px;
+    position: absolute;
+    left: 735px;
+    top: 140px;
+    width: 15px;
+    height: 40px;
+    border: 1px solid blue;
+    background-color:transparent;
+    cursor: pointer;
+    z-index: 9999;
+}
+.btnMoveRightImg {
+    display: none;
+    font-size: 12px;
+    position: absolute;
+    left: 230px;
+    top: 140px;
+    width: 15px;
+    height: 40px;
+    border: 1px solid blue;
+    background-color:transparent;
+    cursor: pointer;
+    z-index: 9999;
+}
+.indexMoveBox {
+    position: absolute;
+    top: 0;
+    left: 750px;
+    width: 230px;
+    height: 312px;
+    background-image: url("../newimage/farm_index_moveBg2.jpg");
+    z-index: 9999;
 }
 /*index-btnArticleBox*/
 .btnArticleBox {
@@ -202,20 +246,24 @@ main {
     justify-content: space-between;
     width: 100%;
     height: auto;
-    margin-top: 10px;
+    margin-top: 40px;
     padding-bottom: 30px;
     border-bottom: 1px solid #a0a0a0;
 }
 .btnArticle {
-    display: inline-block;
-    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    padding: 6px 10px;
+    margin: 0 10px;
     font-size: 18px;
     text-align: center;
     border: 1px solid #a0a0a0;
     border-radius: 20px;
 }
 .btnArticle > img {
-    width: 70px;
+    width: 40px;
 }
 .btnArticle:hover {
     background-color: #a8d031;
@@ -225,7 +273,7 @@ main {
     display: flex;
     width: 100%;
     height: 74px;
-    border-top: 1px solid #4e4e4e;
+    margin: 10px 0;
 }
 .bannerBox > a {
     display: inline-block;
@@ -242,6 +290,7 @@ main {
 
 /*index-pordCateBox*/
 .pordCateBox {
+    padding-top: 10px;
     margin-top: 20px;
     padding-left: 14px;
 }
@@ -252,7 +301,8 @@ main {
 .pordCateBox > .productCate {
     display: flex;
     height: 36px;
-    margin: 20px 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 .pordCateBox > .productCate > a {
     display: inline-block;
@@ -290,9 +340,19 @@ main {
     text-align: center;
     margin-bottom: 30px;
 }
-.product > img {
+.product > div:nth-child(1) {
+    width: 220px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.product > div:nth-child(1) > img {
     width: 220px;
     border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+.productBox .product:hover img {
+    transform: scale(1.2);
 }
 .product > div {
     width: 220px;
@@ -650,6 +710,7 @@ main {
 .commentBox > form > div {
     display: flex;
     justify-content: end;
+    margin-top: 10px;
 }
 .commentBox > form > div > button {
     padding: 6px;
@@ -665,7 +726,7 @@ main {
     background-color: #a8d031;
 }
 .commentBox > .comment {
-    padding: 5px 0;
+    padding: 5px 10px;
     margin-top: 10px;
     border-radius: 10px;
     border: 1px solid #d6d6d6;
@@ -690,6 +751,7 @@ main {
 .commentBox > .comment > div {
     display: flex;
     justify-content: end;
+    margin-top: 4px;
 }
 .commentBox > .comment > div > button {
     padding: 6px;
@@ -1295,8 +1357,10 @@ main {
     line-height: 30px;
 }
 .reviewStarBox > p > span {
-    width: 20px;
+    width: 30px;
     margin-left: 4px;
+    margin-right: 2px;
+    font-size: 18px;
     text-align: right;
 }
 .reviewStar {
@@ -1575,6 +1639,7 @@ main {
     font-size: 14px;
 }
 .orderProd > div:nth-child(2) > p:nth-child(2) > span:nth-child(2) {
+    padding-left: 4px;
     color : #666666;
     font-size: 14px;
 }

@@ -6,31 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
     <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
-
-    <script th:inline="javascript">
-        function redirectToCartOrLogin() {
-            // 서버 사이드에서 인증 상태를 평가합니다.
-            const isAuthenticated = [[${#authentication.isAuthenticated()}]];
-            if (!isAuthenticated) {
-                // 로그인한 사용자인 경우, 장바구니 페이지로 리다이렉트합니다.
-                window.location.href = '/farmstroy/market/newcart';
-            } else {
-                // 로그인하지 않은 사용자인 경우, 로그인 페이지로 리다이렉트합니다.
-                window.location.href = '/farmstory/user/login';
-            }
-        }
-    </script>
-
-
-
+    <script th:src="@{/js/layoutScript/newUserLayout.js}"></script>
 </head>
 <body>
 <div class="container">
     <header>
-        <div class="userBox">
-            <a th:href="@{/user/login}">로그인</a>
+        <!--로그인 안된 경우-->
+        <div class="userBox" th:if="${!#authorization.expression('isAuthenticated()')}">
+            <a href="">고객센터</a>
             <a th:href="@{/user/register}">회원가입</a>
-            <a>고객센터</a>
+            <a th:href="@{/user/login}">로그인</a>
+        </div>
+
+        <!--로그인 된 경우-->
+        <div class="userBox" th:if="${#authorization.expression('isAuthenticated()')}">
+            <a href="">고객센터</a>
+            <a th:href="@{/user/logout}">로그아웃</a>
         </div>
 
         <div class="logoBox">
@@ -43,27 +34,42 @@
                 </label>
             </form>
 
-            <div class="btnUserBox">
-                <a class="btnUser" href="#" onclick="redirectToCartOrLogin()">
+            <!--로그인 안된 경우-->
+            <div class="btnUserBox" th:if="${!#authorization.expression('isAuthenticated()')}">
+                <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                     <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                     <h5>장바구니</h5>
                 </a>
-
-
-                <a class="btnUser">
+                <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                     <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                     <h5>마이페이지</h5>
                 </a>
-                <a class="btnUser">
+                <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                     <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
                     <h5>배송조회</h5>
                 </a>
             </div>
+            <!--로그인 된 경우-->
+            <div class="btnUserBox" th:if="${#authorization.expression('isAuthenticated()')}">
+                <a class="btnUser" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}" >
+                    <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
+                    <h5>장바구니</h5>
+                </a>
+                <a class="btnUser" href=""  th:href="@{/market/orderList(uid=${#authentication.principal.user.uid}, pg=1)}" >
+                    <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
+                    <h5>마이페이지</h5>
+                </a>
+                <a class="btnUser" href="">
+                    <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
+                    <h5>배송조회</h5>
+                </a>
+            </div>
+
         </div>
 
         <div class="navBox">
             <ul>
-                <li><a th:href="@{/introduction/hello}">팜스토리소개</a></li>
+                <li><a th:href="@{/introduction/newHello}">팜스토리소개</a></li>
                 <li><a th:href="@{/market/newlist}">장보기</a></li>
                 <li><a th:href="@{/cropTalk/newlist(cate=story)}">농작물이야기</a></li>
                 <li><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
@@ -72,15 +78,11 @@
         </div>
 
         <div class="bgBox">
-            <img th:src="@{/newimage/farm_top_text_market.png}" alt="top_bg">
-            <img th:src="@{/newimage/farm_top_text_market.png}" alt="top_bg">
         </div>
 
     </header>
-
-
     <div layout:fragment="content">
-
+        <!--내용-->
     </div>
     <footer>
         <div class="footerImgBox">
@@ -97,7 +99,7 @@
             <em>Copyright(C)홍길동 All rights reserved. 0.0.4-SNAPSHOT</em>
         </p>
     </footer>
+    <div class="topButton" onclick="movePageTop()">up</div>
 </div>
-<div class="topButton">up</div>
 </body>
 </html>

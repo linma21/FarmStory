@@ -5,6 +5,7 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.farmstory.dto.ReviewPageRequestDTO;
+import kr.co.farmstory.dto.ReviewRatioDTO;
 import kr.co.farmstory.entity.QReview;
 import kr.co.farmstory.entity.QUser;
 import kr.co.farmstory.repository.custom.ReviewRepositoryCustom;
@@ -43,4 +44,31 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         // 페이지 처리용 page 객체 리턴
         return new PageImpl<>(reviews, pageable, total);
     }
+    // market/newview 리뷰 avg, sum, count(*) 조회
+    public Tuple selectForRatio(int prodno){
+
+        Tuple result = jpaQueryFactory
+                .select(qReview.count(),
+                        qReview.score.avg(),
+                        qReview.score.sum())
+                .from(qReview)
+                .where(qReview.prodno.eq(prodno))
+                .fetchOne();
+        return result;
+    }
+    // market/newview 리뷰 score별 count 조회
+    public List<Tuple> selectScoreCount(int prodno){
+
+        // SELECT score, COUNT(*) FROM review WHERE prodno = ? GROUP BY score ORDER BY score;
+        List<Tuple> results = jpaQueryFactory
+                .select(qReview.score ,qReview.count())
+                .from(qReview)
+                .where(qReview.prodno.eq(prodno))
+                .groupBy(qReview.score)
+                .orderBy(qReview.score.asc())
+                .fetch();
+        log.info("리뷰 score별 count 조회 : " + results);
+        return results;
+    }
+
 }
