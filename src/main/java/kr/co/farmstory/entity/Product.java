@@ -24,6 +24,7 @@ public class Product {
     private String cate;
     private int price;
     private int stock;
+    private int recount;
     private int discount;
     private int delCost;
     private int delType;

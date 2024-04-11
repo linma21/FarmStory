@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -119,7 +120,7 @@ public class AdminController {
     @GetMapping("/admin/user/list")
     public String userList(Model model, PageRequestDTO pageRequestDTO) {
         List<UserDTO> userDTOList = userService.getUserList(pageRequestDTO);
-        int total = userService.getTotalCount(pageRequestDTO); // 이 메소드는 전체 사용자 수를 가져오는 구현이 필요합니다.
+        int total = userService.getTotalCount(pageRequestDTO);
 
         UserResponseDTO userResponseDTO = new UserResponseDTO(pageRequestDTO, userDTOList, total);
         model.addAttribute("userResponseDTO", userResponseDTO);

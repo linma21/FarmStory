@@ -19,7 +19,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ano;
+    private Integer ano;
     private String cate;
     private String title;
     private String content;

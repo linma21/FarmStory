@@ -32,38 +32,22 @@ public class UserController {
     public String loginPage() {
         return "/user/login";
     }
-    // 로그인 정보 조회 후 승인
-    @PostMapping("/user/login")
-    public String login(HttpServletRequest request, RedirectAttributes redirectAttributes){
-        String uid = request.getParameter("uid");
-        String pass = request.getParameter("pass");
 
-        boolean loginResult = userService.selectUser(uid, pass);
 
-        if(loginResult){
-            HttpSession session = request.getSession();
-            session.setAttribute("user", uid);
-            return "redirect:/index";
-        }else {
-            redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 일치하지않습니다.");
-            return "redirect:/user/login";
-        }
-    }
-    
     // 아이디 찾기 페이지 매핑
     @GetMapping("/user/findId")
-    public String FindIdPage(){
+    public String FindIdPage() {
         return "/user/findId";
     }
 
     // 아이디 찾기
     @PostMapping("/user/findId")
-    public String findId(@RequestParam("name") String name, @RequestParam("email") String email,@RequestParam("code") String code, HttpSession session, Model model) {
+    public String findId(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("code") String code, HttpSession session, Model model) {
         String sessionCode = (String) session.getAttribute("code");
-        if(sessionCode != null && sessionCode.equals(code)){
+        if (sessionCode != null && sessionCode.equals(code)) {
             // 인증 코드가 일치할 경우, 아이디 찾기 로직 실행
             String userId = userService.findUserIdByNameAndEmail(name, email);
-            if(userId != null) {
+            if (userId != null) {
                 model.addAttribute("userId", userId);
                 return "/user/findIdResult"; // 조회 결과를 findIdResult.html에 표시
             } else {
@@ -78,12 +62,12 @@ public class UserController {
 
     // 아이디 찾기 결과
     @PostMapping("/user/findIdResult")
-    public String findIdResult(@RequestParam String name, @RequestParam String email, Model model){
+    public String findIdResult(@RequestParam String name, @RequestParam String email, Model model) {
         String userId = userService.findUserIdByNameAndEmail(name, email);
-        if(userId != null){
+        if (userId != null) {
             model.addAttribute("userId", userId);
             return "/findIdResult";
-        }else {
+        } else {
             model.addAttribute("error", "아이디를 찾을 수 없습니다. 입력 정보를 확인해 주세요.");
             return "/user/findId";
         }
@@ -125,7 +109,7 @@ public class UserController {
 
     // 회원가입 페이지 매핑
     @GetMapping("/user/register")
-    public String register(){
+    public String register() {
 
         return "/user/register";
 
@@ -138,11 +122,11 @@ public class UserController {
                                        @PathVariable("type") String type,
                                        @PathVariable("value") String value) {
 
-        int count = userService.selectCountUser(type,value);
+        int count = userService.selectCountUser(type, value);
 
         log.info("count : " + count);
 
-        if (type.equals("email") && count<=0) {
+        if (type.equals("email") && count <= 0) {
             log.info("email : " + value);
             userService.sendEmailCode(session, value);
         }
@@ -190,4 +174,26 @@ public class UserController {
         return "/user/login";
     }
 
+    //role을 delete로 바꾸어 줌
+    @GetMapping("/user/delete/{uid}")
+    public ResponseEntity<?> deleteUser(@PathVariable("uid") String uid) {
+
+        //여기서 uid를 받아서 role을 delete로 만들어주기(업댓)
+
+        log.info("여기 들어오나요?");
+
+        String role = "delete";
+
+        log.info("uid : " + uid);
+
+
+        userService.updateRole(uid, role);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", 1);
+
+        log.info("result : " + resultMap);
+
+        return ResponseEntity.ok().body(resultMap);
+    }
 }

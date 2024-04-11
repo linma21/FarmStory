@@ -7,20 +7,13 @@ window.onload = function (){
     const anoData = document.getElementById("ano");
     const ano = anoData.value;
 
-
     const commentBox = document.getElementById('commentBox');
     const commentForm = document.getElementById('commentForm');
     const commentRemove = document.getElementById('commentRemove');
     const commentModify = document.getElementById('commentModify');
-    const contentTextarea = document.getElementById('contentTextarea');
-    const btnComment = document.getElementById('btnComment');
-    const btnCancel = document.getElementById('btnCancel');
-    const btnArtRemove = document.getElementById('btnArtRemove');
-    const btnArtModify = document.getElementById('btnArtModify');
-    const fileLinks = document.getElementsByClassName('fileLink');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
+    const cateLi = document.querySelectorAll(".lnb > li > a");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리
@@ -36,19 +29,19 @@ window.onload = function (){
     });
     // community 상단 Nav 표시하기
     if(cate === 'notice'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit1.png" alt="공지사항"/>
-                                                <h5>HOME > 커뮤니티 > <span>공지사항</span></h5>`;
+        communityNav.innerHTML = `<h2>공지사항</h2>
+                                    <h5>HOME > 커뮤니티 > <span>공지사항</span></h5>`;
     } else if(cate === 'menu'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit2.png" alt="오늘의식단"/>
+        communityNav.innerHTML = `<h2>오늘의식단</h2>
                                                 <h5>HOME > 커뮤니티 > <span>오늘의식단</span></h5>`;
     } else if(cate === 'chef'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit3.png" alt="나도요리사"/>
+        communityNav.innerHTML = `<h2>나도요리사</h2>
                                                 <h5>HOME > 커뮤니티 > <span>나도요리사</span></h5>`;
     } else if(cate === 'qna'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit4.png" alt="1:1고객문의"/>
+        communityNav.innerHTML = `<h2>1:1고객문의</h2>
                                                 <h5>HOME > 커뮤니티 > <span>1:1고객문의</span></h5>`;
     } else if(cate === 'faq'){
-        communityNav.innerHTML = `<img src="../images/sub_nav_tit_cate5_tit5.png" alt="자주묻는질문"/>
+        communityNav.innerHTML = `<h2>자주묻는질문</h2>
                                                 <h5>HOME > 커뮤니티 > <span>자주묻는질문</span></h5>`;
     }
     // 페이지 로드시 textarea 자동 높이 조절

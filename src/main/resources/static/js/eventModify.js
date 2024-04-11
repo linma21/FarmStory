@@ -11,10 +11,6 @@ window.onload = function (){
     const fileInput = document.getElementById('formFileMultiple');
     const fileValue = communityForm.file.value;
 
-    // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
-    const communityNav = document.getElementById('communityNav');
-
     // 페이지 로드시 textarea 자동 높이 조절
     const textareas = document.querySelectorAll('textarea');
 

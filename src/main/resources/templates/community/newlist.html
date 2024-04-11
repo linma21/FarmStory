@@ -1,16 +1,18 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/articleLayout}">
-        <main class="articleMain" layout:fragment="content">
+      layout:decorate="~{/layout/newUserLayout}">
+
+<div class="container" layout:fragment="content">
+        <main class="articleMain">
             <script th:inline="javascript" th:src="@{/js/communityList.js}"></script>
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
                 <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/newlist(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/newlist(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/newlist(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/newlist(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/newlist(cate=faq)}">자주묻는질문</a></li>
+                    <li id="cateNotice"><a data-cate="notice" th:href="@{/community/newlist(cate=notice)}">공지사항</a></li>
+                    <li id="cateMenu"><a data-cate="menu" th:href="@{/community/newlist(cate=menu)}">오늘의식단</a></li>
+                    <li id="cateChef"><a data-cate="chef" th:href="@{/community/newlist(cate=chef)}">나도요리사</a></li>
+                    <li id="cateQna"><a data-cate="qna" th:href="@{/community/newlist(cate=qna)}">1:1고객문의</a></li>
+                    <li id="cateFaq"><a data-cate="faq" th:href="@{/community/newlist(cate=faq)}">자주묻는질문</a></li>
                 </ul>
             </div>
 
@@ -41,26 +43,30 @@
                         </form>
                     </div>
                     <!-- 글 목록 -->
+                    <!-- 전체 조회 -->
                     <th:block th:each="article, loop:${pageResponseDTO.dtoList}">
                     <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/community/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">
                         <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                         <div>
-                            <h4>[[${article.title}]] <span>(1)</span></h4>
+                            <h4>[[${article.title}]] [<span th:text="${article.hit}"></span>]</h4>
                             <h5>
                                 <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                 <span th:text="${article.nick}"></span>
                             </h5>
                         </div>
+                        <img th:if="${article.hit} >= 20" th:src="@{/newimage/fire.gif}" alt="fire" style="width: 30px; height: 30px;">
                     </a>
+                        <!-- 검색 조회 -->
                         <a class="articleTable"   th:if="${pageResponseDTO.keyword != null}" th:href="@{/community/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                             <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                             <div>
-                                <h4>[[${article.title}]] <span>(1)</span></h4>
+                                <h4>[[${article.title}]] [<span th:text="${article.hit}"></span>]</h4>
                                 <h5>
                                     <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                     <span th:text="${article.nick}"></span>
                                 </h5>
                             </div>
+                            <img th:if="${article.hit} >= 20" th:src="@{/newimage/fire.gif}" alt="fire" style="width: 30px; height: 30px;">
                         </a>
                     </th:block>
                     <div class="PageBox">
@@ -120,3 +126,4 @@
                 </div>
             </div>
         </main>
+</div>

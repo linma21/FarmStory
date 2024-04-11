@@ -1001,8 +1001,90 @@ input[type=number]::-webkit-outer-spin-button {
     margin-left: 4px;
     vertical-align: middle;
 }
+/* OrderList Review Modal */
+.prodWriteReview {
+    display: none;
+    position: absolute;
+    top: 0;
+    width:100%;
+    height:100%;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.prodWriteReview > .reviewForm {
+    position:absolute;
+    top:50%;
+    left: 50px;
+    width:737px;
+    height:215px;
+    padding:40px;
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border: 3px solid #a8d031;
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform:translateY(-50%);
+}
+.prodWriteReview  p > input:nth-child(2) {
+    font-size: 16px;
+    width: 60px;
+    border: 0;
+}
+.prodWriteReview textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
 
-
+/* NEW 리뷰 별 */
+.prodWriteReview fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+.prodWriteReview fieldset legend{
+    text-align: right;
+}
+.prodWriteReview input[type=radio]{
+    display: none;
+}
+.prodWriteReview label{
+    font-size: 3em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+.prodWriteReview label:hover{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.prodWriteReview label:hover ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.prodWriteReview input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+/* 주문 목록 - Review btn */
+.btnReview {
+    float: right;
+    padding: 6px;
+    margin-right: 8px;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+.btnReview:hover {
+    color: white;
+    border: 1px solid #a8d031;
+    background-color: #a8d031;
+}
 /* 글 목록 리스트 */
 /* 농작물 이야기 */
 #sub > .cropTalk .lnb > li:nth-child(1) > a {background-image: url('../images/sub_cate3_lnb1.png');}

@@ -30,7 +30,6 @@
                         <th>합계</th>
                         <th>주문자</th>
                         <th>주문일</th>
-                        <th>확인</th>
                     </tr>
                     <tr th:each="order, index :${orderListResponseDTO.dtoList}">
                         <td th:text="${index.index+1}" style="font-weight: bold"></td>
@@ -46,7 +45,6 @@
                         <td th:text="${order.sum}">11,000원</td>
                         <td th:text="${order.name}">김유신</td>
                         <td th:text="${#temporals.format(order.rdate,'yy-mm-dd hh:mm')}">2023-01-01 13:06:14</td>
-                        <td><a href="./detail.html">[상세확인]</a></td>
                     </tr>
                 </table>
 
@@ -56,22 +54,22 @@
 
                 </p>
 
-                <ul class="paging">
-                    <li th:if="${orderListResponseDTO.prev}"class="page-item">
+                <p class="paging">
+                    <th:block th:if="${orderListResponseDTO.prev}" class="page-item">
                         <a class="page-link" th:href="@{/admin/order/list(pg=${orderListResponseDTO.start -1})}">&#60;</a>
-                    </li>
+                    </th:block>
 
 
-                    <li th:each="num:${#numbers.sequence(orderListResponseDTO.start,orderListResponseDTO.end)}" class="page-item">
+                    <th:block th:each="num:${#numbers.sequence(orderListResponseDTO.start,orderListResponseDTO.end)}" class="page-item">
                         <a class="page-link" th:href="@{/admin/order/list(pg=${num})}">[[${num}]]</a>
-                    </li>
+                    </th:block>
 
 
 
-                    <li th:if="${orderListResponseDTO.next}" class="page-item">
+                    <th:block th:if="${orderListResponseDTO.next}" class="page-item">
                         <a class="page-link" th:href="@{/admin/order/list(pg=${orderListResponseDTO.end + 1})}">&#62;</a>
-                    </li>
-                </ul>
+                    </th:block>
+                </p>
             </article>
         </section>
     </main>

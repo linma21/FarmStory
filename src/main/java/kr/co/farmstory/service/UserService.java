@@ -83,6 +83,7 @@ public class UserService {
         // 인증코드 생성 후 세션 저장
         int code = ThreadLocalRandom.current().nextInt(100000, 1000000);
         session.setAttribute("code", String.valueOf(code));
+        log.info("code : " + code);
 
         String title = "farmstory 인증코드 입니다.";
         String content = "<h1>인증코드는 " + code + "입니다.</h1>";
@@ -133,7 +134,7 @@ public class UserService {
     public List<UserDTO> getUserList(PageRequestDTO pageRequestDTO) {
         // UserService 내 getUserList 메소드 수정
         Pageable pageable = pageRequestDTO.getPageable("regDate");
-        Page<User> result = userRepository.findAll(pageable);
+        Page<User> result = userRepository.findByRoleNot("delete", pageable);
 
         return result.getContent().stream()
                 .map(user -> modelMapper.map(user, UserDTO.class))
@@ -206,6 +207,10 @@ public class UserService {
 
         return users.stream().map(user -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public void updateRole(String uid, String role){
+        userMapper.updateRole(uid,role);
     }
 
 }

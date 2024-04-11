@@ -1,18 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/articleLayout}">
-<main class="articleMain" layout:fragment="content">
-    <script th:inline="javascript" th:src="@{/js/eventView.js}"></script>
-            <div class="sideBox">
-                <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
-                <ul class="lnb">
-                    <li class="tabOn"><a th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
-                </ul>
-            </div>
+      layout:decorate="~{/layout/newUserLayout}">
 
+<div class="container" layout:fragment="content">
+    <main class="articleMain">
+    <script th:inline="javascript" th:src="@{/js/eventView.js}"></script>
+        <div class="sideBox">
+            <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
+            <ul class="lnb">
+                <li><a class="tabOn" th:href="@{/event/newlist(cate=event)}">이벤트</a></li>
+            </ul>
+        </div>
             <div class="contentBox">
                 <div class="articleHeader" id="communityNav">
-                    <img th:src="@{/images/sub_nav_tit_cate4_tit1.png}" alt="이벤트"/>
+                    <h2>이벤트</h2>
                     <h5>HOME > 이벤트 > <span>이벤트</span></h5>
                 </div>
                 <!-- 내용 시작 -->
@@ -33,18 +34,11 @@
                             <p>작성자 : <span>[[${article.nick}]]</span></p>
                             <p>조회수 : <span>[[${article.hit}]]</span>&nbsp;&nbsp;<span th:text="${#temporals.format(article.rdate,'yyyy-MM-dd')}"></span></p>
                         </div>
-
+                        <div class="fileBox">
+                            <img th:src="@{'/imagePath/'+${article.thumbnail}}" th:alt="${article.thumbnail}" alt="">
+                        </div>
                         <div class="contentsBox">
                             <textarea id="contentTextarea" readonly>[[${article.content}]]</textarea>
-
-                        </div>
-
-                        <div class="fileBox">
-                            <p>첨부파일</p>
-                            <th:block  th:each="file:${article.fileList}">
-                                <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink"
-                                   th:data-fno="${file.fno}">[[${file.oName}]]</a>
-                            </th:block>
                         </div>
                         <!-- 수정 / 삭제 / 목록 버튼 -->
                         <div class="articleBtnBox">
@@ -94,8 +88,8 @@
 
                         <!--댓글 없을때-->
                         <th:block th:if="${comments.isEmpty()}">
-                            <div class="comment">
-                                <textarea name="" id="">댓글이 없습니다. 댓글을 남겨주세요</textarea>
+                            <div class="comment" id="noComment">
+                                <textarea name="" id="" readonly>댓글이 없습니다. 댓글을 남겨주세요</textarea>
                             </div>
                         </th:block>
                         <!--로그인한 경우에만 조회-->
@@ -121,3 +115,4 @@
                 </div>
             </div>
         </main>
+</div>

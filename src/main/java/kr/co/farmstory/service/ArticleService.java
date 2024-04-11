@@ -11,16 +11,22 @@ import kr.co.farmstory.repository.CommentRepository;
 import kr.co.farmstory.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,6 +38,9 @@ public class ArticleService {
     private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
     private final FileService fileService;
+
+    @Value("${file.prodImg.path}")
+    private String fileUploadPath;
 
     // 기본 글 목록 조회
     public PageResponseDTO selectArticles(PageRequestDTO pageRequestDTO){
@@ -135,7 +144,7 @@ public class ArticleService {
         return articleDTO;
     }
 
-    // 글 작성
+    // 게시판 글 작성
     public void insertArticle(ArticleDTO articleDTO){
 
         List<FileDTO> files = fileService.fileUpload(articleDTO);
@@ -154,7 +163,54 @@ public class ArticleService {
         fileService.insertFile(files, ano);
 
     }
+    // 이벤트 글 작성
+    public void registerEvent(ArticleDTO articleDTO, MultipartFile eventImg){
+        log.info("이벤트 글 작성 Serv articleDTO : " + articleDTO.toString());
+        log.info("이벤트 글 작성 Serv eventImg : " + eventImg);
 
+        // 이벤트 정보 등록
+        File file = new File(fileUploadPath);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        String path = file.getAbsolutePath();
+        String sName = null;
+
+        // 이미지 리사이즈 760 * height
+        if(eventImg != null) {
+            // oName, sName 구하기
+            String oName = eventImg.getOriginalFilename();
+            String ext = oName.substring(oName.lastIndexOf("."));
+            sName = UUID.randomUUID().toString() + ext;
+            log.info("insertReview oName : " + oName);
+            log.info("insertReview sName : " + sName);
+
+            try {
+                String orgPath = path + "/orgImage";
+                // 원본 파일 폴더 자동 생성
+                java.io.File orgFile = new java.io.File(orgPath);
+                if (!orgFile.exists()) {
+                    orgFile.mkdir();
+                }
+
+                // 원본 파일 저장
+                eventImg.transferTo(new File(orgPath, sName));
+                // 리사이징 후 저장
+                Thumbnails.of(new File(orgPath, sName)) // 원본 파일 (경로, 이름)
+                        .width(750) // 원하는 사이즈
+                        .toFile(new File(path, sName)); // 생성한 이미지 저장
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        // 글 저장
+        articleDTO.setFile(1);
+        articleDTO.setThumbnail(sName);
+        Article article = modelMapper.map(articleDTO, Article.class);
+        // 저장 후 저장한 엔티티 객체 반환(JPA sava() 메서드는 default로 저장한 Entity를 반환)
+        Article saveArticle = articleRepository.save(article);
+        log.info("이벤트 글 작성 Serv 3 : " + saveArticle.toString());
+    }
     // 글 수정
     @Transactional
     public ResponseEntity<?> updateArticle(ArticleDTO articleDTO){
