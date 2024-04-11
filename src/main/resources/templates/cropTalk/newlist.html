@@ -41,26 +41,30 @@
                         </form>
                     </div>
                     <!-- 글 목록 -->
+                    <!-- 전체 조회 -->
                     <th:block th:each="article, loop:${pageResponseDTO.dtoList}">
                     <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/cropTalk/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">
                         <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                         <div>
-                            <h4>[[${article.title}]] <span>(1)</span></h4>
+                            <h4>[[${article.title}]] [<span th:text="${article.hit}"></span>]</h4>
                             <h5>
                                 <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                 <span th:text="${article.nick}"></span>
                             </h5>
                         </div>
+                        <img th:if="${article.hit} >= 20" th:src="@{/newimage/fire.gif}" alt="fire" style="width: 30px; height: 30px;">
                     </a>
+                        <!-- 검색 조회 -->
                         <a class="articleTable"   th:if="${pageResponseDTO.keyword != null}" th:href="@{/cropTalk/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                             <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                             <div>
-                                <h4>[[${article.title}]] <span>(1)</span></h4>
+                                <h4>[[${article.title}]] [<span th:text="${article.hit}"></span>]</h4>
                                 <h5>
                                     <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                     <span th:text="${article.nick}"></span>
                                 </h5>
                             </div>
+                            <img th:if="${article.hit} >= 20" th:src="@{/newimage/fire.gif}" alt="fire" style="width: 30px; height: 30px;">
                         </a>
                     </th:block>
                     <div class="PageBox">
