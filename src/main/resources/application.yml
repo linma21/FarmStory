@@ -132,8 +132,12 @@ spring:
 file:
     upload:
         path: files/
+
+    # 개발용
     prodImg:
         path: prodImg/
 
-
+    # 배포용
+    #prodImg:
+        #path: file:/home/farmstory/prodImg/
 

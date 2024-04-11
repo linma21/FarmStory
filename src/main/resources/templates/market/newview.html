@@ -57,16 +57,98 @@
                 finalPrice.innerText = total.toLocaleString();
             }
 
+            // 바로구매 버튼 클릭시 market/order로 이동 //
+            const btnOrder = document.getElementById('btnOrder');
+            btnOrder.onclick = function (){
+                // 로그인 여부 확인 (난 천재인듯)?
+                const loginCheck = document.getElementById('uid');
+
+                if (loginCheck == null){
+                    let result = confirm("로그인 후 사용하실 수 있습니다. \n 로그인페이지로 이동하시겠습니까?");
+                    if (result){
+                        window.location.href = `/farmstory/user/login`;
+                    }
+                }else {
+                    const prodCount = document.getElementsByName('prodCount')[0].value;
+                    const uid = document.getElementById('uid').value;
+                    const prodno = document.getElementById('prodno').value;
+
+                    const jsonData = {
+                        "uid": uid,
+                        "prodno": prodno,
+                        "prodCount": prodCount
+                    };
+                    fetch("/farmstory/market/moveOrder", {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(jsonData)
+                    })
+                        .then(Response => {
+                            console.log(Response);
+                            if (Response.ok) {
+                                window.location.href = '/farmstory/market/neworder';
+                            }
+                        })
+                        .catch(err => console.log(err))
+                }
+            }
+
+            // 장바구니 버튼 클릭시 //
+            const btnCart = document.getElementById('btnCart');
+            btnCart.onclick = function (){
+                // 로그인 여부 확인 (난 천재인듯)
+                const loginCheck = document.getElementById('uid');
+
+                if (loginCheck == null){
+                    let result = confirm("로그인 후 사용하실 수 있습니다. \n 로그인페이지로 이동하시겠습니까?");
+                    if (result){
+                        window.location.href = `/farmstory/user/login`;
+                    }
+                }else{
+                    const prodCount = document.getElementsByName('prodCount')[0].value;
+                    const uid = document.getElementById('uid').value;
+                    const prodno = document.getElementById('prodno').value;
+
+                    const jsonData = {
+                        "uid" : uid,
+                        "prodno" : prodno,
+                        "prodCount" : prodCount
+                    };
+                    fetch("/farmstory/market/addCart", {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(jsonData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('추가에 실패했습니다.');
+
+                            }
+                            return response.json()
+                        })
+                        .then(data => {
+                            console.log("g3");
+                            if (data.data === "추가 성공"){
+                                let result = confirm("장바구니에 상품을 추가했습니다.\n 장바구니로 이동하시겠습니까?");
+                                if (result) {
+                                    window.location.href = `/farmstory/market/newcart?uid=${uid}`;
+                                }
+                            }else if (data.data === "추가 실패"){
+                                let result = confirm("이미 장바구니에 존재하는 상품입니다.\n 장바구니로 이동하시겠습니까?");
+                                if (result) {
+                                    window.location.href = `/farmstory/market/newcart?uid=${uid}`;
+                                }
+                            }
+                        })
+                        .catch(err => console.log(err))
+                }
+            }
+
             // 리뷰로 스크롤 이동 //
             const prodReviewBox = document.getElementsByClassName('prodReviewBox')[0];
             const moveReview = document.getElementsByClassName('moveReview')[0];
             moveReview.onclick = function (){
                 prodReviewBox.scrollIntoView();
-            }
-            // 최상단 이동 //
-            const topButton = document.getElementsByClassName('topButton')[0];
-            topButton.onclick = function (){
-                window.scrollTo(0, 0);
             }
         }
     </script>
@@ -75,9 +157,10 @@
             <div class="sideBox">
                 <img th:src="@{/newimage/farm_market_logo.png}" alt="">
                 <ul>
-                    <li><a class="" href="">장보기</a></li>
-                    <li><a class="tabOn" href="">장바구니</a></li>
-                    <li><a href="">배송조회</a></li>
+                    <li><a class="tabOn" th:href="@{/market/newlist}">장보기</a></li>
+                    <li><a class="" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}">장바구니</a></li>
+                    <li><a class="" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/user/login}">장바구니</a></li>
+                    <li><a class="" href="">배송조회</a></li>
                 </ul>
             </div>
 
@@ -92,6 +175,8 @@
                     <div class="prodInfoBox">
                         <div class="prodImg">
                             <img th:src="@{'/imagePath/'+${productDTO.titleImg}}" th:alt="${productDTO.prodname}" alt="">
+                            <input type="hidden" id="uid" th:if="${#authorization.expression('isAuthenticated()')}" th:value="${#authentication.principal.user.uid}">
+                            <input type="hidden" id="prodno" th:value="${productDTO.prodno}">
                         </div>
                         <div class="pordInfo">
                         <!-- 제품 이름과 수량 -->
@@ -100,7 +185,7 @@
                                 <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
                                 <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
                             </h2>
-                            <h4 class="moveReview"><span>12000</span>건 리뷰 ></h4>
+                            <h4 class="moveReview">리뷰 <span th:text="${reviewPage.dtoList.size()}"></span> 건</h4>
                             <h3><span id="discount">[[${productDTO.discount}]]</span>%</h3>
                             <!-- 정가 포맷팅 -->
                             <h3>
@@ -129,7 +214,7 @@
                                     </h4>
                                     <div class="quantity-input">
                                         <button class="minus-btn" type="button">-</button>
-                                        <input type="text" class="quantity" name="count" min="1" value="1" id="count">
+                                        <input type="text" class="quantity" th:name="prodCount" min="1" value="1" id="count">
                                         <button class="plus-btn" type="button">+</button>
                                     </div>
                                     <h4><span id="totalPrice" th:text="${#numbers.formatInteger((productDTO.price - (productDTO.price * productDTO.discount / 100)), 0, 'COMMA')}"></span>원</h4>
@@ -145,34 +230,12 @@
                             </div>
 
                             <div class="prodBtn">
-                                <button th:href="@{/market/cart}" id="btnCart">장바구니</button>
-                                <button th:href="@{/market/cart}" id="btnOrder">바로구매</button>
+                                <button id="btnCart">장바구니</button>
+                                <button id="btnOrder">바로구매</button>
                             </div>
                         </div>
                     </div>
-                    <!-- 리뷰 목록 -->
-                    <p>댓글목록</p>
 
-                    <!--리뷰 없을 때-->
-                    <th:block>
-                        <div class="comment">
-                            <textarea name="" id="">리뷰 없음 </textarea>
-                        </div>
-                    </th:block>
-                    <!--로그인한 경우에만 조회-->
-                    <th:block th:unless="${#authentication.principal eq 'anonymousUser'}">
-                        <!-- 리뷰 -->
-                        <th:block>
-                            <div class="comment" th:if="${#authentication.principal.user.role} == 'ADMIN'">
-                                <p><span>리뷰 작성자</span>&nbsp;&nbsp</p>
-                                <textarea name="" readonly>리뷰 내용 - 리뷰 별점(score)도 추가해야함</textarea>
-                                <div>
-                                    <button id="commentModify" data-mode ='modify'>수정</button>
-                                    <button id="commentRemove" data-mode ='remove'>삭제</button>
-                                </div>
-                            </div>
-                        </th:block>
-                    </th:block>
                     <div class="prodContent">
                         <h3>상품설명</h3>
                         <img th:src="@{'/imagePath/'+${productDTO.contentImg}}" th:alt="${productDTO.prodname}">
@@ -215,59 +278,37 @@
                     <div class="prodReviewHeader">
                         <div>
                             <h3>상품 리뷰</h3>
-                            <p>상품 리뷰 <span>1,234</span>건</p>
+                            <p>상품 리뷰 <span th:text="${reviewPage.dtoList.size()}"></span>건</p>
+                            <br>
+                            <h3>평균</h3>
+                            <h1>[[${reviewRatioDTO.avg}]] 점</h1>
                         </div>
                         <div class="reviewStarBox">
-                            <p><span>94</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star5.png}" alt="fiveStar"> 상품상태가 아주 좋아요.</p>
-                            <p><span>2</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star4.png}" alt="fourStar"> 상품상태가 만족스러워요.</p>
-                            <p><span>2</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star3.png}" alt="threeStar"> 상품상태가 보통이에요.</p>
-                            <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star2.png}" alt="twoStar"> 상품상태가 그저그래요.</p>
-                            <p><span>1</span>%<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 상품상태가 별로에요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent5}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star5.png}" alt="fiveStar"> 아주 좋아요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent4}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star4.png}" alt="fourStar"> 만족스러워요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent3}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star3.png}" alt="threeStar"> 보통이에요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent2}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star2.png}" alt="twoStar"> 그저그래요.</p>
+                            <p><span th:text="${reviewRatioDTO.percent1}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 별로에요.</p>
                         </div>
                     </div>
-                    <!--리뷰쓰기는 현재상품을 구매한 사람에게만 나타남-->
-                    <h3>리뷰 쓰기</h3>
-                    <div class="prodWriteReview">
-                        <form action="#" method="post" enctype="multipart/form-data">
-                            <p>
-                                <input type="hidden" name="uid" value="">
-                                <!--이미지로 별점 주는 방법 찾아봐야함-->
-                                <input type="text" name="name" value="홍길동" readonly>
-                                <select name="score">
-                                    <option>★★★★★</option>
-                                    <option>★★★★</option>
-                                    <option>★★★</option>
-                                    <option>★★</option>
-                                    <option>★</option>
-                                </select>
-                                <input type="file" name="file">
-                            </p>
-                            <div>
-                                <textarea name="comment" ></textarea>
-                            </div>
-                        </form>
-                    </div>
-
                     <h3>리뷰 목록</h3>
-
+                    <th:block th:each="review, loop:${reviewPage.dtoList}">
                     <div class="prodReview">
-                        <!-- <img th:src="@{'/newimage/farm_review_star' + ${review.score}.png}"> 아마 될듯?-->
-                        <p><b>홍길동</b><img th:src="@{/newimage/farm_review_star5.png}" alt=""><span>24.03.22</span></p>
+                        <!-- <img th:src="@{'/newimage/farm_review_star' + ${review.score}.png}"> 아마 될듯? 안되네요...ㅜ-->
+                        <p><b>[[${review.nick}]]</b>
+                            <img th:if="${review.score} == 1 " th:src="@{/newimage/farm_review_star1.png}" alt="oneStar">
+                            <img th:if="${review.score} == 2 " th:src="@{/newimage/farm_review_star2.png}" alt="oneStar">
+                            <img th:if="${review.score} == 3 " th:src="@{/newimage/farm_review_star3.png}" alt="oneStar">
+                            <img th:if="${review.score} == 4 " th:src="@{/newimage/farm_review_star4.png}" alt="oneStar">
+                            <img th:if="${review.score} == 5 " th:src="@{/newimage/farm_review_star5.png}" alt="oneStar">
+                            <span  th:text="${#temporals.format(review.rdate,'yyyy-MM-dd')}">24.03.22</span></p>
                         <div>
-                            <img th:src="@{/newimage/오렌지120.png}" alt="">
-                            <textarea readonly>맛있어요 저렴해요 배송빨라요</textarea>
+                            <img th:src="@{'/imagePath/'+${review.thumbnail}}" th:alt="${review.rno}">
+                            <textarea readonly>[[${review.comment}]]</textarea>
                         </div>
                     </div>
-
-                    <div class="prodReview">
-                        <p><b>홍길동</b><img th:src="@{/newimage/farm_review_star3.png}" alt=""><span>24.03.22</span></p>
-                        <div>
-                            <img th:src="@{/newimage/오렌지120.png}" alt="">
-                            <textarea readonly>맛있어요 저렴해요 배송 느려요</textarea>
-                        </div>
-                    </div>
+                    </th:block>
                 </div>
-
             </div>
         </main>
     </div>

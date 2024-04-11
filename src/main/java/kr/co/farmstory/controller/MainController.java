@@ -117,21 +117,21 @@ public class MainController {
     @GetMapping("/notfound")
     public String notFound() {
         // "notfound.html" 템플릿으로 리다이렉트
-        return "notfound";
+        return "/notfound";
     }
 
     // 팜스토리 소개
-    @GetMapping("/introduction/newhello")
+    @GetMapping("/introduction/newHello")
     public String hello() {
 
-        return "/introduction/newhello";
+        return "/introduction/newHello";
     }
 
     // 찾아오는 길
-    @GetMapping("/introduction/newdirection")
+    @GetMapping("/introduction/newDirection")
     public String direction() {
 
-        return "/introduction/newdirection";
+        return "/introduction/newDirection";
     }
 
     // 메인페이지 카테고리별 상품 조회 (16개씩)

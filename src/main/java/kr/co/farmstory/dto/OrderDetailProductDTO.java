@@ -2,6 +2,8 @@ package kr.co.farmstory.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,10 +11,10 @@ import lombok.*;
 @Builder
 @ToString
 public class OrderDetailProductDTO {
-    private int detailNo;
-    private int prodNo;
-    private int orderNo;
-    private int count;
+    private OrderDetailDTO orderDetailDTO;
     private String prodName;
+    private int price;
+    private int totalPrice;
+    private LocalDateTime rdate;
 }
 
