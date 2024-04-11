@@ -153,7 +153,8 @@ public class ReviewService {
         String path = new java.io.File(fileUploadPath).getAbsolutePath();
         String sName = null;
         // 이미지 리사이즈 120 * 120
-        if(thumb != null) {
+        if(thumb != null && !thumb.isEmpty()) {
+            try {
             // oName, sName 구하기
             String oName = thumb.getOriginalFilename();
             String ext = oName.substring(oName.lastIndexOf("."));
@@ -161,8 +162,8 @@ public class ReviewService {
             log.info("insertReview oName : " + oName);
             log.info("insertReview sName : " + sName);
 
-            try {
-                String orgPath = path + "/orgImage";
+
+            String orgPath = path + "/orgImage";
                 // 원본 파일 폴더 자동 생성
                 java.io.File orgFile = new java.io.File(orgPath);
                 if(!orgFile.exists()){
@@ -175,12 +176,7 @@ public class ReviewService {
                 Thumbnails.of(new File(orgPath, sName)) // 원본 파일 (경로, 이름)
                         .size(120,120) // 원하는 사이즈
                         .toFile(new File(path, sName)); // 생성한 이미지 저장
-                /*
-                // 썸네일 생성 후 저장
-                Thumbnails.of(new File(orgPath, sName)) // 원본 파일 (경로, 이름)
-                        .width(120) // 원하는 사이즈
-                        .toFile(new File(path, sName)); // 원본 파일 (경로, 이름)
-                 */
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
