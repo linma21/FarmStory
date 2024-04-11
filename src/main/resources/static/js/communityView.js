@@ -7,7 +7,6 @@ window.onload = function (){
     const anoData = document.getElementById("ano");
     const ano = anoData.value;
 
-
     const commentBox = document.getElementById('commentBox');
     const commentForm = document.getElementById('commentForm');
     const commentRemove = document.getElementById('commentRemove');
