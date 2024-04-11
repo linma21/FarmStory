@@ -104,7 +104,7 @@ spring:
                         client-id: 979608545498-9vr7dn0ce9id17dqlce5b6kvsm8jv882.apps.googleusercontent.com
                         client-secret: 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
                         redirect-uri: http://localhost:8080/farmstory/login/oauth2/code/google
-                        #redirect-uri : http://ec-2-3-39-72-175.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/google
+                        #redirect-uri : http://ec2-2-3-39-72-175.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/google
                         #redirect-uri : http://ec2-54-180-15-253.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/google
 
                         scope:
