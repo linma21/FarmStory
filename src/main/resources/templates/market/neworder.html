@@ -152,10 +152,7 @@
                             productList.push({quantity, prodNo}); // 필요한 데이터를 객체에 담아 리스트에 추가
                         });
 
-                        //await fetchPost(`/farmstory/market/cartProdDelete`, productList);//리스트에 담긴 객체를 보내주기(풀어주기)////////////////////
-
-                        //일단은 orderNo를 찾아야해.
-                        //const orderNo = await fetchGet(`/farmstory/market/orderNo/${result_orderNo}`);//들고옴!
+                        await fetchPost(`/farmstory/market/cartProdDelete`, productList);//리스트에 담긴 객체를 보내주기
 
                         //(orderDetail에 추가)
                         const counts = [];
@@ -187,7 +184,7 @@
                         if (response.result > 0) {
 
                             alert("주문이 성공적으로 완료되었습니다.");
-                            //window.location.href = "/farmstory/market/orderList?uid=" + uid;
+                            window.location.href = "/farmstory/market/orderList?uid=" + uid;
                         } else {
 
                             alert("결제에 실패하였습니다.");
@@ -278,8 +275,6 @@
                 }
             }).open();
         }//우편번호 검색 함수 끝!
-
-
     </script>
 
 

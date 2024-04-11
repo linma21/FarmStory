@@ -213,7 +213,7 @@ main {
     top: 140px;
     width: 15px;
     height: 40px;
-    border: 1px solid blue;
+    border: 0;
     background-color:transparent;
     cursor: pointer;
     z-index: 9999;
@@ -226,7 +226,7 @@ main {
     top: 140px;
     width: 15px;
     height: 40px;
-    border: 1px solid blue;
+    border: 0;
     background-color:transparent;
     cursor: pointer;
     z-index: 9999;

@@ -144,4 +144,11 @@ public class MainController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 고객센터
+    @GetMapping("/introduction/service")
+    public String service() {
+
+        return "/introduction/service";
+    }
+    
 }
