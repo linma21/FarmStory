@@ -192,11 +192,16 @@ public class MarketService {
     }
 
     //받는 사람 정보 + uid 를 orders에 저장
-    public void orders(OrderDTO orderDTO){
+    public int orders(OrderDTO orderDTO){
 
         Orders orders = modelMapper.map(orderDTO, Orders.class);
 
         orderRepository.save(orders);
+
+        log.info("orders"+orders.getOrderNo());
+
+        return orders.getOrderNo();//orderNo를 반환한다.
+
     }
 
     //포인트 차감
@@ -221,7 +226,7 @@ public class MarketService {
         }
 
     }
-
+/*
     //orderNo를 찾기위한 여정
     public int selectOrderNo(String uid){
         int orderNo = marketRepository.findOrderNo(uid);
@@ -231,13 +236,14 @@ public class MarketService {
         return orderNo;
     }
 
+ */
+
     //결제한 상품 목록 orderDetail에 저장
     public void saveOrderDetails(List<String> counts, List<String> detailNos, String orderNo) {
 
         if (counts.size() != detailNos.size()) {
             throw new IllegalArgumentException("Counts and detailNos lists must have the same size.");
         }
-
 
         for (int i = 0; i < counts.size(); i++) {
             OrderDetailDTO orderDetail = new OrderDetailDTO();
