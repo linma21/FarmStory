@@ -8,8 +8,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>farmPlus</title>
     <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
         window.onload = function(){
+            const score1 = [[${reviewRatioDTO.percent1}]];
+            const score2 = [[${reviewRatioDTO.percent2}]];
+            const score3 = [[${reviewRatioDTO.percent3}]];
+            const score4 = [[${reviewRatioDTO.percent4}]];
+            const score5 = [[${reviewRatioDTO.percent5}]];
+            // 별점 그래프
+            new Chart(document.getElementById("pie-chart"), {
+                type: 'pie',
+                data: {
+                    labels: ["1점", "2점", "3점", "4점", "5점"],
+
+                    datasets: [{
+                        label: "ReviewScore (percent)",
+                        backgroundColor: ["#FFF8E1", "#187498","#F9D923","#EB5353","#36AE7C"],
+                        data: [score1,score2,score3,score4,score5]
+                    }]
+                },
+                options: {
+                    // 크기 조절을 위해 false
+                    responsive: false,
+                    title: {
+                        display: true,
+                    }
+                }
+            });
             // 플러스 버튼 클릭 시 수량 증가
             document.querySelector('.plus-btn').onclick = function() {
             //document.querySelector('.plus-btn').addEventListener('click', function() {
@@ -283,13 +309,7 @@
                             <h3>평균</h3>
                             <h1>[[${reviewRatioDTO.avg}]] 점</h1>
                         </div>
-                        <div class="reviewStarBox">
-                            <p><span th:text="${reviewRatioDTO.percent5}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star5.png}" alt="fiveStar"> 아주 좋아요.</p>
-                            <p><span th:text="${reviewRatioDTO.percent4}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star4.png}" alt="fourStar"> 만족스러워요.</p>
-                            <p><span th:text="${reviewRatioDTO.percent3}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star3.png}" alt="threeStar"> 보통이에요.</p>
-                            <p><span th:text="${reviewRatioDTO.percent2}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star2.png}" alt="twoStar"> 그저그래요.</p>
-                            <p><span th:text="${reviewRatioDTO.percent1}"></span> %<img class="reviewStar" th:src="@{/newimage/farm_review_star1.png}" alt="oneStar"> 별로에요.</p>
-                        </div>
+                        <canvas id="pie-chart" width="400" height="250"></canvas>
                     </div>
                     <h3>리뷰 목록</h3>
                     <th:block th:each="review, loop:${reviewPage.dtoList}">
@@ -309,6 +329,7 @@
                     </div>
                     </th:block>
                 </div>
+
             </div>
         </main>
     </div>
