@@ -124,7 +124,7 @@ public class MarketService {
                 dto.setTotalPrice(totalPrice);
                 log.info("findOrderListByUid Serv ...4 : " + dto.toString());
                 return dto;
-            
+
         }).toList();
         log.info("findOrderListByUid Serv ...5 : " + orderDetailList.toString());
 
@@ -252,19 +252,25 @@ public class MarketService {
     }
 
     // 메인 페이지에서 띄울 상품들
-    public List<ProductDTO> selectProductsForMain(String cate){
-        List<Tuple> qProduct =  marketRepository.selectProductsForMain(cate);
+    public List<ProductDTO> selectProductsForMain(String cate) {
+        List<Tuple> qProduct = null;
+        if (cate.equals("전체")) {
+            qProduct = marketRepository.selectProductsForMain("");
+        } else {
+            qProduct = marketRepository.selectProductsForMain(cate);
+        }
+
         List<ProductDTO> productDTOs = qProduct.stream()
                 .map(tuple -> {
-                    Product product = tuple.get(0, Product.class);
-                    String thumb240 = tuple.get(1, String.class);
+                            Product product = tuple.get(0, Product.class);
+                            String thumb240 = tuple.get(1, String.class);
 
-                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-                    productDTO.setTitleImg(thumb240);
-                    return productDTO;
-                }
-            )
-        .toList();
+                            ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+                            productDTO.setTitleImg(thumb240);
+                            return productDTO;
+                        }
+                )
+                .toList();
         return productDTOs;
     }
 
