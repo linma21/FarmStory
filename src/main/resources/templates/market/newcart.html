@@ -353,7 +353,7 @@
                 <li><a class="" th:href="@{/market/newlist}">장보기</a></li>
                 <li><a class="tabOn" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}">장바구니</a></li>
                 <li><a class="tabOn" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/user/login}">장바구니</a></li>
-                <li><a class="" href="">배송조회</a></li>
+                <li><a class="" th:href="@{/notfound}">배송조회</a></li>
             </ul>
         </div>
 
