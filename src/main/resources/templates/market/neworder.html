@@ -152,10 +152,7 @@
                             productList.push({quantity, prodNo}); // 필요한 데이터를 객체에 담아 리스트에 추가
                         });
 
-                        //await fetchPost(`/farmstory/market/cartProdDelete`, productList);//리스트에 담긴 객체를 보내주기(풀어주기)////////////////////
-
-                        //일단은 orderNo를 찾아야해.
-                        //const orderNo = await fetchGet(`/farmstory/market/orderNo/${result_orderNo}`);//들고옴!
+                        await fetchPost(`/farmstory/market/cartProdDelete`, productList);//리스트에 담긴 객체를 보내주기
 
                         //(orderDetail에 추가)
                         const counts = [];
