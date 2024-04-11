@@ -6,19 +6,18 @@ window.onload = function (){
     const cate = cateData.value;
     const anoData = document.getElementById("ano");
     const ano = anoData.value;
-    const userData = document.getElementById("user");
-    const user = userData.value;
 
+    const commentBox = document.getElementById('commentBox');
     const commentForm = document.getElementById('commentForm');
     const commentRemove = document.getElementById('commentRemove');
     const commentModify = document.getElementById('commentModify');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const sideBoxLi = document.querySelectorAll(".lnb > li > a");
+    const cateLi = document.querySelectorAll(".lnb > li > a");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리
-    sideBoxLi.forEach(function(item) {
+    cateLi.forEach(function(item) {
 
         const dataCate = item.getAttribute("data-cate");
 
