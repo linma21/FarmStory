@@ -223,7 +223,7 @@
                                 <span th:if="${productDTO.amount} >= 1000" th:text="(${productDTO.amount}/1000)+'kg'"></span>
                                 <span th:if="${productDTO.amount} < 1000" th:text="${productDTO.amount}+'g'"></span>
                             </h2>
-                            <h4 class="moveReview">리뷰 <span th:text="${reviewPage.dtoList.size()}"></span> 건</h4>
+                            <h4 class="moveReview" style="width: 100px;">리뷰 <span th:text="${reviewPage.dtoList.size()}"></span> 건</h4>
                             <h3><span id="discount">[[${productDTO.discount}]]</span>%</h3>
                             <!-- 정가 포맷팅 -->
                             <h3>
@@ -319,7 +319,7 @@
                             <p>상품 리뷰 <span th:text="${reviewPage.dtoList.size()}"></span>건</p>
                             <br>
                             <h3>평균</h3>
-                            <h1>[[${reviewRatioDTO.avg}]] 점</h1>
+                            <h1 th:text="${#numbers.formatDecimal(reviewRatioDTO.avg, 0, 'POINT', 2, 'POINT')}"> 점</h1>
                         </div>
                         <canvas id="pie-chart" width="400" height="250"></canvas>
                     </div>
@@ -335,7 +335,8 @@
                             <img th:if="${review.score} == 5 " th:src="@{/newimage/farm_review_star5.png}" alt="oneStar">
                             <span  th:text="${#temporals.format(review.rdate,'yyyy-MM-dd')}">24.03.22</span></p>
                         <div>
-                            <img th:src="@{'/imagePath/'+${review.thumbnail}}" th:alt="${review.rno}" style="width: 120px; height: 120px ">
+                            <img th:if="${review.thumbnail} != null" th:src="@{'/imagePath/'+${review.thumbnail}}" th:alt="${review.rno}" style="width: 120px; height: 120px ">
+                            <img th:if="${review.thumbnail} == null" th:src="@{/newimage/noReview.png}" th:alt="${review.rno}" style="width: 120px; height: 120px ">
                             <textarea readonly>[[${review.comment}]]</textarea>
                         </div>
                     </div>
