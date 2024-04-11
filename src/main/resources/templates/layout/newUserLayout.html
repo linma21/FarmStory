@@ -22,14 +22,15 @@
         <div class="userBox" th:if="${#authorization.expression('isAuthenticated()')}">
             <a th:href="@{/introduction/service}">고객센터</a>
             <a th:href="@{/user/logout}">로그아웃</a>
+            <a class="nav-link" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/admin/index}">관리자</a>
         </div>
 
         <div class="logoBox">
             <a th:href="@{/index}"><img th:src="@{/newimage/farm_header_logo.png}" alt="logoImg"></a>
 
-            <form action="">
+            <form th:action="@{/market/newlist}">
                 <label for="indexSearch">
-                    <input type="text" id="indexSearch" placeholder="검색어를 입력하세요">
+                    <input type="text" id="indexSearch" name="keyword"  placeholder="상품명을 검색해주세요.">
                     <button><img th:src="@{/newimage/farm_header_search.svg}" alt="button"></button>
                 </label>
             </form>
