@@ -16,6 +16,12 @@
             const score3 = [[${reviewRatioDTO.percent3}]];
             const score4 = [[${reviewRatioDTO.percent4}]];
             const score5 = [[${reviewRatioDTO.percent5}]];
+            // 리뷰로 스크롤 이동 //
+            const prodReviewBox = document.getElementsByClassName('prodReviewBox')[0];
+            const moveReview = document.getElementsByClassName('moveReview')[0];
+            moveReview.onclick = function (){
+                prodReviewBox.scrollIntoView();
+            }
             // 별점 그래프
             new Chart(document.getElementById("pie-chart"), {
                 type: 'pie',
@@ -169,14 +175,20 @@
                         .catch(err => console.log(err))
                 }
             }
-
-            // 리뷰로 스크롤 이동 //
-            const prodReviewBox = document.getElementsByClassName('prodReviewBox')[0];
-            const moveReview = document.getElementsByClassName('moveReview')[0];
-            moveReview.onclick = function (){
-                prodReviewBox.scrollIntoView();
-            }
         }
+        // 리뷰 페이지 넘긴 후 페이지 로드 시 리뷰 목록으로 스크롤 이동
+        document.addEventListener("DOMContentLoaded", function() {
+            const prodReviewBox = document.getElementsByClassName('prodReviewBox')[0];
+            const url = location.href;
+            const aa = url.split('&aa=')[1];
+
+            if(aa != null) {
+                // 모든 요소가 로드된 이후에 실행되어야 하기 때문에 timeout 걸어줌
+                setTimeout(() => {
+                    prodReviewBox.scrollIntoView();
+                }, 10);
+            }
+        });
     </script>
 
         <main class="articleMain">
@@ -328,16 +340,17 @@
                         </div>
                     </div>
                     </th:block>
+                    <!-- 페이지 -->
                     <div class="PageBox" th:if="${!reviewPage.dtoList.isEmpty()}">
                         <ul>
                             <li th:if="${reviewPage.prev}">
-                                <a th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${reviewPage.start - 1})}">이전</a>
+                                <a th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${reviewPage.start - 1}, aa='a')}">이전</a>
                             </li>
                             <li th:each="n : ${#numbers.sequence(reviewPage.start, reviewPage.end)}">
-                                <a th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${n})}" th:classappend="${reviewPage.rpg == n} ? 'pageOn' : 'page-link'" th:text="${n}"></a>
+                                <a th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${n}, aa='a')}" th:classappend="${reviewPage.rpg == n} ? 'pageOn' : 'page-link'" th:text="${n}"></a>
                             </li>
                             <li th:if="${reviewPage.next}">
-                                <a th:if="${marketPageRequestDTO.keyword == null}" th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${reviewPage.end + 1})}">다음</a>
+                                <a th:if="${marketPageRequestDTO.keyword == null}" th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${reviewPage.end + 1}, aa='a')}">다음</a>
                             </li>
                         </ul>
                     </div>
@@ -346,5 +359,4 @@
             </div>
         </main>
     </div>
-
 </html>
