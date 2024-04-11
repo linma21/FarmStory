@@ -85,8 +85,15 @@
                 const reciver = document.getElementsByName('receiverName')[0].value;
                 const receiverMemo = document.getElementsByClassName('receiverMemo')[0].value;
                 const uid = document.getElementsByClassName('name')[0].dataset.id;
-                const payment = document.getElementsByName('payment')[0].value;
+                const paymentTag = document.getElementsByName('payment');
                 const recaddr = zip + "_" + addr1 + "_" + addr2;
+
+                let payment = "";
+                Array.from(paymentTag).forEach(function (pay){
+                    if (pay.checked) {
+                        payment = pay.value;
+                    }
+                })
 
                 console.log("payment : " + payment);
 
@@ -133,8 +140,22 @@
 
                         console.log("사용하는 포인트값 찍어보기 : " + usingPoint.value);
 
+
+                        //여기에 적립 포인트를 넣어보자
+
+                        // totalPoint 요소의 텍스트 값을 가져와서 출력하는 스크립트
+                        const addPointElement = document.getElementById("totalPoint");
+                        const addPoint = addPointElement.textContent.trim().replace(/,/g, ''); // 적립 포인트
+                        console.log("적립 포인트 : " + addPoint); // 적립 포인트 값 출력
+
+
+                        let point = havingPoint + parseInt(addPoint) - parseInt(usingPoint.value);
+
+                        console.log("point : "+point);
+
                         //사용한 포인트 차감
-                        await fetchGet(`/farmstory/market/point/${uid}/${usingPoint.value}`);
+                        await fetchGet(`/farmstory/market/point/${uid}/${point}`);
+
 
                         //(장바구니 비우기)-cart_product에 있는 cartNo를 이용해서 다 삭제
                         //prodNo를 받아와서 장바구니에 있는거 다 삭제 -ok!
@@ -409,8 +430,10 @@
                                 <tr>
                                     <td>결제수단</td>
                                     <td>
-                                        <label><input type="radio" class="userPayment" name="payment" value="카드결제">카드결제</label>
-                                        <label><input type="radio" class="userPayment" name="payment" value="계좌이체">계좌이체</label>
+                                        <fieldset style="border: 0;">
+                                            <label><input type="radio" class="userPayment" name="payment" value="카드결제"> 카드결제</label>
+                                            <label><input type="radio" class="userPayment" name="payment" value="계좌이체"> 계좌이체</label>
+                                        </fieldset>
                                     </td>
                                 </tr>
                                 <tr>

@@ -210,13 +210,12 @@ public class MarketService {
         Account account = accountRepository.findById(uid).orElse(null);
 
         log.info("원래 포인트 : "+account.getPoint());
-        log.info("사용하는 포인트 : " + usingPoint);
+        log.info("더하는 포인트 : " + usingPoint);
 
         if (account != null) {
             // 계정의 포인트를 업데이트
-            account.setPoint(account.getPoint() - usingPoint);
-
             log.info("account.getPoint()"+account.getPoint());
+            account.setPoint(usingPoint);
 
             // 업데이트된 정보를 저장
             accountRepository.save(account);

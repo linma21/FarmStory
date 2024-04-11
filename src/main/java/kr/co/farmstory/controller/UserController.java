@@ -33,40 +33,6 @@ public class UserController {
         return "/user/login";
     }
 
-    /*
-
-    // 로그인 정보 조회 후 승인(없애도 로그인이 됨)
-    @PostMapping("/user/login")
-    public String login(HttpServletRequest request, RedirectAttributes redirectAttributes,Model model) {
-        String uid = request.getParameter("uid");
-        String pass = request.getParameter("pass");
-
-        boolean loginResult = userService.selectUser(uid, pass);
-
-        log.info("여기로 들어옵니까?");
-
-        if (loginResult) {//uid와 pass가 db에 있으면 if문을 통과
-
-            UserDTO userDTO = userService.findById(uid);//db에 있는 uid와 pass값이 일치하면 그 uid에 있는 role값을 가져옴
-
-            log.info("로그인한 유저의 정보 : "+userDTO);
-
-            if (userDTO.getRole().equals("delete")) {//만약 role이 delete라면
-                model.addAttribute("error", "탈퇴한 회원입니다.");
-                return "redirect:/user/login";
-            } else {
-                HttpSession session = request.getSession();
-                session.setAttribute("user", uid);
-                return "redirect:/index";
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 일치하지않습니다.");
-            return "redirect:/user/login";
-        }
-    }
-
-
-     */
 
     // 아이디 찾기 페이지 매핑
     @GetMapping("/user/findId")
