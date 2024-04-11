@@ -28,7 +28,7 @@ function chkImg(obj) {
 
         // input 태그 비우기
         const inputFile = document.getElementById("file").select();
-        inputFile.clear();
+        inputFile.value = "";
         return false;
     }
 }
