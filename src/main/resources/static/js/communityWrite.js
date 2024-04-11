@@ -7,7 +7,7 @@ window.onload = function (){
     const btnSubmit = document.getElementById('btnSubmit');
     const articleForm = document.getElementById('articleForm');
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
+    const cateLi = document.querySelectorAll(".lnb > li > a");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리
