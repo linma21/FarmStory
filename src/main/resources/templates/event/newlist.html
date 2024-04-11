@@ -22,8 +22,8 @@
                 let differenceInMilliseconds = currentDate - articleDate;
                 let differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
 
-                // 차이가 24시간 이내인 경우 'NEW'를 추가
-                if (differenceInDays < 1) {
+                // 차이가 48시간 이내인 경우 'NEW'를 추가
+                if (differenceInDays < 2) {
                     // <img>를 insertAdjacentHTML하면 이미지가 깨져서 hidden으로 가려놨다가 공개
                     articleTables[i].querySelector('img').style.visibility = 'visible';
                 }

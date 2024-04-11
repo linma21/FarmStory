@@ -13,6 +13,7 @@
             const btnProdF = document.getElementById('btnProdF'); // 과일만 조회 버튼
             const btnProdG = document.getElementById('btnProdG'); // 곡류만 조회 버튼
             const btnProdE = document.getElementById('btnProdE'); // 기타만 조회 버튼
+            const btnProdAll = document.getElementById('btnProdAll'); // 전체 조회 버튼
             const productBox = document.getElementsByClassName('productBox')[0]; // 개별 상품 최상위 div 태그
             const aTageProduct = document.getElementsByClassName('product'); // 개별 상품 a 태그
 
@@ -76,6 +77,20 @@
                     cate.classList.remove('cateOn');
                 })
                 btnCate[4].classList.add('cateOn');
+                selectCate(cate);
+            };
+
+            // 전체 버튼 클릭
+            btnProdAll.onclick = function (e) {
+                e.preventDefault();
+                Array.from(aTageProduct).forEach(function (product) {
+                    product.remove();
+                })
+                const cate = "전체";
+                Array.from(btnCate).forEach(function (cate) {
+                    cate.classList.remove('cateOn');
+                })
+                btnCate[0].classList.add('cateOn');
                 selectCate(cate);
             };
 
@@ -185,7 +200,7 @@
                     </a>
                     <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                         <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
-                        <h5>배송조회</h5>
+                        <h5>주문조회</h5>
                     </a>
                 </div>
                 <!--로그인 된 경우-->
@@ -194,13 +209,13 @@
                         <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                         <h5>장바구니</h5>
                     </a>
-                    <a class="btnUser" href=""  th:href="@{/market/orderList(uid=${#authentication.principal.user.uid}, pg=1)}" >
+                    <a class="btnUser" href=""  th:href="@{/notfound}" >
                         <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                         <h5>마이페이지</h5>
                     </a>
-                    <a class="btnUser" href="">
+                    <a class="btnUser" th:href="@{/market/orderList(uid=${#authentication.principal.user.uid}, pg=1)}" >
                         <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
-                        <h5>배송조회</h5>
+                        <h5>주문조회</h5>
                     </a>
                 </div>
             </div>
@@ -242,7 +257,7 @@
             <div class="pordCateBox">
                 <h2>최신 상품</h2>
                 <div class="productCate">
-                    <a class="btnCate cateOn" href="">전체</a>
+                    <a class="btnCate cateOn" id="btnProdAll" href="">전체</a>
                     <a class="btnCate" id="btnProdV" href="">야채</a>
                     <a class="btnCate" id="btnProdF" href="">과일</a>
                     <a class="btnCate" id="btnProdG" href="">곡류</a>

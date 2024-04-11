@@ -176,11 +176,13 @@ public class MarketController {
 
         log.info("orderDTO : "+ orderDTO);
 
-        marketService.orders(orderDTO);
+        int orderNo = marketService.orders(orderDTO);
+
+        log.info("컨트롤러의 orderNo : " +orderNo);
 
         Map<String, String> response = new HashMap<>();
 
-        response.put("result","1");
+        response.put("orderNo",String.valueOf(orderNo));//orderNo를 반환
 
         return ResponseEntity.ok().body(response);
     }
@@ -219,6 +221,7 @@ public class MarketController {
 
     }
 
+    /*
     @GetMapping("/market/orderNo/{uid}")
     @ResponseBody
     public int orderNo(@PathVariable("uid")String uid){
@@ -232,11 +235,22 @@ public class MarketController {
 
     }
 
+     */
+
     @PostMapping("/market/saveOrderDetail")
     public ResponseEntity<?> orderDetails(@RequestBody Map<String, Object> requestData) {
         String countsJson = (String) requestData.get("counts");
         String detailNosJson = (String) requestData.get("detailNos");
         String orderNoJson = (String) requestData.get("orderNo");
+
+
+        System.out.println("counts: " + countsJson);
+        System.out.println("detailNos: " + detailNosJson);
+        System.out.println("orderNo: " + orderNoJson);
+
+
+        log.info("orderDetails : 데이터는 받아와지는가?");
+
 
         List<String> counts = Arrays.asList(new Gson().fromJson(countsJson, String[].class));
         List<String> detailNos = Arrays.asList(new Gson().fromJson(detailNosJson, String[].class));
@@ -244,6 +258,8 @@ public class MarketController {
 
 
         marketService.saveOrderDetails(counts, detailNos, orderNo);
+
+        log.info("orderDetails : 처리는 끝났는가?");
 
         Map<String, String> response = new HashMap<>();
 

@@ -329,7 +329,7 @@
                 totalProdPrice += parseInt(prodPrice[i].innerText.replace(/,/g, ''));
                 totalProdDisPrice += (parseInt(prodPrice[i].innerText.replace(/,/g, '')) - parseInt(prodDisPrice[i].innerText.replace(/,/g, '')));
                 totalProdTotal += parseInt(prodDisPrice[i].innerText.replace(/,/g, ''));
-                totalProdPoint += (parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10);
+                totalProdPoint += (parseInt(parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10));//소수점 때문에 살짝 수정
 
                 if (totalProdTotal >= 30000) {
                     totalProdDelCost = 0;
@@ -384,7 +384,7 @@
 
                                 <div class="cartInfo">
                                     <p>
-                                        <a href="">
+                                        <a th:href="@{/market/newview(prodno=${product.prodno})}">
                                             <b class="prodName">[[${product.prodname}]]</b>
                                             <b th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></b>
                                             <b th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></b>

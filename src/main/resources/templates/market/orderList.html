@@ -10,8 +10,7 @@
 
     <nav class="order-nav">
         <ul>
-            <li><a th:href="@{/market/list}">장보기</a></li>
-            <li><a th:href="@{/account}">계정 관리</a></li>
+            <li><a th:href="@{/market/newlist}">장보기</a></li>
         </ul>
     </nav>
 
@@ -28,14 +27,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="orderDetail : ${pageResponseDTO.orderDetailList}">
+        <tr th:each="orderDetail : ${pageResponseDTO.orderDetailList}" style="text-align: center">
             <td th:text="${orderDetail.orderDetailDTO.orderNo}"></td>
             <td th:text="${orderDetail.prodName}"></td>
             <td th:text="${orderDetail.orderDetailDTO.count}"></td>
-            <td th:text="${orderDetail.price}"></td>
-            <td th:text="${orderDetail.totalPrice}"></td>
+            <td th:text="${#numbers.formatInteger(orderDetail.price, 1, 'COMMA')}"></td>
+            <td th:text="${#numbers.formatInteger(orderDetail.totalPrice, 1, 'COMMA')}"></td>
             <td th:text="${#temporals.format(orderDetail.rdate, 'yyyy-MM-dd')}"></td>
             <td>
+                <!-- th:text="${#numbers.formatInteger(orderDetail.totalPrice, 1, 'COMMA')}" -->
+
                 <!-- 리뷰 작성 버튼 -->
                 <button class="btn btnReview"
                         th:data-prodNo="${orderDetail.orderDetailDTO.prodno}"
@@ -77,7 +78,7 @@
                 <input type="radio" name="score" value="1" id="rate5"><label
                     for="rate5">★</label>
             </fieldset>
-            <input type="file" name="thumb" id="file" onchange="chkImg(this)"/>
+            <input type="file" name="thumb" id="file" onchange="chkImg(this)" accept=".gif, .jpg, .png, .jpeg, .bmp">
             </p>
             <div>
                 <textarea name="comment" placeholder="솔직한 리뷰를 남겨 주시면 팜스토리에 큰 힘이 됩니다!"></textarea>

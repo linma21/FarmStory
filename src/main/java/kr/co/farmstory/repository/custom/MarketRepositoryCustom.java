@@ -30,7 +30,6 @@ public interface MarketRepositoryCustom {
     // market/cart 페이지에서 선택 상품 cart_prodNo 테이블에서 삭제
     public boolean deleteCart(int[] cart_prodNos);
 
-    public int findOrderNo(String uid);
 
     // main 페이지에서 띄울 상품 16개
     public List<Tuple> selectProductsForMain(String cate);

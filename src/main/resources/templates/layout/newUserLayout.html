@@ -47,7 +47,7 @@
                 </a>
                 <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                     <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
-                    <h5>배송조회</h5>
+                    <h5>주문조회</h5>
                 </a>
             </div>
             <!--로그인 된 경우-->
@@ -56,13 +56,13 @@
                     <img class="btnUserImg1" th:src="@{/newimage/farm_header_cart.png}" alt="cart">
                     <h5>장바구니</h5>
                 </a>
-                <a class="btnUser" href=""  th:href="@{/market/orderList(uid=${#authentication.principal.user.uid}, pg=1)}" >
+                <a class="btnUser" th:href="@{/notfound}" >
                     <img class="btnUserImg2" th:src="@{/newimage/farm_header_user.png}" alt="">
                     <h5>마이페이지</h5>
                 </a>
                 <a class="btnUser" href="">
                     <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
-                    <h5>배송조회</h5>
+                    <h5>주문조회</h5>
                 </a>
             </div>
 

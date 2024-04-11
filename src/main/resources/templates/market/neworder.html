@@ -57,7 +57,7 @@
                 // 사용자가 입력한 포인트 값을 가져옴
                 const inputPoint = parseInt(usingPoint.value, 10);
 
-                if (havingPoint >= inputPoint){
+                if (havingPoint >= inputPoint) {
                     inputUsingPoint.innerText = inputPoint.toLocaleString();
                     console.log("inputPoint:" + inputPoint);
 
@@ -85,7 +85,10 @@
                 const reciver = document.getElementsByName('receiverName')[0].value;
                 const receiverMemo = document.getElementsByClassName('receiverMemo')[0].value;
                 const uid = document.getElementsByClassName('name')[0].dataset.id;
+                const payment = document.getElementsByName('payment')[0].value;
                 const recaddr = zip + "_" + addr1 + "_" + addr2;
+
+                console.log("payment : " + payment);
 
                 e.preventDefault();
 
@@ -118,12 +121,15 @@
                             "reciver": reciver,
                             "rechp": receiverHp,
                             "memo": receiverMemo,
+                            "payment": payment,
                             "uid": uid
                         };
 
                         console.log("jsonData 찍어보기 : " + jsonData);
 
-                        await fetchPost(`/farmstory/market/orders`, jsonData);//orders에 저장할 값 보냄
+                        const orderNo = await fetchPost(`/farmstory/market/orders`, jsonData);//orders에 저장할 값 보냄
+
+                        console.log("입력한 사용자의 orderNo가 잘 만들어 졌는지 체크! : " + orderNo.orderNo);
 
                         console.log("사용하는 포인트값 찍어보기 : " + usingPoint.value);
 
@@ -148,9 +154,6 @@
 
                         await fetchPost(`/farmstory/market/cartProdDelete`, productList);//리스트에 담긴 객체를 보내주기
 
-                        //일단은 orderNo를 찾아야해.
-                        const orderNo = await fetchGet(`/farmstory/market/orderNo/${uid}`);//들고옴!
-
                         //(orderDetail에 추가)
                         const counts = [];
                         const detailNos = [];
@@ -173,7 +176,7 @@
                         const dataSon = {
                             "counts": JSON.stringify(counts),
                             "detailNos": JSON.stringify(detailNos),
-                            "orderNo": JSON.stringify(orderNo)
+                            "orderNo": JSON.stringify(orderNo.orderNo)
                         };
 
                         const response = await fetchPost(`/farmstory/market/saveOrderDetail`, dataSon);
@@ -186,8 +189,6 @@
 
                             alert("결제에 실패하였습니다.");
                         }
-
-
                     }
                 } else {
                     alert("기본 정보를 빠짐없이 입력해주세요");
@@ -244,7 +245,8 @@
             totalDiscount.innerText = totalProdDisPrice.toLocaleString();
             totalDelCost.innerText = totalProdDelCost.toLocaleString();
             totalOrder.innerText = (totalProdTotal + parseInt(totalDelCost.innerText.replace(/,/g, '')) - inputUsingPoint.innerText.replace(/,/g, '')).toLocaleString();
-            totalPoint.innerText = ((parseInt(totalOrder.innerText.replace(/,/g, '')) - totalProdDelCost) / 10 ).toLocaleString();
+            totalPoint.innerText = (parseInt((parseInt(totalOrder.innerText.replace(/,/g, '')) - totalProdDelCost) / 10)).toLocaleString();//소수점때문에 살짝 수정
+
         }
 
         //우편번호 검색을 위한 함수
@@ -273,8 +275,6 @@
                 }
             }).open();
         }//우편번호 검색 함수 끝!
-
-
     </script>
 
 
@@ -304,14 +304,15 @@
                     <div class="orderProd" th:each="product : ${productDTOs}">
                         <img th:src="@{'/imagePath/'+${product.thumb}}" alt="">
                         <div>
-                            <p>
+                            <a th:href="@{/market/newview(prodno=${product.prodno})}">
                                 <b class="prodName">[[${product.prodname}]]</b>
                                 <b th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></b>
                                 <b th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></b>
-                            </p>
+                            </a>
                             <p>
                                 <span><b class="prodDiscount" th:text="${product.discount}" th:name="prodDiscount"></b>%</span>
-                                <span><s class="prodPrice" th:text="${#numbers.formatInteger((product.price * product.count), 1, 'COMMA')} + '원'"
+                                <span><s class="prodPrice"
+                                         th:text="${#numbers.formatInteger((product.price * product.count), 1, 'COMMA')} + '원'"
                                          th:name="prodPrice"></s></span>
                             </p>
                             <p>
@@ -337,7 +338,9 @@
                         </div>
                         <div>
                             <p>
-                                <b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b> 도착 예정
+                                <b class="prodDelDate"
+                                   th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b> 도착
+                                예정
                             </p>
                         </div>
                     </div>
@@ -368,10 +371,10 @@
 
                                         <button type="button" id="btnPoint">사용</button>
                                         <p id="resultPoint"></p>
-                                  <!--
-                                        <button id="btnPoint">사용</button>
-                                        <p id="overPointMsg"></p>
-                                    -->
+                                        <!--
+                                              <button id="btnPoint">사용</button>
+                                              <p id="overPointMsg"></p>
+                                          -->
                                     </td>
                                 </tr>
                             </table>
@@ -402,7 +405,13 @@
                                         <input type="text" class="receiverHp">
                                         <span id="result_hp"></span>
                                     </td>
-
+                                </tr>
+                                <tr>
+                                    <td>결제수단</td>
+                                    <td>
+                                        <label><input type="radio" class="userPayment" name="payment" value="카드결제">카드결제</label>
+                                        <label><input type="radio" class="userPayment" name="payment" value="계좌이체">계좌이체</label>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>메모</td>

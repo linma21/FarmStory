@@ -120,6 +120,20 @@ public class MainController {
         return "/notfound";
     }
 
+    // 준비중 페이지를 위한 메서드 추가1
+    @GetMapping("/notfound1")
+    public String notFound1() {
+        // "notfound.html" 템플릿으로 리다이렉트
+        return "/notfound1";
+    }
+
+    // 준비중 페이지를 위한 메서드 추가2
+    @GetMapping("/notfound2")
+    public String notFound2() {
+        // "notfound.html" 템플릿으로 리다이렉트
+        return "/notfound2";
+    }
+
     // 팜스토리 소개
     @GetMapping("/introduction/newHello")
     public String hello() {
