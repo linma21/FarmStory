@@ -171,7 +171,7 @@
 <div class="container">
     <header>
         <div class="userBox">
-            <a th:href="@{/notfound}">고객센터</a>
+            <a th:href="@{/introduction/service}">고객센터</a>
             <a sec:authorize="isAnonymous()" th:href="@{/user/register}">회원가입 </a>
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
             <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
@@ -200,7 +200,7 @@
                     </a>
                     <a class="btnUser" onclick="notLogin()" style="cursor: pointer">
                         <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
-                        <h5>배송조회</h5>
+                        <h5>주문조회</h5>
                     </a>
                 </div>
                 <!--로그인 된 경우-->
@@ -215,7 +215,7 @@
                     </a>
                     <a class="btnUser" href="">
                         <img class="btnUserImg3" th:src="@{/newimage/farm_header_order.png}" alt="">
-                        <h5>배송조회</h5>
+                        <h5>주문조회</h5>
                     </a>
                 </div>
             </div>
@@ -233,8 +233,8 @@
         <main>
             <div class="adBox">
                 <div>
-                    <button class="btnMoveLeftImg"><</button>
-                    <button class="btnMoveRightImg">></button>
+                    <button class="btnMoveLeftImg"><img th:src="@{/newimage/farm_index_leftArrow.png}"></button>
+                    <button class="btnMoveRightImg"><img th:src="@{/newimage/farm_index_rightArrow.png}"></button>
                     <div class="indexMoveBox">
                     </div>
                     <img class="MoveImg" th:src="@{/newimage/farm_index_moveBg.jpg}" alt="">
@@ -285,25 +285,6 @@
                     </div>
                 </a>
                 </th:block>
-            </div>
-
-            <div class="btnArticleBox">
-                <a class="btnArticle" href="">
-                    <img th:src="@{/newimage/farm_index_notice.png}" alt="">
-                    <h4>공지사항</h4>
-                </a>
-                <a class="btnArticle" href="">
-                    <img th:src="@{/newimage/farm_index_cuppon.png}" alt="">
-                    <h4>쿠폰</h4>
-                </a>
-                <a class="btnArticle" href="">
-                    <img th:src="@{/newimage/farm_index_ask.png}" alt="">
-                    <h4>고객문의</h4>
-                </a>
-                <a class="btnArticle" href="">
-                    <img th:src="@{/newimage/farm_index_qna.png}" alt="">
-                    <h4>QnA</h4>
-                </a>
             </div>
         </main>
 

@@ -7,14 +7,13 @@ window.onload = function (){
     const anoData = document.getElementById("ano");
     const ano = anoData.value;
 
-
     const commentBox = document.getElementById('commentBox');
     const commentForm = document.getElementById('commentForm');
     const commentRemove = document.getElementById('commentRemove');
     const commentModify = document.getElementById('commentModify');
 
     // 커뮤니티 공통 ///////////////////////////////////////////////////////////////////
-    const cateLi = document.querySelectorAll(".lnb li");
+    const cateLi = document.querySelectorAll(".lnb > li > a");
     const communityNav = document.getElementById('communityNav');
 
     // aside 현재 카테고리 표시하기 - 반복처리

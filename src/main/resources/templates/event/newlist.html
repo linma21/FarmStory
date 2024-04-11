@@ -3,6 +3,33 @@
       layout:decorate="~{/layout/newUserLayout}">
 
 <div class="container" layout:fragment="content">
+    <script>
+        window.onload = function () {
+            // 현재 시간 가져오기
+            let currentDate = new Date();
+
+            // 모든 articleTable 요소에 대해 반복
+            let articleTables = document.getElementsByClassName('articleTable');
+
+            for (let i = 0 ; i < articleTables.length ; i++) {
+                const artRdate = articleTables[i].dataset.rdate;
+                console.log(artRdate);
+
+                // tdRdate를 JavaScript의 Date 객체로 변환
+                let articleDate = new Date(artRdate);
+
+                // 두 날짜의 차이를 계산하여 일(day) 단위로 변환
+                let differenceInMilliseconds = currentDate - articleDate;
+                let differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+                // 차이가 24시간 이내인 경우 'NEW'를 추가
+                if (differenceInDays < 1) {
+                    // <img>를 insertAdjacentHTML하면 이미지가 깨져서 hidden으로 가려놨다가 공개
+                    articleTables[i].querySelector('img').style.visibility = 'visible';
+                }
+            }
+        }
+    </script>
     <main class="articleMain">
             <div class="sideBox">
                 <img th:src="@{/images/sub_aside_cate4_tit.png}" alt="이벤트"/>
@@ -38,26 +65,30 @@
                         </form>
                     </div>
                     <!-- 글 목록 -->
+                    <!-- 전체 조회 -->
                     <th:block th:each="article, loop:${pageResponseDTO.dtoList}">
-                    <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/event/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}">
+                    <a class="articleTable"  th:if="${pageResponseDTO.keyword == null}" th:href="@{/event/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate})}" th:data-rdate="${article.rdate}">
                         <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                         <div>
-                            <h4>[[${article.title}]] <span></span></h4>
+                            <h4>[[${article.title}]] [<span th:text="${article.hit}"></span>]</span></h4>
                             <h5>
                                 <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                 <span th:text="${article.nick}"></span>
                             </h5>
                         </div>
+                        <img th:src="@{/newimage/new_img.png}" alt="new" style="width: 30px; height: 30px; visibility: hidden">
                     </a>
+                        <!-- 검색 조회 -->
                         <a class="articleTable"   th:if="${pageResponseDTO.keyword != null}" th:href="@{/event/newview(ano=${article.ano}, pg=${pageResponseDTO.pg}, cate=${pageResponseDTO.cate}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">
                             <h4>[[${pageResponseDTO.startNo - loop.index}]]</h4>
                             <div>
-                                <h4>[[${article.title}]] <span>(1)</span></h4>
+                                <h4>[[${article.title}]] [<span th:text="${article.hit}"></span>]</h4>
                                 <h5>
                                     <span th:text="${#temporals.format(article.rdate,'yyyy-MM')}"></span>
                                     <span th:text="${article.nick}"></span>
                                 </h5>
                             </div>
+                            <img th:src="@{/newimage/new_img.png}" alt="new" style="width: 30px; height: 30px; visibility: hidden">
                         </a>
                     </th:block>
                     <div class="PageBox">
