@@ -323,11 +323,24 @@
                             <img th:if="${review.score} == 5 " th:src="@{/newimage/farm_review_star5.png}" alt="oneStar">
                             <span  th:text="${#temporals.format(review.rdate,'yyyy-MM-dd')}">24.03.22</span></p>
                         <div>
-                            <img th:src="@{'/imagePath/'+${review.thumbnail}}" th:alt="${review.rno}">
+                            <img th:src="@{'/imagePath/'+${review.thumbnail}}" th:alt="${review.rno}" style="width: 120px; height: 120px ">
                             <textarea readonly>[[${review.comment}]]</textarea>
                         </div>
                     </div>
                     </th:block>
+                    <div class="PageBox" th:if="${!reviewPage.dtoList.isEmpty()}">
+                        <ul>
+                            <li th:if="${reviewPage.prev}">
+                                <a th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${reviewPage.start - 1})}">이전</a>
+                            </li>
+                            <li th:each="n : ${#numbers.sequence(reviewPage.start, reviewPage.end)}">
+                                <a th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${n})}" th:classappend="${reviewPage.rpg == n} ? 'pageOn' : 'page-link'" th:text="${n}"></a>
+                            </li>
+                            <li th:if="${reviewPage.next}">
+                                <a th:if="${marketPageRequestDTO.keyword == null}" th:href="@{/market/newview(prodno=${productDTO.prodno}, rpg=${reviewPage.end + 1})}">다음</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
             </div>

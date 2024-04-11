@@ -71,8 +71,8 @@ public class MarketService {
     }
 
     // 장보기 글보기 페이지 - 장보기 게시글 출력
-    public ProductDTO selectProduct(int prodeno){
-        List<Tuple> joinProduct = marketRepository.selectProduct(prodeno);
+    public ProductDTO selectProduct(int prodno){
+        List<Tuple> joinProduct = marketRepository.selectProduct(prodno);
         // List에서 Product, Images 엔티티 꺼낸 후 ProductDTO로 병합
         ProductDTO joinProductDTO = joinProduct.stream()
                 .map(tuple ->

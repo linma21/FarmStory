@@ -48,11 +48,11 @@ public class MarketController {
 
     // 장보기 글보기 페이지 매핑 (cate, pg, type, keyword 받음)
     @GetMapping("/market/newview")
-    public String marketView(Model model, MarketPageRequestDTO marketPageRequestDTO, int prodno){
+    public String marketView(Model model, MarketPageRequestDTO marketPageRequestDTO, ReviewPageRequestDTO reviewPageRequestDTO, int prodno){
         // 상품 조회
         ProductDTO productDTO = marketService.selectProduct(prodno);
         // 리뷰 조회
-        ReviewPageResponseDTO reviewPage = reviewService.selectReviews(prodno);
+        ReviewPageResponseDTO reviewPage = reviewService.selectReviews(prodno, reviewPageRequestDTO);
         log.info("장보기 글보기 Cont 1 : "+ reviewPage.toString());
         // 리뷰 별점 - 평균, 비율 구하기
         ReviewRatioDTO reviewRatioDTO = reviewService.selectForRatio(prodno);

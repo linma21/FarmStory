@@ -42,13 +42,12 @@ public class ReviewService {
     private String fileUploadPath;
 
     // 리뷰 목록 조회
-    public ReviewPageResponseDTO selectReviews(int prodno){
+    public ReviewPageResponseDTO selectReviews(int prodno, ReviewPageRequestDTO reviewPageRequestDTO){
 
-        ReviewPageRequestDTO pageRequestDTO = new ReviewPageRequestDTO();
-        Pageable pageable = pageRequestDTO.getPageable("no");
+        Pageable pageable = reviewPageRequestDTO.getPageable("no");
         log.info("selectReviews Serv ...1 ");
         // 리뷰 목록  Page 조회
-        Page<Tuple> results = reviewRepository.selectReviewsAndNick(prodno, pageRequestDTO, pageable);
+        Page<Tuple> results = reviewRepository.selectReviewsAndNick(prodno, reviewPageRequestDTO, pageable);
 
         // Page<Tuple>을 List<ReviewDTO>로 변환
         List<ReviewDTO> reviewList = results.getContent().stream()
@@ -68,7 +67,7 @@ public class ReviewService {
         // List<ReviewDTO>와 Page 리턴
         int total = (int) results.getTotalElements();
         return ReviewPageResponseDTO.builder()
-                .pageRequestDTO(pageRequestDTO)
+                .pageRequestDTO(reviewPageRequestDTO)
                 .dtoList(reviewList)
                 .total(total)
                 .build();
@@ -163,7 +162,7 @@ public class ReviewService {
             log.info("insertReview sName : " + sName);
 
 
-            String orgPath = path + "/orgImage";
+                String orgPath = path + "/orgImage";
                 // 원본 파일 폴더 자동 생성
                 java.io.File orgFile = new java.io.File(orgPath);
                 if(!orgFile.exists()){
