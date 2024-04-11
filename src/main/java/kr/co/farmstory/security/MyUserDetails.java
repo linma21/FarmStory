@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @Getter
 @Setter
 @ToString
@@ -39,6 +40,7 @@ public class MyUserDetails implements UserDetails, OAuth2User {
         // 계정이 갖는 권한 목록
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        log.info("authorities : " + authorities.toString());
         return authorities;
     }
 

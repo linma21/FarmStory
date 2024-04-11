@@ -1,18 +1,20 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/articleLayout}">
-<main class="articleMain" layout:fragment="content">
+      layout:decorate="~{/layout/newUserLayout}">
+
+<div class="container" layout:fragment="content">
+<main class="articleMain">
     <script th:inline="javascript" th:src="@{/js/communityView.js}"></script>
-            <div class="sideBox">
-                <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
-                <ul class="lnb">
-                    <li id="cateNotice" data-cate="notice"><a th:href="@{/community/newlist(cate=notice)}">공지사항</a></li>
-                    <li id="cateMenu" data-cate="menu"><a th:href="@{/community/newlist(cate=menu)}">오늘의식단</a></li>
-                    <li id="cateChef" data-cate="chef"><a th:href="@{/community/newlist(cate=chef)}">나도요리사</a></li>
-                    <li id="cateQna" data-cate="qna"><a th:href="@{/community/newlist(cate=qna)}">1:1고객문의</a></li>
-                    <li id="cateFaq" data-cate="faq"><a th:href="@{/community/newlist(cate=faq)}">자주묻는질문</a></li>
-                </ul>
-            </div>
+    <div class="sideBox">
+        <img th:src="@{/images/sub_aside_cate5_tit.png}" alt="커뮤니티"/>
+        <ul class="lnb">
+            <li id="cateNotice"><a data-cate="notice" th:href="@{/community/newlist(cate=notice)}">공지사항</a></li>
+            <li id="cateMenu"><a data-cate="menu" th:href="@{/community/newlist(cate=menu)}">오늘의식단</a></li>
+            <li id="cateChef"><a data-cate="chef" th:href="@{/community/newlist(cate=chef)}">나도요리사</a></li>
+            <li id="cateQna"><a data-cate="qna" th:href="@{/community/newlist(cate=qna)}">1:1고객문의</a></li>
+            <li id="cateFaq"><a data-cate="faq" th:href="@{/community/newlist(cate=faq)}">자주묻는질문</a></li>
+        </ul>
+    </div>
 
             <div class="contentBox">
                 <div class="articleHeader" id="communityNav">
@@ -98,8 +100,8 @@
 
                         <!--댓글 없을때-->
                         <th:block th:if="${comments.isEmpty()}">
-                            <div class="comment">
-                                <textarea name="" id="">댓글이 없습니다. 댓글을 남겨주세요</textarea>
+                            <div class="comment" id="noComment">
+                                <textarea name="" id="" readonly>댓글이 없습니다. 댓글을 남겨주세요</textarea>
                             </div>
                         </th:block>
                         <!--로그인한 경우에만 조회-->
@@ -125,3 +127,4 @@
                 </div>
             </div>
         </main>
+</div>

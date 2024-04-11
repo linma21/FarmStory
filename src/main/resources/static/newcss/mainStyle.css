@@ -14,6 +14,19 @@ a {
 input, textarea {
     outline: none;
 }
+/*topButton*/
+.topButton {
+    position: sticky;
+    margin-left: 990px;
+    bottom: 10px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    color: white;
+    background-color: #666666;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 /*container*/
 .container {
@@ -134,6 +147,11 @@ header {
     width: 196px;
     text-align: center;
 }
+.navBox li > a{
+    font-size: 18px;
+    font-weight: bold;
+    color: #666666;
+}
 .navBox li > a:hover {
     color: #a8d031;
     font-weight: bold;
@@ -176,34 +194,86 @@ main {
 .adBox {
     width: 100%;
     margin: 0 auto;
+    overflow: hidden;
 }
 .adBox > div {
+    position: relative;
     display: inline-block;
+    width: 1960px;
 }
 .adBox img {
-    width: 450px;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.btnMoveLeftImg {
+    font-size: 12px;
+    position: absolute;
+    left: 735px;
+    top: 140px;
+    width: 15px;
+    height: 40px;
+    border: 0;
+    background-color:transparent;
+    cursor: pointer;
+    z-index: 9999;
+}
+.btnMoveRightImg {
+    display: none;
+    font-size: 12px;
+    position: absolute;
+    left: 230px;
+    top: 140px;
+    width: 15px;
+    height: 40px;
+    border: 0;
+    background-color:transparent;
+    cursor: pointer;
+    z-index: 9999;
+}
+.indexMoveBox {
+    position: absolute;
+    top: 0;
+    left: 750px;
+    width: 230px;
+    height: 312px;
+    background-image: url("../newimage/farm_index_moveBg2.jpg");
+    z-index: 9999;
 }
 /*index-btnArticleBox*/
 .btnArticleBox {
     display: flex;
+    justify-content: space-between;
     width: 100%;
-    height: 80px;
-    margin-top: 20px;
+    height: auto;
+    margin-top: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #a0a0a0;
 }
 .btnArticle {
-    display: inline-block;
-    width: 196px;
-    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    padding: 6px 10px;
+    margin: 0 10px;
     font-size: 18px;
     text-align: center;
-    border: 1px solid #a8d031;
+    border: 1px solid #a0a0a0;
+    border-radius: 20px;
+}
+.btnArticle > img {
+    width: 40px;
+}
+.btnArticle:hover {
+    background-color: #a8d031;
 }
 /*index-bannerBox*/
 .bannerBox {
     display: flex;
     width: 100%;
     height: 74px;
-    margin-top: 20px;
+    margin: 10px 0;
 }
 .bannerBox > a {
     display: inline-block;
@@ -220,6 +290,7 @@ main {
 
 /*index-pordCateBox*/
 .pordCateBox {
+    padding-top: 10px;
     margin-top: 20px;
     padding-left: 14px;
 }
@@ -230,7 +301,8 @@ main {
 .pordCateBox > .productCate {
     display: flex;
     height: 36px;
-    margin: 20px 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 .pordCateBox > .productCate > a {
     display: inline-block;
@@ -243,6 +315,9 @@ main {
     font-weight: bold;
     color: #666666;
     margin-right: 10px;
+}
+.productCate > a:nth-last-child(1) {
+    margin-left: auto;
 }
 .pordCateBox > .productCate > a:hover {
     background-color: #a8d031;
@@ -265,9 +340,19 @@ main {
     text-align: center;
     margin-bottom: 30px;
 }
-.product > img {
+.product > div:nth-child(1) {
+    width: 220px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.product > div:nth-child(1) > img {
     width: 220px;
     border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+.productBox .product:hover img {
+    transform: scale(1.2);
 }
 .product > div {
     width: 220px;
@@ -353,7 +438,7 @@ main {
     border-bottom: 2px solid #aeaeae;
     border-right: 1px solid #aeaeae;
 }
-.sideBox > .lnb > .tabOn {
+.sideBox .tabOn {
     color: white;
     background-color: #a8d031;
     border-bottom: 2px solid #aeaeae;
@@ -625,6 +710,7 @@ main {
 .commentBox > form > div {
     display: flex;
     justify-content: end;
+    margin-top: 10px;
 }
 .commentBox > form > div > button {
     padding: 6px;
@@ -640,7 +726,7 @@ main {
     background-color: #a8d031;
 }
 .commentBox > .comment {
-    padding: 5px 0;
+    padding: 5px 10px;
     margin-top: 10px;
     border-radius: 10px;
     border: 1px solid #d6d6d6;
@@ -665,6 +751,7 @@ main {
 .commentBox > .comment > div {
     display: flex;
     justify-content: end;
+    margin-top: 4px;
 }
 .commentBox > .comment > div > button {
     padding: 6px;
@@ -919,7 +1006,270 @@ main {
 .pordInfo > .prodBtn > button:nth-child(2) {
     background-color: #df0011;
 }
+/* 장보기 - 리뷰 */
+.prodReviewWrap {
+    padding: 0px 20px;
+}
+.prodReviewWrap > .reviewItem:first-of-type {
+    border: none;
+}
+.css-1rj676f {
+    padding: 20px 0px;
+    background: rgb(255, 255, 255);
+}
+.css-1rj676f .scoreInfo {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 20px;
+}
+/* 리뷰 별 */
+.css-jn37c1:first-of-type {
+    margin: 0px 0px 2px;
+}
+.css-jn37c1 {
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0px 0px 2px 2px;
+    text-align: left;
+    font-size: 0px;
+}
+/* 리뷰 별 갯수 */
+.css-1rj676f .scoreInfo .scoreNum {
+    margin: 0px 5px 1px 3px;
+    font-size: 15px;
+    color: rgb(34, 34, 34);
+}
+.css-ajngxe {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 22px;
+    margin: 17px 0px 0px;
+}
+.css-dfvcwv .name {
+    display: inline-block;
+    height: 22px;
+    padding-left: 4px;
+    font-size: 13px;
+    line-height: 22px;
+    vertical-align: middle;
+}
+.css-a0c6pv {
+    margin-left: auto;
+    font-size: 13px;
+    color: rgb(102, 102, 102);
+    vertical-align: -1px;
+}
+/* NEW 리뷰 별 */
+.prodWriteReview fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+.prodWriteReview fieldset legend{
+    text-align: right;
+}
+.prodWriteReview input[type=radio]{
+    display: none;
+}
+.prodWriteReview label{
+    font-size: 3em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+.prodWriteReview label:hover{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.prodWriteReview label:hover ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.prodWriteReview input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+#reviewContents {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid 1.5px #D3D3D3;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+}
+/* 주문 목록 - 컨테이너 */
+.order-container {
+    max-width: 980px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+/* 주문 목록 - 섹션 헤딩 */
+.order-container h3 {
+    font-size: 18px;
+    margin-top: 30px;
+    color: #333;
+}
 
+/* 주문 목록 - 이미지 섹션 스타일링 */
+.order-detail img {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+/* 주문 목록 - 네비게이션 바 스타일링 */
+.order-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.order-nav ul li {
+    float: left;
+}
+
+.order-nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.order-nav ul li a:hover {
+    background-color: #111;
+}
+/* 주문 목록 - 테이블 스타일링 */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-table thead th {
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 10px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.order-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.order-table tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+/*  주문 목록 - Review Modal */
+.prodWriteReview {
+    display: none;
+    position: absolute;
+    top: 0;
+    width:100%;
+    height:100%;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.prodWriteReview > .reviewForm {
+    position:absolute;
+    top:50%;
+    left: 50px;
+    width:737px;
+    height:215px;
+    padding:40px;
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border: 3px solid #a8d031;
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform:translateY(-50%);
+}
+.prodWriteReview  p > input:nth-child(2) {
+    font-size: 16px;
+    width: 60px;
+    border: 0;
+}
+.prodWriteReview textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+/* 주문 목록 - Review btn */
+.btnReview {
+    float: right;
+    padding: 6px;
+    margin-right: 8px;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+.btnReview:hover {
+    color: white;
+    border: 1px solid #a8d031;
+    background-color: #a8d031;
+}
+/* 리뷰 - 이미지 **/
+.thumbList {
+    width: 400px;
+}
+.css-1fc1rmp {
+    overflow: hidden;
+    margin-top: 12px;
+}
+.css-1fc1rmp.typeA .thumb {
+    position: relative;
+    float: left;
+    width: calc(20% - 5px);
+    margin-left: 5px;
+}
+.css-1fc1rmp.typeA .thumb .img {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 0px;
+    padding-bottom: 100%;
+    border-radius: 3px;
+    background-size: cover;
+    background-position: center center;
+}
+ .css-1fc1rmp.typeA .thumb {
+     position: relative;
+     float: left;
+     width: calc(20% - 5px);
+     margin-left: 5px;
+ }
+/* 리뷰 - 내용 **/
+.css-bgfycm {
+    position: relative;
+    margin: 20px 0px 0px;
+}
+.css-bgfycm .contents {
+    margin: 8px 0px 0px;
+    font-size: 13px;
+    color: rgb(34, 34, 34);
+    line-height: 1.38;
+    word-break: break-word;
+    white-space: pre-line;
+}
 /* 수량 입력 상자 전체 스타일링 */
 .quantity-input {
     display: flex;
@@ -972,6 +1322,107 @@ main {
 }
 .exchange > table tr > td:nth-child(2) {
     border-right: none;
+}
+
+/**리뷰 market-review**/
+.prodReviewBox {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 0 20px;
+}
+.prodReviewBox > h3 {
+    margin: 10px 0;
+}
+.prodReviewHeader {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 2px solid #666666;
+    border-bottom: 1px solid #dfe3e8;
+}
+.reviewStarBox {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.reviewStarBox > p {
+    display: flex;
+    font-size: 16px;
+    line-height: 30px;
+}
+.reviewStarBox > p > span {
+    width: 30px;
+    margin-left: 4px;
+    margin-right: 2px;
+    font-size: 18px;
+    text-align: right;
+}
+.reviewStar {
+    width: 150px;
+    margin-right: 20px;
+    margin-left: 8px;
+}
+
+.prodWriteReview  p > input:nth-child(2) {
+    font-size: 16px;
+    width: 60px;
+    border: 0;
+}
+.prodWriteReview textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+
+.prodReview {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+.prodReview {
+    display: flex;
+}
+.prodReview > p {
+    display: flex;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.prodReview > p > img {
+    width: 100px;
+    height: 20px;
+    margin-right: 20px;
+    margin-left: 8px;
+}
+.prodReview > p > b {
+    padding-right: 10px;
+}
+.prodReview > p > span {
+    padding-top: 2px;
+    font-size: 14px;
+}
+.prodReview textarea {
+    width: 600px;
+    height: 120px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding-left: 10px;
+    resize: none;
+    border: 0;
 }
 
 /***market-cart***/
@@ -1030,6 +1481,15 @@ main {
 }
 .cartInfo > p:nth-child(1) {
     margin: 6px 0;
+
+}
+.cartInfo > p:nth-child(1) > a:nth-child(1){
+    width: 240px;
+    height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
 }
 .cartInfo > p:nth-child(1) > a:nth-child(2) {
     padding-right: 10px;
@@ -1161,8 +1621,19 @@ main {
     flex-wrap: wrap;
     margin: 0 20px;
 }
+.orderProd > div:nth-child(2) {
+    width: 400px;
+}
+.orderProd > div:nth-last-child(2) {
+    width: 220px;
+}
+.orderProd > div:nth-last-child(2) > span {
+    font-size: 14px;
+    color: #1ba41b;
+}
 .orderProd > div:nth-last-child(1) {
-    padding-left: 80px;
+    width: 250px;
+    padding-left: 10px;
     font-weight: bold;
     color: #0b3ae2;
 }
@@ -1177,6 +1648,7 @@ main {
     font-size: 14px;
 }
 .orderProd > div:nth-child(2) > p:nth-child(2) > span:nth-child(2) {
+    padding-left: 4px;
     color : #666666;
     font-size: 14px;
 }
@@ -1250,11 +1722,30 @@ main {
 .orderInfoBox > div > table tr:nth-last-child(1) td {
     border-bottom: 0;
 }
+.orderInfoBox > div > table tr p:nth-child(1) {
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: #666666;
+}
+.orderInfoBox > div > table tr p:nth-last-child(1) {
+    padding-top: 4px;
+    font-size: 14px;
+    color: red;
+}
+.orderInfoBox > div > table tr #usingPoint {
+    text-align: right;
+    padding: 0 4px;
+}
+.orderInfoBox > div > table tr #btnPoint {
+    margin: 0;
+    border-radius: 4px;
+    border: 1px solid #dfe3e8;
+}
 .orderPayBox {
     display: flex;
     flex-wrap: wrap;
     width: 250px;
-    height: 350px;
+    height: 325px;
 }
 .orderPayBox > h3 {
     margin: 10px 0;
@@ -1264,7 +1755,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 305px;
+    height: 280px;
     padding: 10px;
     border: 1px solid #dfe3e8;
     border-radius: 10px;
@@ -1286,22 +1777,13 @@ main {
     font-size: 14px;
     text-align: right;
 }
-.orderPay > p:nth-child(6) > span:nth-child(1) {
-    font-size: 12px;
-    font-weight: bold;
-    color: red;
-}
-.orderPay > p:nth-child(6) > span:nth-child(2) {
-    font-size: 12px;
-    color: #666666;
-}
-.orderPay > p:nth-child(7) {
+.orderPay > p:nth-child(6) {
     font-weight: bold;
     border-top: 1px solid #dfe3e8;
     padding-top: 10px;
     margin-top: 10px;
 }
-.orderPay > p:nth-child(8) {
+.orderPay > p:nth-child(7) {
     font-weight: bold;
     color: #1ba41b;
     font-size: 14px;

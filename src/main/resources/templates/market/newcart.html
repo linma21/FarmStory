@@ -4,16 +4,12 @@
 
 <div class="container" layout:fragment="content">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>farmPlus</title>
-    <link rel="stylesheet" th:href="@{/newcss/mainStyle.css}">
     <script>
         window.onload = function(){
-        //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
+            //// 페이지 로드시 장바구니 상품 합계 금액 표시 ////
             orderPriceSub();
 
-        //// 수량 조절시 실시간 가격 조정 ////
+            //// 수량 조절시 실시간 가격 조정 ////
             const plusBtns = document.getElementsByClassName('plus-btn');
             const minusBtns = document.getElementsByClassName('minus-btn');
 
@@ -27,20 +23,27 @@
                     quantityInput.value = modValue;
 
                     // 해당 상품 목록 박스 가격 변동 //
-                    const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
-                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
-                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
-                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
-                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
+                    const cartInfo = e.target.parentNode.parentNode.parentNode;            // 버튼의 부모의 부모의 부모태그
+                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]');        // 원래 가격 x 수량
+                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]');  // 상품 할인율
+                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]');  // 할인된 가격 x 수량
+                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]');        // 할인된 가격 x 수량 x 10%
 
-                    let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
+                    let intPrice = parseInt(prodPrice.innerText.replace(/,/g, '')); // 콤마 붙어 있는 가격 (String -> int)
+                    console.log(intPrice);
+                    let oneProdPrice = intPrice / value; // 상품 1개 가격, 콤마 제거
+                    console.log(oneProdPrice);
                     let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
+                    console.log(modProdPrice);
                     let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
+                    console.log(modProdDisPrice);
                     let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
+                    console.log(modProdPoint);
 
-                    prodPrice.innerText = modProdPrice;
-                    prodDisPrice.innerText = modProdDisPrice;
-                    prodPoint.innerText = modProdPoint;
+
+                    prodPrice.innerText = modProdPrice.toLocaleString();
+                    prodDisPrice.innerText = modProdDisPrice.toLocaleString();
+                    prodPoint.innerText = modProdPoint.toLocaleString();
                     // 전체 주문예상금액 가격 변동 //
                     orderPriceSub();
                 });
@@ -56,29 +59,30 @@
                     let modValue = value - 1;
                     if (value > 1) {
                         quantityInput.value = modValue;
+
+                        // 해당 상품 목록 박스 가격 변동 //
+                        const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
+                        const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
+                        const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
+                        const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
+                        const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
+
+                        let intPrice = parseInt(prodPrice.innerText.replace(/,/g, ''));
+                        let oneProdPrice = intPrice / value; // 상품 1개 가격
+                        let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
+                        let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
+                        let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
+
+                        prodPrice.innerText = modProdPrice.toLocaleString();
+                        prodDisPrice.innerText = modProdDisPrice.toLocaleString();
+                        prodPoint.innerText = modProdPoint.toLocaleString();
+                        // 전체 주문예상금액 가격 변동 //
+                        orderPriceSub();
                     }
-
-                    // 해당 상품 목록 박스 가격 변동 //
-                    const cartInfo = e.target.parentNode.parentNode.parentNode; // 버튼의 부모의 부모의 부모태그
-                    const prodPrice = cartInfo.querySelector('[name="prodPrice"]'); // 원래 가격 x 수량
-                    const prodDiscount = cartInfo.querySelector('[name="prodDiscount"]'); // 상품 할인율
-                    const prodDisPrice = cartInfo.querySelector('[name="prodDisPrice"]'); // 할인된 가격 x 수량
-                    const prodPoint = cartInfo.querySelector('[name="prodPoint"]'); // 할인된 가격 x 수량 x 10%
-
-                    let oneProdPrice = parseInt(prodPrice.innerText) / value; // 상품 1개 가격
-                    let modProdPrice = oneProdPrice * modValue; // 원래 가격 x 수정된 수량
-                    let modProdDisPrice = (oneProdPrice - (oneProdPrice * parseInt(prodDiscount.innerText) / 100)) * modValue; // 할인된 가격 x 수정된 수량
-                    let modProdPoint = modProdDisPrice / 10; // 할인된 가격 x 수정된 수량 x 10%
-
-                    prodPrice.innerText = modProdPrice;
-                    prodDisPrice.innerText = modProdDisPrice;
-                    prodPoint.innerText = modProdPoint;
-                    // 전체 주문예상금액 가격 변동 //
-                    orderPriceSub();
                 });
             })
 
-        //// 주문하기 버튼 클릭시 DB에서 수량조절 후 order로 전달 ////
+            //// 주문하기 버튼 클릭시 DB에서 수량조절 후 order로 전달 ////
             const btnOrder = document.getElementsByClassName('btnOrder')[0];
             btnOrder.onclick = function () {
                 const cart_prodNo = document.getElementsByName('cart_prodNo');
@@ -94,8 +98,6 @@
                     modCart_prodNo.push(currentProdNo);
                     modCount.push(currentCount)
                 }
-                console.log(modCart_prodNo);
-                console.log(modCount);
 
                 const jsonData = {
                     "cart_prodNo" : modCart_prodNo,
@@ -139,6 +141,7 @@
                     .catch(err => console.log(err))
             }
 
+            // 선택을 통한 다중 삭제 //
             const prodCheckBox = document.querySelectorAll('.prodCheckBox');
             const btnDeleteProds = document.getElementById('btnDeleteProds');
 
@@ -155,7 +158,6 @@
                         cart_prodNo.push(div.querySelector('[name="cart_prodNo"]').value);
                     }
                 })
-                alert(cart_prodNo);
                 // 삭제
                 let result = false;
                 if (cart_prodNo.length != 0){
@@ -179,8 +181,6 @@
                             return response.json()
                         })
                         .then(data => {
-                            console.log("g3");
-
                             if (data.data === "삭제 성공"){
                                 for (let i = 0; i < cart_prodNo.length; i++) {
                                     console.log(cart_prodNo[i]);
@@ -191,6 +191,25 @@
                                 deleteDiv.length = 0;
                                 // 전체 주문예상금액 가격 변동 //
                                 orderPriceSub();
+
+                                // 장바구니의 상품이 0개일때
+                                const cartItem = document.getElementsByClassName('cartItem');
+                                if (cartItem.length === 0) {
+                                    const cartBox = document.getElementsByClassName('cartBox')[0];
+                                    const notProd = `<div class="cartItem">
+                                                        <div class="cartInfoBot">
+                                                            <div>
+                                                                <p style="padding: 30px 0;">
+                                                                    <span style="height: 200px; font-size: 20px;">
+                                                                        장바구니에 상품이 없습니다.
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>`
+                                    cartBox.insertAdjacentHTML('beforeend', notProd);
+                                }
+                                ///
                             }
                         })
                         .catch(err => console.log(err))
@@ -201,7 +220,7 @@
                 }
             }
 
-        //// 개별 상품 삭제 ////
+            //// 개별 상품 삭제 ////
             const btnDeleteProd = document.getElementsByClassName('btnDeleteProd');
             Array.from(btnDeleteProd).forEach(function (delProd) {
                 delProd.addEventListener('click', function(e) {
@@ -227,13 +246,30 @@
                                 return response.json()
                             })
                             .then(data => {
-                                console.log("g3");
-
                                 if (data.data === "삭제 성공"){
                                     cartInfo.remove();
                                     cart_prodNo.length = 0;
                                     // 전체 주문예상금액 가격 변동 //
                                     orderPriceSub();
+
+                                    // 장바구니의 상품이 0개일때
+                                    const cartItem = document.getElementsByClassName('cartItem');
+                                    if (cartItem.length === 0) {
+                                        const cartBox = document.getElementsByClassName('cartBox')[0];
+                                        const notProd = `<div class="cartItem">
+                                                        <div class="cartInfoBot">
+                                                            <div>
+                                                                <p style="padding: 30px 0;">
+                                                                    <span style="height: 200px; font-size: 20px;">
+                                                                        장바구니에 상품이 없습니다.
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>`
+                                        cartBox.insertAdjacentHTML('beforeend', notProd);
+                                    }
+                                    ///
                                 }
                             })
                             .catch(err => console.log(err))
@@ -246,11 +282,10 @@
                 })
             })
 
-        //// 전체 선택 ////
+            //// 전체 선택 ////
             const totalCheckBox = document.getElementsByClassName('totalCheckBox')[0];
             let checkedTurn = 0;
             totalCheckBox.onclick = function (e){
-                alert("g2");
                 if (checkedTurn === 0) {
                     prodCheckBox.forEach(function(checkbox) {
                         checkbox.checked = true;
@@ -265,10 +300,9 @@
 
             }
 
-
         } //window.onload 끝//
 
-    //// 각 장바구니 품목 가격 합산하는 함수 ////
+        //// 각 장바구니 품목 가격 합산하는 함수 ////
         function orderPriceSub() {
             const totalCount = document.getElementById('totalCount');
             const totalPrice = document.getElementById('totalPrice');
@@ -290,12 +324,13 @@
             let totalProdTotal = 0;
 
             // 각 포인트, 가격, 할인, 합계값 더하는 for문
-            for (let i = 0; i < prodPoint.length; i++) {
+            for (let i = 0; i < prodPrice.length; i++) {
                 totalProdCount += 1;
-                totalProdPrice += parseInt(prodPrice[i].innerText);
-                totalProdDisPrice += (parseInt(prodPrice[i].innerText) - parseInt(prodDisPrice[i].innerText));
-                totalProdTotal += parseInt(prodDisPrice[i].innerText);
-                totalProdPoint += (parseInt(prodDisPrice[i].innerText) / 10);
+                totalProdPrice += parseInt(prodPrice[i].innerText.replace(/,/g, ''));
+                totalProdDisPrice += (parseInt(prodPrice[i].innerText.replace(/,/g, '')) - parseInt(prodDisPrice[i].innerText.replace(/,/g, '')));
+                totalProdTotal += parseInt(prodDisPrice[i].innerText.replace(/,/g, ''));
+                totalProdPoint += (parseInt(parseInt(prodDisPrice[i].innerText.replace(/,/g, '')) / 10));//소수점 때문에 살짝 수정
+
                 if (totalProdTotal >= 30000) {
                     totalProdDelCost = 0;
                 }else{
@@ -303,55 +338,53 @@
                 }
             }
             // 태그에 값 출력하기
-            totalPrice.innerText = totalProdPrice.toString();
-            totalDiscount.innerText = totalProdDisPrice.toString();
-            totalDelCost.innerText = totalProdDelCost.toString();
-            totalOrder.innerText = (totalProdTotal+parseInt(totalDelCost.innerText)).toString();
-            totalPoint.innerText = totalProdPoint.toString();
+            totalPrice.innerText = totalProdPrice.toLocaleString();
+            totalDiscount.innerText = totalProdDisPrice.toLocaleString();
+            totalDelCost.innerText = totalProdDelCost.toLocaleString();
+            totalOrder.innerText = (totalProdTotal+parseInt(totalDelCost.innerText.replace(/,/g, ''))).toLocaleString();
+            totalPoint.innerText = totalProdPoint.toLocaleString();
         }
     </script>
 
-        <main class="articleMain">
-            <div class="sideBox">
-                <img th:src="@{/newimage/farm_market_logo.png}" alt="">
-                <ul>
-                    <li><a class="" href="">장보기</a></li>
-                    <li><a class="tabOn" href="">장바구니</a></li>
-                    <li><a class="" href="">배송조회</a></li>
-                </ul>
+    <main class="articleMain">
+        <div class="sideBox">
+            <img th:src="@{/newimage/farm_market_logo.png}" alt="">
+            <ul>
+                <li><a class="" th:href="@{/market/newlist}">장보기</a></li>
+                <li><a class="tabOn" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/market/newcart(uid=${#authentication.principal.user.uid})}">장바구니</a></li>
+                <li><a class="tabOn" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/user/login}">장바구니</a></li>
+                <li><a class="" th:href="@{/notfound}">배송조회</a></li>
+            </ul>
+        </div>
+
+        <div class="contentBox">
+            <div class="articleHeader">
+                <h2>장바구니</h2>
+                <h5>HOME > 장보기 > <span>장바구니</span></h5>
             </div>
 
-            <div class="contentBox">
-                <div class="articleHeader">
-                    <h2>장바구니</h2>
-                    <h5>HOME > 장보기 > <span>장바구니</span></h5>
+            <div class="articleBox">
+
+                <div class="cartHeader">
+                    <input type="checkbox" class="totalCheckBox">
+                    <h4>전체선택</h4>
+                    <a id="btnDeleteProds" style="cursor: pointer">선택삭제</a>
                 </div>
-
-                <div class="articleBox">
-
-                    <div class="cartHeader">
-                        <input type="checkbox" class="totalCheckBox">
-                        <h4>전체선택</h4>
-                        <a id="btnDeleteProds" style="cursor: pointer">선택삭제</a>
-                    </div>
-
                     <div class="prodInfoBox">
 
                         <div class="cartBox">
-
                             <!--장바구니 품목 시작-->
-                            <div class="cartItem" th:each="product : ${productDTO}">
+                            <div class="cartItem" th:if="${!productDTO.isEmpty()}" th:each="product : ${productDTO}">
                                 <input type="checkbox" class="prodCheckBox">
                                 <input type="hidden" name="cart_prodNo" th:value="${product.cart_prodNo}">
-                                <input type="hidden" id="uid" value="skdlawo5985@gmail.com">
-                                <!--나중에 변경해야함 ${#authentication.principal.user.uid} -->
+                                <input type="hidden" id="uid" th:value="${#authentication.principal.user.uid}">
                                 <a class="cartImg" href="">
                                     <img th:src="@{'/imagePath/'+${product.thumb}}" class="thumb" alt="">
                                 </a>
 
                                 <div class="cartInfo">
                                     <p>
-                                        <a href="">
+                                        <a th:href="@{/market/newview(prodno=${product.prodno})}">
                                             <b class="prodName">[[${product.prodname}]]</b>
                                             <b th:if="${product.amount} >= 1000" th:text="(${product.amount}/1000)+'kg'"></b>
                                             <b th:if="${product.amount} < 1000" th:text="${product.amount}+'g'"></b>
@@ -360,12 +393,14 @@
                                     </p>
                                     <p>
                                         <span><b class="prodDiscount" th:text="${product.discount}" th:name="prodDiscount"></b>%</span>
-                                        <span><s class="prodPrice" th:text="${product.price}*${product.count}" th:name="prodPrice"></s>원</span>
+                                        <span>
+                                            <s class="prodPrice" th:text="${#numbers.formatInteger(product.price * product.count, 1, 'COMMA')} + '원'" th:name="prodPrice"></s>
+                                        </span>
                                     </p>
                                     <p>
                                         <span>
-                                            <b class="prodCutPrice" th:text="(${product.price}-(${product.price}*${product.discount}/100))*${product.count}" th:name="prodDisPrice">
-                                            </b>원
+                                           <b class="prodCutPrice" name="prodDisPrice" th:text="${#numbers.formatInteger((product.price - (product.price * product.discount / 100)) * product.count, 1, 'COMMA')}">
+                                         </b>원
                                         </span>
                                     </p>
 
@@ -373,11 +408,11 @@
                                         <div>
                                             <p>
                                                 <span>
-                                                    <b class="prodPoint" th:text="((${product.price}-(${product.price}*${product.discount}/100))*10/100)*${product.count}" th:name="prodPoint">
+                                                    <b class="prodPoint" name="prodPoint" th:text="${#numbers.formatInteger(((product.price - (product.price * product.discount / 100)) * product.count) * 0.10, 0, 'COMMA')}">
                                                     </b> 팜포인트 적립
                                                 </span>
                                             </p>
-                                            <p><span><b class="prodDelDate">00-00</b>도착 예정</span></p>
+                                            <p><span><b class="prodDelDate" th:text="${#temporals.format(#temporals.createNow().plusDays(2), 'MM-dd')}"></b>도착 예정</span></p>
                                         </div>
 
                                         <div class="quantity-input">
@@ -388,22 +423,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--장바구니 품목 끝-->
+                            <!--장바구니에 상품이 없을때-->
+                            <div class="cartItem" th:if="${productDTO.isEmpty()}">
+                                <div class="cartInfoBot">
+                                    <div>
+                                        <p style="padding: 30px 0;">
+                                            <span style="height: 200px; font-size: 20px;">
+                                                장바구니에 상품이 없습니다.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <!--장바구니 품목 끝-->
 
-                        <div class="cartTotal">
-                            <p>주문예상금액</p>
-                            <p>총 상품 가격<span><b id="totalPrice"></b>원</span></p>
-                            <p>총 할인<span>- <b id="totalDiscount"></b>원</span></p>
-                            <p>배송비<span>+ <b id="totalDelCost"></b>원</span></p>
-                            <p>결제 금액<span><b id="totalOrder"></b>원</span></p>
-                            <p>적립 포인트<span><b id="totalPoint"></b> P</span></p>
-                            <button class="btnOrder">주문하기</button>
-                        </div>
+                    <div class="cartTotal">
+                        <p>주문예상금액</p>
+                        <p>총 상품 가격<span><b id="totalPrice"></b>원</span></p>
+                        <p>총 할인<span>- <b id="totalDiscount"></b>원</span></p>
+                        <p>배송비<span>+ <b id="totalDelCost"></b>원</span></p>
+                        <p>결제 금액<span><b id="totalOrder"></b>원</span></p>
+                        <p>적립 포인트<span><b id="totalPoint"></b> P</span></p>
+                        <button class="btnOrder">주문하기</button>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-    </div>
+</div>
 </html>
