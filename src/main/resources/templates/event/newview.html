@@ -88,8 +88,8 @@
 
                         <!--댓글 없을때-->
                         <th:block th:if="${comments.isEmpty()}">
-                            <div class="comment">
-                                <textarea name="" id="">댓글이 없습니다. 댓글을 남겨주세요</textarea>
+                            <div class="comment" id="noComment">
+                                <textarea name="" id="" readonly>댓글이 없습니다. 댓글을 남겨주세요</textarea>
                             </div>
                         </th:block>
                         <!--로그인한 경우에만 조회-->
