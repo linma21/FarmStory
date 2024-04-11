@@ -12,7 +12,7 @@ import java.util.List;
 public class ReviewPageResponseDTO {
 
     private List<ReviewDTO> dtoList;
-    private int pg;
+    private int rpg;
     private int size;
     private int total;
     private int last;
@@ -22,14 +22,14 @@ public class ReviewPageResponseDTO {
 
     @Builder
     public ReviewPageResponseDTO(ReviewPageRequestDTO pageRequestDTO, List<ReviewDTO> dtoList , int total){
-        this.pg = pageRequestDTO.getPg();
+        this.rpg = pageRequestDTO.getRpg();
         this.size = pageRequestDTO.getSize();
         this.total = total;
         this.dtoList = dtoList;
 
-        this.startNo = total - ((pg - 1) * size);
-        this.end = (int) (Math.ceil(this.pg / 10.0)) * 10;
-        this.start = this.end - 4;
+        this.startNo = total - ((rpg - 1) * size);
+        this.end = (int) (Math.ceil(this.rpg / 10.0)) * 10;
+        this.start = this.end - 9;
 
         int last = (int) (Math.ceil(total / (double) size));
         this.last = last;

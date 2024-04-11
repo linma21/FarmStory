@@ -17,13 +17,13 @@ public class ReviewPageRequestDTO {
     private int no = 1;
 
     @Builder.Default
-    private int pg = 1;
+    private int rpg = 1;
 
     @Builder.Default
-    private int size = 5;
+    private int size = 10;
 
     public Pageable getPageable(String sort){
-        return PageRequest.of(this.pg - 1, this.size, Sort.by(sort).descending());
+        return PageRequest.of(this.rpg - 1, this.size, Sort.by(sort).descending());
     }
 
 }

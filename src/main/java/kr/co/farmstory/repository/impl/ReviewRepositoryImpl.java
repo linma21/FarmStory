@@ -36,6 +36,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .join(qUser)
                 .on(qReview.uid.eq(qUser.uid))
                 .orderBy(qReview.rno.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
         long total = results.getTotal();
 
