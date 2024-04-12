@@ -195,6 +195,7 @@ public class MarketService {
     public int orders(OrderDTO orderDTO){
 
         Orders orders = modelMapper.map(orderDTO, Orders.class);
+        orders.setStatus("준비중");
 
         orderRepository.save(orders);
 

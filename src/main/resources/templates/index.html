@@ -123,6 +123,11 @@
 
                         // 태그 문자열 삽입
                         productBox.insertAdjacentHTML('beforeend', newProduct);
+
+                        // 위치 이동
+                        const pordCateBox = document.getElementsByClassName('pordCateBox')[0];
+                        pordCateBox.scrollIntoView({behavior: "smooth"});
+
                     }
                 })
                 .catch(err => console.log(err))
