@@ -69,7 +69,6 @@ window.onload = function () {
         }, 1000);
     });
 
-
 //우편번호 검색
     function postcode() {
         new daum.Postcode({
