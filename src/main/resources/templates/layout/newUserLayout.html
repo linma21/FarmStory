@@ -13,7 +13,7 @@
     <header>
         <!--로그인 안된 경우-->
         <div class="userBox" th:if="${!#authorization.expression('isAuthenticated()')}">
-            <a href="">고객센터</a>
+            <a th:href="@{/introduction/service}">고객센터</a>
             <a th:href="@{/user/register}">회원가입</a>
             <a th:href="@{/user/login}">로그인</a>
         </div>

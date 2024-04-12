@@ -13,18 +13,21 @@
 
             for (let i = 0 ; i < articleTables.length ; i++) {
                 const artRdate = articleTables[i].dataset.rdate;
-                console.log(artRdate);
+                console.log("1" +artRdate);
 
-                // tdRdate를 JavaScript의 Date 객체로 변환
+                // artRdate JavaScript의 Date 객체로 변환
                 let articleDate = new Date(artRdate);
+                console.log("2" + articleDate);
+
 
                 // 두 날짜의 차이를 계산하여 일(day) 단위로 변환
                 let differenceInMilliseconds = currentDate - articleDate;
+                console.log("3" + differenceInMilliseconds);
                 let differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-
+                console.log("4" + differenceInDays);
                 // 차이가 48시간 이내인 경우 'NEW'를 추가
                 if (differenceInDays < 2) {
-                    // <img>를 insertAdjacentHTML하면 이미지가 깨져서 hidden으로 가려놨다가 공개
+                    // <img>를 insertAdjacentHTML하면 이미지가 깨져서 hidden 으로 가려놨다가 공개
                     articleTables[i].querySelector('img').style.visibility = 'visible';
                 }
             }
