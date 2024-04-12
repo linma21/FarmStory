@@ -21,7 +21,7 @@
 - backend : ![java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white) ![spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white) ![gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 
 ## 모델링 
-- ![farmDRD](https://github.com/linma21/farmstory/assets/154877422/0d529357-4f33-4c3d-8eee-75032b42b403)
+![farmDRD](https://github.com/linma21/farmstory/assets/154877422/0d529357-4f33-4c3d-8eee-75032b42b403)
   
 ## 주요 기능
 - [로그인]
