@@ -88,8 +88,8 @@ spring:
 
                         # 카카오 > 내 애플리케이션 > 카카오 로그인 > 등록한 Redirect URI 입력
                         #redirect-uri: http://ec2-54-180-15-253.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/kakao
-                        #redirect-uri: http://ec2-3-39-72-175.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/kakao
-                        redirect-uri: http://localhost:8080/farmstory/login/oauth2/code/kakao
+                        redirect-uri: http://ec2-3-39-72-175.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/kakao
+                        #redirect-uri: http://localhost:8080/farmstory/login/oauth2/code/kakao
 
                         # 카카오 > 내 애플리케이션 > 요약정보 > REST API 키 입력
                         client-id: 3227ae68356a2d41ac3d1a0a451d3676
@@ -103,8 +103,8 @@ spring:
                     google:
                         client-id: 979608545498-9vr7dn0ce9id17dqlce5b6kvsm8jv882.apps.googleusercontent.com
                         client-secret: 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
-                        redirect-uri: http://localhost:8080/farmstory/login/oauth2/code/google
-                        #redirect-uri : http://ec2-2-3-39-72-175.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/google
+                        #redirect-uri: http://localhost:8080/farmstory/login/oauth2/code/google
+                        redirect-uri : http://ec2-3-39-72-175.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/google
                         #redirect-uri : http://ec2-54-180-15-253.ap-northeast-2.compute.amazonaws.com:8080/farmstory/login/oauth2/code/google
 
                         scope:
