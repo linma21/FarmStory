@@ -1,6 +1,6 @@
 # FRAMSTORY_PROJECT
 
----
+
 ## 🛒 프로젝트 소개
 - Spring 웹 쇼핑몰
 - Springboot, JPA 를 활용한 팀 프로젝트
