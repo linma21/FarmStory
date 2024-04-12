@@ -17,7 +17,7 @@
 - Server : AWS EC2
 - DataBase : MySQL, HeidiSQL
 - frontend : javaScript, HTML/css
-- 	https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white
+- 	![html](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white)
 - backend : java, Spring Boot, JPA, MyBAties, spring security, Thymeleaf
 - etc : OAuth2
 
