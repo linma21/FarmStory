@@ -1,20 +1,20 @@
 # FRAMSTORY_PROJECT
 
 ---
-## 프로젝트 소개
+## 🛒 프로젝트 소개
 - Spring 웹 쇼핑몰
 - Springboot, JPA 를 활용한 팀 프로젝트
   
-## 기간 / 인원
-- 2024.04.01. ~2024.04.12. (0.5개월) /4명
+## ⏱ 기간 / 👫 인원
+- 2024.04.01. ~2024.04.12. (14일) /4명
 
-## 개발 환경
+## 🖥 개발 환경
 - Version : Java 17
 - IDE : IntelliJ
 - Framework : SpringBoot 3.2.3
 - ORM : JPA, QueryDsl
   
-## 기술 스택
+## 📚 기술 스택
 - Server : 	![AWS](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
 - DataBase : ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 - frontend : ![javaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white) ![html](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white)  ![css](https://img.shields.io/badge/CSS-1572B6?&style=for-the-badge&logo=css3&logoColor=white)
@@ -82,10 +82,13 @@
 |-------------------------------------------------------------------------------------------------------------------|
 | ![farmstorReviewList](https://github.com/linma21/farmstory/assets/154877422/b9ddfdb8-f7eb-45ba-a1f3-f03e2c7e1b54) |
 
-
+## 🏅 결과 : 팀 프로젝트 1위
+![KakaoTalk_20240412_232833120](https://github.com/linma21/farmstory/assets/154877422/8eed6fcc-0695-44ca-885a-9bbe47f0c1ac)
 
 
 ## 배운 점
-   - 
+- Git Branch를 통해 매일 commit과 merge를 하며 팀 단위의 업무를 할 때 Github Branch 전략이 어떤 방식으로 운영되어야하는지 알게 되었다.
+- 다른 팀원들이 코딩한 것을 보면서, 이 코드는 어떤 기능을 하는지, 왜 이런 방식을 사용했는지 고민해보고 나라면 어떤 방식의 코딩을 했을 지 생각하며 코드를 리뷰하니까 '효율적인 코드란 무엇인가'에 대한 폭 넓은 생각을 가지게 되었다. 다른 사람의 코드를 보고 의견을 나누는 게 이렇게 성장에 도움이 될 줄이야!
 ## 아쉬운 점
+- 가장 먼저 생각나는 건 모델링. 팀원 모두가 처음 해보는 프로젝트라 모델링 단계에서 부터 꼼꼼한 작업이 필요하다는 걸 알지 못했다. 기본적인 기능은 일주일만에 구현했는데 이후에 하나 둘 씩 서브 기능들을 추가하려니 ERD를 손봐야할 일이 너무 많았다. 어떤 기능을 구현할 지 미리 정리해두고 모델링을 만드는 것에 더 많을 시간을 투자해야 할 것 같다.
 - 
