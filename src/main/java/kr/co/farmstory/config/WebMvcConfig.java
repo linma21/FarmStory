@@ -20,21 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     private String connectPath = "/imagePath/**";
 
-    //
-    //private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
-  
-    // private String resourcePath = "file:///Users/java/Desktop/farmstory/prodImg/";
-  
-    //private String resourcePath = "file:///Users/java/Desktop/farmstory/prodImg/";
-
-    // private String resourcePath = "file:///Users/user/Desktop/farmstory/prodImg/";
-
-    //private String resourcePath = "file:///Users/java/Desktop/workspace/Spring/farmstory/prodImg/";
-
-    //private String resourcePath = "file:///Users/java/Desktop/Workspace/farmstory/prodImg/";
-
     // 이진
-    //private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
     // private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
     // private String resourcePath = "file:///Users/chlvl/Desktop/workspace/farmstory/prodImg/";
 
@@ -47,7 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private String resourcePath = "file:///Users/java/Desktop/workspace/farmstory/prodImg/";
     // private String resourcePath = "file:///Users/devimjae/Desktop/workspace/farmstory/prodImg/";
 
-  // 배포
+    // 배포
     // private String resourcePath = "file:///home/farmStory/prodImg/";
 
     @Override
