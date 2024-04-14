@@ -42,7 +42,7 @@
 관리자는 상품 관리할 수 있다.✅<br/>
 관리자는 매출을 조회할 수 있다.✅<br/>
 관리자는 모든 게시판에 글쓰기를 할 수 있다.✅<br/><br/>
-![image](https://github.com/linma21/farmstory/assets/154877422/f0fdf474-b751-4a51-ad14-68c044174dee)
+
 ![farmStory](https://github.com/linma21/farmstory/assets/154877422/c94893f0-6553-4237-aa5b-8330d81b420a)
 
 ## 모델링 
